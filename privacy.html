@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — MediaFlowSwift</title>
+<meta name="description" content="What MediaFlowSwift sends outside your Mac, to whom, and why: every outside service is off until you turn it on.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="5" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h4M6 14h4M6 18h4M18 10h4M18 14h4M18 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 11l5 3-5 3z" fill="currentColor"/></svg>MediaFlowSwift</a>
+    <nav class="menu" aria-label="Site">
+      <a href="/">Overview</a>
+      <a href="/#how">How it works</a>
+      <a href="/#plans">Plans</a>
+      <a href="/support.html">Support</a>
+      <a href="/privacy.html" aria-current="page">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="doc">
+  <h1>Privacy</h1>
+  <p class="updated">Last updated 22 September 2026. This page describes the app; it says the same as Settings &rsaquo; Privacy inside MediaFlowSwift, which is the authoritative list and changes with the app.</p>
+
+  <h2>The short version</h2>
+  <p>MediaFlowSwift works on your Mac and your own network. It has no account, collects no usage data or analytics, and contacts no server of ours. Your media, projects and database stay on your Mac and on your network.</p>
+  <p>A few features need a service run by another company. Each one is <strong>off until you turn it on</strong> in Settings &rsaquo; Privacy, which shows what is sent, to whom, and what for. You can turn any of them off again at any time.</p>
+
+  <h2>Services you can turn on</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Service</th><th>Goes to</th><th>What is sent</th></tr>
+    <tr><td>Online speech recognition</td><td>Apple</td><td>The audio of the clip being transcribed, only when your Mac has no on-device speech model for its language.</td></tr>
+    <tr><td>Historical weather lookup</td><td>Open-Meteo</td><td>Each clip&rsquo;s GPS coordinates, rounded to about 100&nbsp;m, and the date it was shot.</td></tr>
+    <tr><td>Place names for GPS coordinates</td><td>Apple</td><td>Each clip&rsquo;s coordinates, rounded to about 100&nbsp;m.</td></tr>
+    <tr><td>Maps of where you shot</td><td>Apple</td><td>The area of the map being shown, so that the map images can be supplied.</td></tr>
+    <tr><td>Writing your YouTube title, description and tags</td><td>The model provider you chose (Anthropic, OpenAI or Google), or a model on your own computer</td><td>The transcript of the finished video you chose, its length, the brief you typed, and the drafts for revision. Never the video or its file name. With a model on your own Mac or network, nothing leaves your network.</td></tr>
+    <tr><td>Suggesting categories</td><td>The model provider you chose, or a model on your own computer</td><td>Three frames from each clip, your category list, the clip&rsquo;s camera, duration and place name, the opening words of any speech, and your recent corrections. Set up in Settings &rsaquo; Analysis and ticked per import.</td></tr>
+    <tr><td>Uploading to YouTube</td><td>Google, in a Google Cloud project you own</td><td>The finished video you chose and the details you entered for it, and the thumbnail if you chose to send it. Sign-in opens your browser at Google; MediaFlowSwift never sees your Google password. Nothing is uploaded until you click Upload and confirm.</td></tr>
+    <tr><td>Reading your videos&rsquo; statistics</td><td>Google (YouTube and YouTube Analytics)</td><td>The YouTube IDs of videos uploaded by MediaFlowSwift and a date span; Google answers with views, likes, comments, watch time and the like. Only when you click Read from YouTube Now.</td></tr>
+    <tr><td>Sending problem reports</td><td>The report relay whose address you entered (for reports to us, see below)</td><td>A problem report, only when you click Send on one you have read in full: its text exactly as shown, a title, a random identifier for your copy of the app, and a crash signature if there is one. Names, drives, folders and file names are taken out before you see it.</td></tr>
+  </table>
+  </div>
+
+  <h2>What stays on your network</h2>
+  <ul>
+    <li>Your network storage: finding it, connecting to it, reading and writing media, the shared database file and app updates.</li>
+    <li>Your database server, if you use one. That connection is not encrypted, so keep the server on a network you trust.</li>
+    <li>App updates come from a folder you choose, never from a web site.</li>
+    <li>A local model you point at another computer on your network receives the same frames or text as above and nothing more; an address on the internet is refused.</li>
+  </ul>
+
+  <h2>Problem reports sent to us</h2>
+  <p>If you send a problem report to us, it is filed as an issue in our development tracker so that we can fix the fault. It contains only what the app showed you before you clicked Send. If you chose to include an email address for a reply, we use it for that reply and nothing else. We keep reports for as long as the fault is being worked on and for our release records afterwards.</p>
+
+  <h2>This website</h2>
+  <p>This site is static pages served by GitHub Pages. We run no analytics and set no cookies. GitHub, as the host, keeps ordinary server logs of requests (IP address, page requested, time) under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub&rsquo;s privacy statement</a>. Fonts are loaded from Google Fonts, which receives the request for the font files.</p>
+
+  <h2>Purchases</h2>
+  <p>When plans go on sale, payment will be handled by a payment provider; the checkout page will say which, and their privacy policy covers the card and billing details you enter there. MediaFlowSwift itself never sees card numbers.</p>
+
+  <h2>Questions</h2>
+  <p>Write to <a href="mailto:support@mediaflowswift.com">support@mediaflowswift.com</a>.</p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Michael Williams &middot; MediaFlowSwift</span>
+    <nav aria-label="Legal"><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms &amp; refunds</a></nav>
+  </div>
+</footer>
+</body>
+</html>
