@@ -465,7 +465,7 @@ See also: [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas),
 
 MediaFlow has no built-in NAS. Until you choose one, Settings › Network reads “No NAS chosen yet” and nothing is assumed. A NAS is optional: you can organize to any folder, including a drive attached to this Mac.
 
-When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, as the host offered for a PostgreSQL server, and as the place it looks for app updates. It also reconnects the share after sleep.
+When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, as the host offered for a PostgreSQL server, and as the place it looks for app updates. It also connects the share when it is needed: see below.
 
 ### Choose a share
 
@@ -475,6 +475,12 @@ When you do choose a share, MediaFlow uses it as the starting point for file pic
 4. Mount the share you want in Finder, return to Settings, and click Use this
 
 Picking a mounted share fills in both the share name and its address, so there is nothing to type. If you prefer, open “Type the address instead” and enter an smb:// address. A name ending in .local keeps working when the NAS gets a new network address.
+
+### Connected when it is needed
+
+Once a share is chosen, MediaFlowSwift connects it by itself whenever something needs it and it is not mounted: a couple of seconds after launch, a few seconds after the Mac wakes, and before opening a project whose file lives on it. The status area reads “Connecting to ‘share’…” meanwhile. The launch and wake attempts are made once, so a share that cannot be reached raises at most one password prompt; opening a project tries again, because you are there to answer. If the share still cannot be connected, the project is not opened and a message says so, rather than opening it from the database with every clip called missing. A project on some other drive that is unplugged gets the same treatment: the message names the drive.
+
+While a drive is not connected, the clips on it read Volume not connected in the Where column, in grey, and Re-check files leaves their last known state alone. Nothing is called Missing because its drive is away.
 
 ### Passwords
 
@@ -1091,6 +1097,7 @@ It does not read file contents or recompute checksums, so it cannot detect damag
 - Only on card — the file is on a camera card and has not been copied to the destination
 - Not at destination — the file is somewhere other than the destination and not on a card, such as the folder you imported from or another drive. It is not lost; hover over it to see which drive. If a whole project reads this way after a library was moved, you may have opened the old copy of the project: see After Moving Your Library to a New Drive
 - Missing — no file was found at the recorded path
+- Volume not connected — the drive or share the path names is not mounted right now. The file is neither checked nor called missing; its last known state stands until the drive is back
 
 Re-check files only looks at recorded paths. It does not search for files that have moved; use Workflow → Repair → Relink Missing Media… for that.
 
@@ -3091,6 +3098,8 @@ A clip is followed only if a file is at the same place under the new folder and 
 Library Moved never changes or removes the project file at the old location, so that file still opens, under the same name. It is an old copy: its clips point at the old location, so they read Not at destination, and work done in it stays in it. When you open one on the Mac that ran Library Moved, MediaFlowSwift says “This is an old copy” and offers to open the current copy instead. It knows from its own note of what Library Moved did. For a library moved before this version, choose Library Moved again with the same two folders and click Find Projects: every project already followed is noted, and nothing is changed. Another Mac has no such note until Library Moved has been opened on it the same way. Separately, if a project file is kept apart from its destination folder and another file for the same project is found in that folder, MediaFlowSwift says “There is another copy”, shows where each is and when each was saved, and does not claim to know which is current. Your answer is a decision about where the project lives, and is recorded at once in this Mac’s projects list and in the shared database. Open the Current Copy (or Open the Other Copy) makes that copy the project’s home, so it is the one that opens next time. Use This Copy and Don’t Ask Again, offered when MediaFlowSwift does not know which copy is current, makes the open copy the home and stops the question for that file. Stay Here only looks: nothing is recorded, this Mac’s projects list points at the other copy, saves made here are not sent to the database (the status line says Not synced), and you are asked again next time.
 
 The same question is asked when the shared database records the project as living in another file that is still there. A project is written to the database only from the file the database says it lives at, unless that file is gone, Library Moved has noted it as the old copy, or you have said otherwise. That is what keeps a stale copy, opened by mistake on any Mac, from overwriting what every Mac sees. When the old drive is retired, the old copies go with it.
+
+If the file the database names is not there at all when you open a project from the projects list — the drive is off, or the project was moved without Library Moved — MediaFlowSwift looks for the project where it may be: where Library Moved noted it went, in its destination folder, and in its library folder if it is out on an editing drive. A file that holds this very project is opened, and the projects list and the database are pointed at it. If none is found, the project opens from the database alone and one notice says so. Your changes are then kept in the shared database, and the project file is left as it is until its drive is back, when saving to it resumes on its own, or until you choose Save As to give the project a new home. If you quit before the drive is back, the file has not caught up: open the project from the projects list again rather than by the file, and it comes from the database.
 
 ### Stopping and Running It Again
 
