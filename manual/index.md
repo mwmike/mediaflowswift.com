@@ -565,6 +565,8 @@ With “Check for new versions automatically” on, MediaFlow looks shortly afte
 2. Click Install Update. The button is unavailable while a background operation is running; wait for it to finish
 3. MediaFlow copies the new version, checks that it is genuine and from the same maker as the one you are running, closes, puts it in place of the old one and reopens. It reopens only once the old copy has fully closed, which can take some seconds while the shared database is saved. Do not quit or reopen it yourself while it works
 
+The update window lists what is new in the version on offer: every version newer than yours, its headline and its points, taken from the change log inside the new copy of the app. The copy is checked for its maker’s signature when it is installed, not when its notes are read, so treat the list as a preview. A copy made before this feature carries no change log, and the list is simply absent.
+
 Your settings are written to disk and to the saved setup before the app restarts.
 
 MediaFlow looks for a new version a few seconds after launch, again every minute until it can reach the place new versions come from, and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept beside the app as “MediaFlowswift (previous)” for Revert. Because every version is the same signed app to macOS, permissions you have given MediaFlow, such as reaching your local network, carry over from one update to the next. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
