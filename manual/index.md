@@ -3585,7 +3585,7 @@ Choose Help → Report a Problem…, or click Report a Problem… where it is of
 
 - What you wrote, exactly as you wrote it
 - The version of MediaFlowSwift and of macOS, whether the Mac is Apple silicon or Intel, the kind of shared database you use (never its address), and how many clips are in the open project
-- A summary of any crash reports macOS wrote about MediaFlowSwift in the last two weeks: what kind of failure, how often (times are in UTC), and where in the program it happened. macOS writes these itself, in Logs/DiagnosticReports in your Library; MediaFlowSwift only reads the ones about itself
+- A summary of any crashes and hangs macOS recorded for MediaFlowSwift in the last two weeks: what kind of failure, how often (times are in UTC), and where in the program it happened. Two sources say so: the report files macOS writes in Logs/DiagnosticReports in your Library, of which MediaFlowSwift reads only the ones about itself, and MetricKit, Apple’s service that hands an app its own crash and hang diagnostics on a later launch. The same fault told by both is counted once. Neither leaves your Mac unless you send a report
 - Whether the last run ended without quitting
 - The last 150 lines of MediaFlowSwift’s log (Help → Show Log)
 
