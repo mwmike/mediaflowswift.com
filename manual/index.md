@@ -133,6 +133,7 @@ For video creators. This guide is generated from the app’s own Help (Help → 
   - [Managing Archive Volumes](#managing-archive-volumes)
 
 - [Settings & Preferences](#settings--preferences)
+  - [Plans and Pricing](#plans-and-pricing)
   - [The Settings Window](#the-settings-window)
   - [Smart Notifications](#smart-notifications)
 
@@ -720,6 +721,8 @@ When the source is an SD card or USB drive, an Eject button appears next to the 
 
 A Clear Card… button appears beside Eject. It closes the Import sheet and opens the Clear Card sheet, which deletes only clips that are already organized and verified at the destination.
 
+Importing is part of the Studio plan; see Plans and Pricing.
+
 See also: [Importing from iPhone or Camera](#importing-from-iphone-or-camera), [The Import Sheet and Completion Card](#the-import-sheet-and-completion-card), [Clear Card](#clear-card), [Clip Classifier, Second Pass (Tier 1)](#clip-classifier-second-pass-tier-1)
 
 ## Importing from iPhone or Camera
@@ -1050,6 +1053,8 @@ When you change the category or the camera of an organized clip, MediaFlow moves
 Every long file operation (organize, import, project move, cleanup move and restore, relink, re-file and archive) has a Cancel button on its progress window. Cancelling stops the work between files. The file being written at that moment is discarded, so no half-copied file is left behind. Every file that finished before you cancelled stays where it landed; nothing already copied, moved or deleted is put back. The window then reports what did finish, for example “Cancelled after 12 of 40 files, 6.2 GB copied”, and waits for you to click Done.
 
 > **Tip:** Clips in the Skip (don’t copy) category are never copied. The category is stored as “Do Not Copy” in the .vpm file and the database; only the label changed.
+
+Organize is part of the Studio plan; see Plans and Pricing.
 
 See also: [Change destination folder](#change-destination-folder), [Re-check files](#re-check-files), [Freeing Up Space](#freeing-up-space), [Clear Card](#clear-card)
 
@@ -1947,6 +1952,8 @@ Select a video clip to load it in the preview panel. The controls appear below t
 
 > **Tip:** Use frame stepping for precise positioning when extracting thumbnails or creating subclips.
 
+Making proxies is part of the Studio plan; see Plans and Pricing.
+
 See also: [Pop-Out Video Window](#pop-out-video-window), [Extracting Thumbnails and Subclips](#extracting-thumbnails-and-subclips)
 
 ## Pop-Out Video Window
@@ -2459,6 +2466,8 @@ A successful test shows the server’s version, such as PostgreSQL 16. A failed 
 - Use the password already in my Keychain — for saving the file again for the server you already use. A server reads its password only the first time it starts, so the file must keep the same one
 - Make a new password — for a server that has never been started. It replaces the one in your Keychain, so MediaFlow can no longer sign in to the old server
 
+The database server is part of Studio Pro; without it the app keeps working with a database file. See Plans and Pricing.
+
 See also: [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Database Connection Issues](#database-connection-issues)
 
 ## Copying Records Between the File and the Server
@@ -2794,6 +2803,8 @@ This is off until you turn it on. In Settings › Privacy, switch on “A model 
 
 > **Warning:** Read what it writes before you publish it. The agent works from a transcript, and speech recognition mishears names, places and technical words. A wrong name in a title is your name on a mistake.
 
+Writing with the agent is part of Studio Pro, with a monthly fair-use limit; see Plans and Pricing.
+
 See also: [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [The Publishing Checklist](#the-publishing-checklist), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories)
 
 ## The Publishing Checklist
@@ -2898,6 +2909,8 @@ When an upload finishes, MediaFlow adds the video to the shared database, if you
 These are the words and settings the video went up with, even if you edit the draft afterwards. If the database was not connected when the upload finished, the video is added the next time you open Prepare for YouTube for that project, or upload from it; a later upload does not push it aside. The visibility is what you asked for: MediaFlow’s permission cannot read your channel, so if Google kept a Public video Private, or you changed it in YouTube Studio, the database does not know. Turning on statistics changes that: see How Your Videos Are Doing.
 
 > **Tip:** An upload uses most of a new Google Cloud project’s daily allowance of 10,000 units: 1,600 for the video and 50 for the thumbnail. That is about six videos a day. The allowance resets at midnight Pacific time.
+
+Uploading, and reading results, are part of Studio Pro, each with a monthly fair-use limit; see Plans and Pricing.
 
 See also: [Setting Up Your Google Client](#setting-up-your-google-client), [How Your Videos Are Doing](#how-your-videos-are-doing), [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [The Publishing Checklist](#the-publishing-checklist), [Making a Thumbnail](#making-a-thumbnail), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac)
 
@@ -3069,6 +3082,8 @@ Proving the library copy means reading it, so expect roughly the time it would t
 On a Mac that knows a project is out, Cleanup and Free Up Space never take a file out of its library copy, even where it looks like a spare copy of a clip on the editing drive. The Mac that sent it out knows at once; another Mac knows from the first time it opens the project or its library copy with the shared database connected.
 
 > **Tip:** Copying writes the whole project across. Over a wireless connection that can be slow; a wired connection to the drive is many times faster.
+
+The editing drive is part of the Studio plan; see Plans and Pricing.
 
 See also: [Moving a Project](#moving-a-project), [After Moving Your Library to a New Drive](#after-moving-your-library-to-a-new-drive), [Processing the Proxy Queue](#processing-the-proxy-queue)
 
@@ -3282,11 +3297,35 @@ See also: [Archiving a Project to USB](#archiving-a-project-to-usb), [Restoring 
 
 # Settings & Preferences
 
+## Plans and Pricing
+
+*Two plans, Studio and Studio Pro, a 14-day trial of the full app, and what stays open when a plan ends.*
+
+MediaFlowSwift comes in two plans. Studio is all the file management: importing from cards, phones and folders; categorizing, reviewing, rating and tagging; Organize with every copy proved; Free Up Space; Archive and restore; proxies; the editing drive; Library Moved; reports; Help; updates and problem reports. Studio Pro is everything in Studio, plus the title, description, chapters and tags written for you, uploading to YouTube with thumbnail and schedule, results read back from YouTube, and the database server that gives every Mac the same projects list.
+
+### The trial
+
+The first time this copy is opened, a 14-day trial of Studio Pro begins. No card is asked for. Settings › Plan shows how many days are left, and a banner in the main window says so too; Later hides it for this session. The trial’s start is kept in your Keychain, not in the preferences, so installing the app again does not start it again, and a clock turned back does not lengthen it.
+
+### When a plan ends
+
+Nothing you have made is taken away. Every project opens, every clip shows where it is, restoring from an archive and copying footage out work, and so do Help, reports, updates and problem reports. What pauses is what makes new work: importing, Organize, proxies, moving a project to the editing drive, writing, publishing, and the database server. Each of those says which plan opens it, with a Plans… button that shows the plans side by side.
+
+### Fair use
+
+Writing with the agent, uploading and reading results cost us something each time, so each has a monthly limit — generous, and shown in Settings › Plan. Reaching one pauses that feature until the start of the next month; nothing else is affected.
+
+### Buying a plan
+
+Prices are announced with the first public release, monthly or yearly. A plan follows you, not a Mac: the Macs you use share it. Until plans go on sale, Choose a plan… explains them and asks for nothing. Nothing on the Plan tab is sent anywhere.
+
+See also: [The Settings Window](#the-settings-window), [Importing from a Card, Drive or Folder](#importing-from-a-card-drive-or-folder), [Organizing Media to Storage](#organizing-media-to-storage), [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server)
+
 ## The Settings Window
 
-*What each of the eight Settings tabs is for: General, Network, Storage, Cameras, Categories, Analysis, Privacy and Notifications.*
+*What each of the nine Settings tabs is for: General, Network, Storage, Cameras, Categories, Analysis, Privacy, Notifications and Plan.*
 
-Choose MediaFlow → Settings (Cmd+,). The window has eight tabs. This topic says what each one is for; the related topics go into detail.
+Choose MediaFlow → Settings (Cmd+,). The window has nine tabs. This topic says what each one is for; the related topics go into detail.
 
 ### General
 
