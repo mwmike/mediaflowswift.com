@@ -696,6 +696,10 @@ To stop a long import, click Cancel on the progress window. The copy stops betwe
 
 The Camera picker lists the project’s cameras (Camera A, Drone, Phone, …). New camera… adds a name to that list, saves it with the project, and selects it for this import. Typing a name that already exists selects the existing entry rather than adding a duplicate.
 
+### Sorting the List
+
+Click a column header to sort the list by Filename, Date, Type, Length or Size; click it again to reverse. Filename keeps a GoPro recording’s chapters together, as the clip table does. The choice is remembered for the next import, whichever source you use. Until a video’s length has been read, it sorts as the shortest.
+
 ### Ask a Model to Suggest Categories
 
 This checkbox asks an AI model to look at each imported video clip and propose one of your project’s categories. It is off every time the sheet opens and applies to this import only, so no import uses a model unless you tick the box for it. The model runs in the background after the copy finishes. Its answers arrive as proposals: nothing is applied to a clip until you confirm it.
