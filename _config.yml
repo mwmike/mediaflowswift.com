@@ -1,0 +1,11 @@
+title: MediaFlowSwift
+url: https://mediaflowswift.com
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+  hard_wrap: false
+exclude:
+  - README.md
+  - images/LICENSES.md
+  - tools
