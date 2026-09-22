@@ -75,6 +75,24 @@ nav.menu a[aria-current="page"], nav.menu a:hover { color: var(--ink); }
 .cta.quiet { background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-left: 0.5rem; }
 .note { font-size: 0.95rem; color: var(--ink-2); }
 
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; }
+.hero-photo { margin: 0; }
+.hero-photo img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.55); }
+@media (max-width: 60rem) { .hero-grid { grid-template-columns: 1fr; } .hero-photo { order: -1; } }
+
+/* How it works */
+.how-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; }
+.side-photo { margin: 0; }
+.side-photo img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.side-photo figcaption { font-size: 0.95rem; color: var(--ink-2); margin-top: 0.5rem; }
+@media (max-width: 60rem) { .how-intro { grid-template-columns: 1fr; } }
+
+/* A photograph behind a tinted section, kept quiet enough to read over */
+.photo-back { position: relative; isolation: isolate; background: var(--paper-2) url("images/memory-cards.jpg") center / cover no-repeat; }
+.photo-back::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--paper-2); opacity: 0.9; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .photo-back::before { opacity: 0.86; } }
+:root[data-theme="dark"] .photo-back::before { opacity: 0.86; }
+
 /* Pipeline */
 .pipeline { margin: 3rem 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper-2); }
 .pipeline li { padding: 1rem 1rem 1.1rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
