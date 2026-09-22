@@ -550,7 +550,7 @@ Settings › General › Updates shows the source. Until you choose something el
 
 ### Who may sign an update
 
-An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else in that folder can be handed to you as an update. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so a new version no longer needs the Local Network switch turned off and on, and your Keychain asks once more and then not again.
+An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else in that folder can be handed to you as an update. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so your Keychain asks once more and then not again. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
 
 ### Automatic checks
 
@@ -570,7 +570,7 @@ The update window lists what is new in the version on offer: every version newer
 
 Your settings are written to disk and to the saved setup before the app restarts.
 
-MediaFlow looks for a new version a few seconds after launch, again every minute until it can reach the place new versions come from, and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept beside the app as “MediaFlowswift (previous)” for Revert. Because every version is the same signed app to macOS, permissions you have given MediaFlow, such as reaching your local network, carry over from one update to the next. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
+MediaFlow looks for a new version a few seconds after launch, again every minute until it can reach the place new versions come from, and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept beside the app as “MediaFlowswift (previous)” for Revert. Every version is the same signed app to macOS, and before the new one reopens the installer tells Launch Services about it and unregisters the copy kept for Revert, so that permissions you have given MediaFlow carry over from one update to the next; the Keychain’s do. Reaching your local network is the one macOS has sometimes made the new version ask for again; see It Stopped Connecting After an Update. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
 
 ### Going back
 
