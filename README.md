@@ -8,6 +8,9 @@ The public website for MediaFlowSwift, served by GitHub Pages from the `main` br
 - `paddle-config.js` — the plans, price ids and client-side tokens for sandbox and live; edit prices here and nowhere else
 - `pricing.js` — the Plans section: local prices from Paddle, monthly/yearly toggle, Buy buttons opening Paddle's overlay checkout
 - `thanks.html` — where Paddle sends a buyer; shows the licence key from the licence service
+- `key.html` — Lost your key: the key again from the transaction number on a Paddle receipt
+- `download.html` — the current version from `downloads/latest.json`, requirements, installing
+- `downloads/` — `latest.json`, `CHANGELOG.md` and the newest zip, written by `tools/publish-release.sh` with each release
 - `manual/index.md` — the online manual, GENERATED: run `tools/import-guide.sh` after each release (it copies the app's `docs/guides/user-guide.md`); GitHub Pages renders it through `_layouts/manual.html`
 - `CNAME` — the custom domain
 

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thank you — MediaFlowSwift</title>
-<meta name="description" content="Your MediaFlowSwift licence key and how to enter it in the app.">
+<title>Lost your key? — MediaFlowSwift</title>
+<meta name="description" content="Find your MediaFlowSwift licence key again from the transaction number on your Paddle receipt.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,6 @@
     <nav class="menu" aria-label="Site">
       <a href="/">Overview</a>
       <a href="/download.html">Download</a>
-      <a href="/#how">How it works</a>
       <a href="/#plans">Plans</a>
       <a href="/manual/">Manual</a>
       <a href="/support.html">Support</a>
@@ -30,8 +29,16 @@
 
 <main class="wrap">
 <article class="doc">
-  <h1>Thank you</h1>
-  <p id="lead">Your payment went through. Your licence key is on its way.</p>
+  <h1>Lost your key?</h1>
+  <p>Your licence key is on the thank-you page you saw after buying. If that page is gone, the receipt Paddle emailed you has a <strong>transaction number</strong> that starts with <code>txn_</code>. Paste it here and the key comes back.</p>
+
+  <form id="lookup" class="keyform">
+    <label for="txn">Transaction number from your receipt</label>
+    <div class="row">
+      <input id="txn" name="transaction_id" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="txn_01k9ppwf885xk7azx0xgnp6kp1" required pattern="^\s*txn_[a-z0-9]{26}\s*$">
+      <button type="submit" class="cta" id="find">Find my key</button>
+    </div>
+  </form>
 
   <div class="keybox" id="keybox" hidden>
     <span class="tag">Your licence key</span>
@@ -42,13 +49,12 @@
 
   <p class="paddle-notice" id="status" hidden></p>
 
-  <h2>Enter it in the app</h2>
+  <h2>Then enter it in the app</h2>
   <ol class="steps">
     <li>Open MediaFlowSwift and choose <strong>MediaFlowSwift &rsaquo; Settings &rsaquo; Plan</strong>.</li>
-    <li>Click <strong>Enter licence key</strong> and paste the key.</li>
-    <li>Click <strong>Activate</strong>. That Mac now counts as one of your three.</li>
+    <li>Paste the key into <strong>Licence key</strong> and click <strong>Activate</strong>.</li>
   </ol>
-  <p class="note">The key is also on the receipt Paddle emails you, and you can fetch it again any time from <a href="/key.html">Lost your key?</a> with the transaction number on that receipt. Questions: <a href="mailto:support@mediaflowswift.com">support@mediaflowswift.com</a>.</p>
+  <p class="note">A key works on up to three Macs at once; Settings &rsaquo; Plan lists them and can release one. No receipt at all? Write to <a href="mailto:support@mediaflowswift.com">support@mediaflowswift.com</a> from the email address you bought with.</p>
 </article>
 </main>
 
@@ -61,25 +67,16 @@
 
 <script src="paddle-config.js"></script>
 <script>
-/* Paddle sends the buyer here with ?_ptxn=<transaction id>. The licence service turns that into a key.
- * The webhook usually gets there first; if not, the service reads the transaction from Paddle itself. */
 (function () {
   var cfg = window.MediaFlowPaddle;
-  var params = new URLSearchParams(window.location.search);
-  var txn = params.get("_ptxn") || params.get("transaction_id") || "";
+  var form = document.getElementById("lookup");
+  var input = document.getElementById("txn");
   var status = document.getElementById("status");
-  var lead = document.getElementById("lead");
   var keybox = document.getElementById("keybox");
   var keyEl = document.getElementById("key");
+  var find = document.getElementById("find");
 
   function say(text) { status.textContent = text; status.hidden = !text; }
-
-  function show(key) {
-    keyEl.textContent = key;
-    keybox.hidden = false;
-    lead.textContent = "Your payment went through. Here is your licence key; keep it somewhere safe.";
-    say("");
-  }
 
   document.getElementById("copy").addEventListener("click", function () {
     navigator.clipboard.writeText(keyEl.textContent).then(function () {
@@ -89,36 +86,34 @@
     });
   });
 
-  if (!/^txn_[a-z0-9]{26}$/.test(txn)) {
-    say("This page needs the transaction number from your receipt. Use Lost your key? to look it up.");
-    return;
-  }
-  var base = cfg.environment().licenceService;
-  if (!base) {
-    say("Your key will be emailed to you shortly. Transaction " + txn + ". If it has not arrived within an hour, email support@mediaflowswift.com with that number.");
-    return;
-  }
+  var preset = new URLSearchParams(window.location.search).get("transaction_id");
+  if (preset) input.value = preset;
 
-  var tries = 0;
-  function fetchKey() {
-    tries += 1;
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var txn = input.value.trim();
+    keybox.hidden = true;
+    if (!/^txn_[a-z0-9]{26}$/.test(txn)) return say("That is not a Paddle transaction number. It starts with txn_ and is on your receipt.");
+    var base = cfg.environment().licenceService;
+    if (!base) return say("Key lookup is not available yet. Email support@mediaflowswift.com with transaction " + txn + ".");
+    find.disabled = true;
+    say("Looking it up…");
     fetch(base + "/key?transaction_id=" + encodeURIComponent(txn), { cache: "no-store" })
       .then(function (r) { return r.json().then(function (body) { return { status: r.status, body: body }; }); })
       .then(function (res) {
-        if (res.body && res.body.ok && res.body.key) return show(res.body.key);
-        if (res.status === 409 && tries < 6) {
-          say("Paddle is still confirming the payment. Checking again in a moment…");
-          return setTimeout(fetchKey, 5000);
+        find.disabled = false;
+        if (res.body && res.body.ok && res.body.key) {
+          keyEl.textContent = res.body.key;
+          keybox.hidden = false;
+          return say(res.body.status === "lapsed" ? "This licence has ended. The key is shown for your records; choose a plan to go on." : "");
         }
-        say((res.body && res.body.message) || "The key could not be fetched. It will also be on your receipt; if it is not there within an hour, email support@mediaflowswift.com with transaction " + txn + ".");
+        say((res.body && res.body.message) || "The key could not be found. Email support@mediaflowswift.com with transaction " + txn + ".");
       })
       .catch(function () {
-        if (tries < 3) return setTimeout(fetchKey, 5000);
-        say("The licence service did not answer. Your key will be on your receipt; if not, email support@mediaflowswift.com with transaction " + txn + ".");
+        find.disabled = false;
+        say("The licence service did not answer. Try again in a minute, or email support@mediaflowswift.com with transaction " + txn + ".");
       });
-  }
-  say("Fetching your key…");
-  fetchKey();
+  });
 })();
 </script>
 </body>

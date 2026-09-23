@@ -187,3 +187,11 @@ article.manual th, article.manual td { text-align: left; padding: 0.5rem 0.7rem;
 .keybox .cta { margin-top: 0; font: inherit; font-weight: 600; border: 0; cursor: pointer; }
 .keybox .copied { margin-left: 0.75rem; color: var(--good); font-weight: 600; }
 ol.steps li { margin: 0.4rem 0; }
+
+/* Lost-key form */
+.keyform { margin: 1.25rem 0; }
+.keyform label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+.keyform .row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.keyform input { flex: 1 1 18rem; font: inherit; font-family: ui-monospace, Menlo, monospace; padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.keyform .cta { margin-top: 0; font: inherit; font-weight: 600; border: 0; cursor: pointer; }
+#release .key strong { font-family: var(--display); font-size: 1.5rem; }

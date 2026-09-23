@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download — MediaFlowSwift</title>
+<meta name="description" content="Download MediaFlowSwift for the Mac. Fourteen days of the full app free, no card; buy a plan when you are ready.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="5" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h4M6 14h4M6 18h4M18 10h4M18 14h4M18 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 11l5 3-5 3z" fill="currentColor"/></svg>MediaFlowSwift</a>
+    <nav class="menu" aria-label="Site">
+      <a href="/">Overview</a>
+      <a href="/download.html" aria-current="page">Download</a>
+      <a href="/#plans">Plans</a>
+      <a href="/manual/">Manual</a>
+      <a href="/support.html">Support</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="doc">
+  <h1>Download MediaFlowSwift</h1>
+  <p class="lead">The full app, free for 14 days, no card. When the trial ends everything you made still opens; buy a plan to go on.</p>
+
+  <div class="keybox" id="release">
+    <span class="tag">Current version</span>
+    <p class="key"><strong id="version">Being prepared</strong> <span class="note" id="meta"></span></p>
+    <a class="cta" id="get" href="/#plans" aria-disabled="true">Download for Mac</a>
+    <p class="paddle-notice" id="status" hidden></p>
+  </div>
+
+  <h2>Requirements</h2>
+  <ul>
+    <li>macOS 14 Sonoma or later, Apple silicon or Intel.</li>
+    <li>Signed with an Apple Developer ID and notarized by Apple, so macOS opens it without a fuss.</li>
+    <li>No account, no sign-in. The app never contacts a server of ours except to check for new versions and, once you enter a key, to check your licence; the <a href="/privacy.html">privacy page</a> lists exactly what is sent.</li>
+  </ul>
+
+  <h2>Installing</h2>
+  <ol class="steps">
+    <li>Unzip the download and drag <strong>MediaFlowswift</strong> into your Applications folder.</li>
+    <li>Open it. The 14-day trial of Studio Pro starts the first time it opens.</li>
+    <li>If you use a NAS or a shared drive, macOS asks once whether the app may use your local network. Say yes; the <a href="/manual/">manual</a> explains why.</li>
+  </ol>
+
+  <h2>Updating</h2>
+  <p>The app looks for new versions here itself and offers each one with what is new. You never need to come back to this page unless you want to.</p>
+
+  <h2>What is new</h2>
+  <p>The <a href="/downloads/CHANGELOG.md">change log</a> lists every version and what it brought, in plain words.</p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Michael Williams &middot; MediaFlowSwift</span>
+    <nav aria-label="Legal"><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms &amp; refunds</a></nav>
+  </div>
+</footer>
+
+<script>
+/* The same manifest the app reads: downloads/latest.json, written by tools/publish-release.sh with each release. */
+(function () {
+  var version = document.getElementById("version");
+  var meta = document.getElementById("meta");
+  var get = document.getElementById("get");
+  var status = document.getElementById("status");
+  function say(text) { status.textContent = text; status.hidden = !text; }
+  fetch("/downloads/latest.json", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+    .then(function (m) {
+      if (!m || !m.version || !m.url || !m.size) throw new Error("bad manifest");
+      version.textContent = "MediaFlowSwift " + m.version;
+      var mb = Math.round(m.size / 1048576 * 10) / 10;
+      meta.textContent = "· " + mb + " MB" + (m.published ? " · " + m.published : "");
+      get.href = m.url;
+      get.removeAttribute("aria-disabled");
+      get.textContent = "Download MediaFlowSwift " + m.version;
+    })
+    .catch(function () {
+      version.textContent = "Being prepared";
+      say("The first public release is being prepared and will appear here. Until then, the plans are below, and you can write to support@mediaflowswift.com to be told when it is out.");
+      get.textContent = "See the plans";
+    });
+})();
+</script>
+</body>
+</html>
