@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thank you — MediaFlowSwift</title>
+<meta name="description" content="Your MediaFlowSwift licence key and how to enter it in the app.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="5" width="24" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h4M6 14h4M6 18h4M18 10h4M18 14h4M18 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 11l5 3-5 3z" fill="currentColor"/></svg>MediaFlowSwift</a>
+    <nav class="menu" aria-label="Site">
+      <a href="/">Overview</a>
+      <a href="/#how">How it works</a>
+      <a href="/#plans">Plans</a>
+      <a href="/manual/">Manual</a>
+      <a href="/support.html">Support</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="doc">
+  <h1>Thank you</h1>
+  <p id="lead">Your payment went through. Your licence key is on its way.</p>
+
+  <div class="keybox" id="keybox" hidden>
+    <span class="tag">Your licence key</span>
+    <p class="key"><code id="key"></code></p>
+    <button type="button" class="cta" id="copy">Copy key</button>
+    <span class="copied" id="copied" hidden>Copied</span>
+  </div>
+
+  <p class="paddle-notice" id="status" hidden></p>
+
+  <h2>Enter it in the app</h2>
+  <ol class="steps">
+    <li>Open MediaFlowSwift and choose <strong>MediaFlowSwift &rsaquo; Settings &rsaquo; Plan</strong>.</li>
+    <li>Click <strong>Enter licence key</strong> and paste the key.</li>
+    <li>Click <strong>Activate</strong>. That Mac now counts as one of your three.</li>
+  </ol>
+  <p class="note">The key is also on the receipt Paddle emails you, and you can fetch it again any time from <a href="/key.html">Lost your key?</a> with the transaction number on that receipt. Questions: <a href="mailto:support@mediaflowswift.com">support@mediaflowswift.com</a>.</p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Michael Williams &middot; MediaFlowSwift</span>
+    <nav aria-label="Legal"><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms &amp; refunds</a></nav>
+  </div>
+</footer>
+
+<script src="paddle-config.js"></script>
+<script>
+/* Paddle sends the buyer here with ?_ptxn=<transaction id>. The licence service turns that into a key.
+ * The webhook usually gets there first; if not, the service reads the transaction from Paddle itself. */
+(function () {
+  var cfg = window.MediaFlowPaddle;
+  var params = new URLSearchParams(window.location.search);
+  var txn = params.get("_ptxn") || params.get("transaction_id") || "";
+  var status = document.getElementById("status");
+  var lead = document.getElementById("lead");
+  var keybox = document.getElementById("keybox");
+  var keyEl = document.getElementById("key");
+
+  function say(text) { status.textContent = text; status.hidden = !text; }
+
+  function show(key) {
+    keyEl.textContent = key;
+    keybox.hidden = false;
+    lead.textContent = "Your payment went through. Here is your licence key; keep it somewhere safe.";
+    say("");
+  }
+
+  document.getElementById("copy").addEventListener("click", function () {
+    navigator.clipboard.writeText(keyEl.textContent).then(function () {
+      var c = document.getElementById("copied");
+      c.hidden = false;
+      setTimeout(function () { c.hidden = true; }, 2000);
+    });
+  });
+
+  if (!/^txn_[a-z0-9]{26}$/.test(txn)) {
+    say("This page needs the transaction number from your receipt. Use Lost your key? to look it up.");
+    return;
+  }
+  var base = cfg.environment().licenceService;
+  if (!base) {
+    say("Your key will be emailed to you shortly. Transaction " + txn + ". If it has not arrived within an hour, email support@mediaflowswift.com with that number.");
+    return;
+  }
+
+  var tries = 0;
+  function fetchKey() {
+    tries += 1;
+    fetch(base + "/key?transaction_id=" + encodeURIComponent(txn), { cache: "no-store" })
+      .then(function (r) { return r.json().then(function (body) { return { status: r.status, body: body }; }); })
+      .then(function (res) {
+        if (res.body && res.body.ok && res.body.key) return show(res.body.key);
+        if (res.status === 409 && tries < 6) {
+          say("Paddle is still confirming the payment. Checking again in a moment…");
+          return setTimeout(fetchKey, 5000);
+        }
+        say((res.body && res.body.message) || "The key could not be fetched. It will also be on your receipt; if it is not there within an hour, email support@mediaflowswift.com with transaction " + txn + ".");
+      })
+      .catch(function () {
+        if (tries < 3) return setTimeout(fetchKey, 5000);
+        say("The licence service did not answer. Your key will be on your receipt; if not, email support@mediaflowswift.com with transaction " + txn + ".");
+      });
+  }
+  say("Fetching your key…");
+  fetchKey();
+})();
+</script>
+</body>
+</html>

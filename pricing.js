@@ -1,0 +1,102 @@
+/* Plans section: local prices from Paddle, a monthly/yearly toggle, and Buy buttons that open
+ * Paddle's overlay checkout for exactly the price shown. Reads paddle-config.js.
+ * Only Paddle's own formatted totals are displayed; nothing is calculated or reformatted here. */
+(function () {
+  var cfg = window.MediaFlowPaddle;
+  var notice = document.getElementById("paddle-notice");
+  var buttons = document.querySelectorAll("[data-buy]");
+  var amounts = document.querySelectorAll("[data-price-for]");
+  var pers = document.querySelectorAll("[data-per]");
+  var choices = document.querySelectorAll(".billing-choice");
+  var period = "month";
+  var prices = {}; // price id -> Paddle's formatted total
+  var ready = false;
+
+  function say(text) {
+    notice.textContent = text;
+    notice.hidden = !text;
+  }
+
+  function refuse(reason) {
+    say("Prices are not available right now (" + reason + "). Email support@mediaflowswift.com and we will sort it out.");
+    amounts.forEach(function (el) { el.textContent = "—"; });
+    buttons.forEach(function (b) { b.disabled = true; });
+  }
+
+  function priceId(tier) {
+    return cfg.environment().prices[tier][period];
+  }
+
+  function render() {
+    amounts.forEach(function (el) {
+      var id = priceId(el.getAttribute("data-price-for"));
+      el.textContent = prices[id] || "…";
+    });
+    pers.forEach(function (el) { el.textContent = period === "month" ? "a month" : "a year"; });
+    choices.forEach(function (c) { c.setAttribute("aria-pressed", String(c.getAttribute("data-period") === period)); });
+    buttons.forEach(function (b) { b.disabled = !ready || !prices[priceId(b.getAttribute("data-buy"))]; });
+  }
+
+  function theme() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function successUrl() {
+    var url = new URL("/thanks.html", window.location.origin);
+    if (cfg.isSandbox()) url.searchParams.set("sandbox", "1");
+    return url.toString();
+  }
+
+  function open(tier) {
+    var open = { items: [{ priceId: priceId(tier), quantity: 1 }],
+      settings: { displayMode: "overlay", variant: "one-page", theme: theme(), successUrl: successUrl(), showAddDiscounts: false } };
+    var email = new URLSearchParams(window.location.search).get("email");
+    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) open.customer = { email: email };
+    Paddle.Checkout.open(open);
+  }
+
+  function loadPrices() {
+    var env = cfg.environment();
+    var items = [];
+    cfg.tiers.forEach(function (t) {
+      items.push({ priceId: env.prices[t.id].month, quantity: 1 });
+      items.push({ priceId: env.prices[t.id].year, quantity: 1 });
+    });
+    // No address: Paddle works out the visitor's country and currency itself.
+    Paddle.PricePreview({ items: items }).then(function (result) {
+      result.data.details.lineItems.forEach(function (item) {
+        prices[item.price.id] = item.formattedTotals.total;
+      });
+      ready = true;
+      render();
+    }).catch(function (error) {
+      console.error("PricePreview failed", error);
+      refuse("the price service did not answer");
+    });
+  }
+
+  choices.forEach(function (c) {
+    c.addEventListener("click", function () { period = c.getAttribute("data-period"); render(); });
+  });
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { open(b.getAttribute("data-buy")); });
+  });
+
+  if (!cfg) return refuse("the plan list is missing");
+  var missing = cfg.missing();
+  if (missing) return refuse(missing);
+  if (!window.Paddle) return refuse("the payment script did not load");
+
+  if (cfg.isSandbox()) {
+    Paddle.Environment.set("sandbox");
+    say("Sandbox: test prices and test cards only. Nothing here is a real purchase.");
+  }
+  Paddle.Initialize({
+    token: cfg.environment().token,
+    eventCallback: function (event) {
+      if (event.name === "checkout.error" || event.name === "checkout.payment-error") console.warn(event.name, event);
+    }
+  });
+  render();
+  loadPrices();
+})();

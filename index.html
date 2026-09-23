@@ -92,9 +92,14 @@
   <section id="plans">
     <div class="wrap">
       <h2>Plans</h2>
-      <p>Two plans, and a free trial of the full app with no card required. Prices will be announced with the first public release.</p>
-      <div class="plans">
-        <div class="plan">
+      <p>Two plans, monthly or yearly. Try the full app free for 14 days first: download it, no card needed, and buy when you are ready.</p>
+      <div class="billing" role="group" aria-label="Billing period">
+        <button type="button" class="billing-choice" data-period="month" aria-pressed="true">Monthly</button>
+        <button type="button" class="billing-choice" data-period="year" aria-pressed="false">Yearly <span class="save">two months free</span></button>
+      </div>
+      <p class="paddle-notice" id="paddle-notice" hidden></p>
+      <div class="plans" id="plan-cards">
+        <div class="plan" data-tier="studio">
           <span class="tag">Studio</span>
           <h3>All the file management</h3>
           <ul>
@@ -105,9 +110,10 @@
             <li>Proxies, editing drive, Library Moved</li>
             <li>Reports, Help, updates, problem reports</li>
           </ul>
-          <p class="price">Monthly or yearly &middot; price coming soon</p>
+          <p class="price"><span class="amount" data-price-for="studio">&hellip;</span> <span class="per" data-per>a month</span></p>
+          <button type="button" class="cta buy" data-buy="studio" disabled>Buy Studio</button>
         </div>
-        <div class="plan">
+        <div class="plan" data-tier="pro">
           <span class="tag">Studio Pro</span>
           <h3>Studio, plus publishing and the studio database</h3>
           <ul>
@@ -117,9 +123,11 @@
             <li>Results read back from YouTube</li>
             <li>Shared database server across your Macs</li>
           </ul>
-          <p class="price">Monthly or yearly &middot; price coming soon</p>
+          <p class="price"><span class="amount" data-price-for="pro">&hellip;</span> <span class="per" data-per>a month</span></p>
+          <button type="button" class="cta buy" data-buy="pro" disabled>Buy Studio Pro</button>
         </div>
       </div>
+      <p class="note">Prices are shown in your local currency with tax included where it applies. Payment is handled by Paddle, our merchant of record; your licence key is shown as soon as the payment goes through and is also on your receipt. One plan covers one person on up to three Macs.</p>
       <h3 class="compare-title">Studio and Studio Pro, side by side</h3>
       <div class="tablewrap">
       <table class="compare">
@@ -157,6 +165,10 @@
     </div>
   </section>
 </main>
+
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="paddle-config.js"></script>
+<script src="pricing.js"></script>
 
 <footer>
   <div class="wrap">

@@ -167,3 +167,23 @@ article.manual code { font-size: 0.95em; background: var(--paper-2); padding: 0.
 article.manual hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 article.manual table { border-collapse: collapse; margin: 1rem 0; font-size: 1rem; }
 article.manual th, article.manual td { text-align: left; padding: 0.5rem 0.7rem; border-top: 1px solid var(--line); vertical-align: top; }
+
+/* Plans: billing toggle, prices from Paddle, Buy buttons */
+.billing { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-top: 0.5rem; background: var(--paper-2); }
+.billing-choice { font: inherit; font-family: var(--display); font-weight: 600; font-size: 1rem; padding: 0.55rem 1.1rem; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; }
+.billing-choice[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.billing-choice .save { font-family: var(--body); font-weight: 400; font-size: 0.85rem; opacity: 0.85; margin-left: 0.3rem; }
+.plan .price { font-size: 1.05rem; color: var(--ink-2); }
+.plan .price .amount { font-family: var(--display); font-weight: 700; font-size: 2rem; color: var(--ink); margin-right: 0.2rem; }
+.plan .buy { margin-top: 0.75rem; font: inherit; font-weight: 600; border: 0; cursor: pointer; }
+.plan .buy:disabled { opacity: 0.5; cursor: default; }
+.paddle-notice { border-left: 3px solid var(--accent); background: var(--paper-2); padding: 0.6rem 1rem; margin: 1rem 0 0; color: var(--ink-2); font-size: 1rem; max-width: var(--max); }
+
+/* Thank-you page */
+.keybox { border: 1px solid var(--line); border-radius: 8px; background: var(--paper-2); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.keybox .tag { font-family: var(--display); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.keybox .key { margin: 0.5rem 0 0.75rem; }
+.keybox code { font-size: 1.5rem; letter-spacing: 0.05em; word-break: break-all; }
+.keybox .cta { margin-top: 0; font: inherit; font-weight: 600; border: 0; cursor: pointer; }
+.keybox .copied { margin-left: 0.75rem; color: var(--good); font-weight: 600; }
+ol.steps li { margin: 0.4rem 0; }
