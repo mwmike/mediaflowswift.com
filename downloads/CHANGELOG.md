@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.29.
+Nothing waiting. Everything finished so far is in 1.10.30.
+
+## 1.10.30 · September 24, 2026
+
+**Back on your database after an update, by itself.**
+
+- **Back on your database after an update, without flipping a switch.** When macOS keeps a freshly updated MediaFlowSwift off your local network, the app no longer gives up after ten minutes: it keeps checking, less often as time goes on, checks again the moment you come back to it, and connects as soon as macOS lets it through. Nothing connects before you agree to the terms, either.
 
 ## 1.10.29 · September 24, 2026
 
