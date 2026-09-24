@@ -19,11 +19,11 @@ window.MediaFlowPaddle = (function () {
       }
     },
     production: {
-      token: "", // live client-side token from Paddle > Developer tools > Authentication
-      licenceService: "https://licence.mediaflowswift.com",
+      token: "live_2b3b300462b0c94a613c7ae20a8", // client-side token "mediaflowswift.com", made 2026-09-23
+      licenceService: "https://mediaflow-licence-production.mediaflow-licence.workers.dev",
       prices: {
-        studio: { month: "", year: "" },
-        pro:    { month: "", year: "" }
+        studio: { month: "pri_01m38kej65avvs92ebazg7sxqe", year: "pri_01m38kejast9b85gh49722a106" },
+        pro:    { month: "pri_01m38kejw32spadewqm9wzr3bv", year: "pri_01m38kek1rajswp7wv3w4a1fq3" }
       }
     }
   };
