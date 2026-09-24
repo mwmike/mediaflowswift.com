@@ -1,6 +1,6 @@
 /* Plans section: local prices from Paddle, a monthly/yearly toggle, and Buy buttons that open
  * Paddle's overlay checkout for exactly the price shown. Reads paddle-config.js.
- * Only Paddle's own formatted totals are displayed; nothing is calculated or reformatted here. */
+ * Only Paddle's own formatted prices (before tax, matching the catalog) are displayed; nothing is calculated or reformatted here. */
 (function () {
   var cfg = window.MediaFlowPaddle;
   var notice = document.getElementById("paddle-notice");
@@ -9,7 +9,7 @@
   var pers = document.querySelectorAll("[data-per]");
   var choices = document.querySelectorAll(".billing-choice");
   var period = "month";
-  var prices = {}; // price id -> Paddle's formatted total
+  var prices = {}; // price id -> Paddle's formatted price before tax
   var ready = false;
 
   function say(text) {
@@ -68,7 +68,7 @@
     // No address: Paddle works out the visitor's country and currency itself.
     Paddle.PricePreview({ items: items }).then(function (result) {
       result.data.details.lineItems.forEach(function (item) {
-        prices[item.price.id] = item.formattedTotals.total;
+        prices[item.price.id] = item.formattedTotals.subtotal;
       });
       ready = true;
       render();
