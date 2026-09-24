@@ -3675,7 +3675,7 @@ Symptom: the database connected yesterday, and after an update it does not, with
 
 1. Open Settings › Storage and click Open Local Network Settings…, or open System Settings › Privacy & Security › Local Network yourself
 2. Turn MediaFlowswift off, then on again. If it is listed more than once, turn every one on
-3. Go back to MediaFlowSwift. It looks again every few seconds for about ten minutes and connects by itself as soon as macOS lets it through. There is no need to restart it, or to choose Reconnect Database. After ten minutes, choose Database → Reconnect Database
+3. Go back to MediaFlowSwift. It keeps checking, every few seconds at first and then less often, for as long as macOS holds it back, and connects by itself as soon as macOS lets it through. There is no need to restart it, or to choose Reconnect Database. macOS sometimes lets the new version through by itself later on; the switch makes it happen now, and MediaFlowSwift checks again the moment you come back to it
 
 MediaFlowSwift knows this within a few seconds of trying, where it used to wait ten and then guess. It asks macOS why the connection is being held back, looks twice, and still gives the connection itself three seconds to get through before saying so. If macOS will say nothing, you get the ordinary message about a server that did not answer instead, which still mentions the switch. You may also be asked once for leave to read the saved password after an update; choose Always Allow.
 
