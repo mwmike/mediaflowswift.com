@@ -6,7 +6,15 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.27.
+Nothing waiting. Everything finished so far is in 1.10.28.
+
+## 1.10.28 · September 24, 2026
+
+**Ready for customers: terms of use, and every copy updated from the website.**
+
+- **Clear Card counts one clip properly.** Its finish screen now says “1 clip that could not be verified was left on the card”, not “were”, and “1 file was refused”; when nothing was kept, it leaves the line out rather than counting zero clips. The confirmation before deleting leaves out its zero too.
+- **Every copy updates from the website.** New versions now come from mediaflowswift.com for everyone, checked every few hours and every half hour while you are offline, so there is nothing to choose in Settings › General › Updates. The option to update from a copy of the app on a share of your own is gone.
+- **Terms of use, agreed once.** The first time MediaFlowSwift opens, it shows the terms it is sold under, with the main points in four short paragraphs, and starts once you click Agree; until then it connects to nothing and opens nothing. It asks again only when the terms change, and says what changed. Help › Terms of Use shows them any time. Your agreement is kept on your Mac and nowhere else, and on a new copy the free trial's 14 days start when you agree.
 
 ## 1.10.27 · September 24, 2026
 
