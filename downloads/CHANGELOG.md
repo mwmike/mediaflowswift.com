@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.28.
+Nothing waiting. Everything finished so far is in 1.10.29.
+
+## 1.10.29 · September 24, 2026
+
+**Your shared drive reconnects by itself.**
+
+- **Your share comes back by itself.** When the network blinks or the server stops answering and macOS drops the share you chose in Settings › Network, MediaFlowSwift now reconnects it for you: after a few seconds, then every few minutes until it is back, with a strip at the top of the window saying so. It never asks for a password on its own, leaves a share you eject in Finder alone, and waits while your Mac sleeps.
 
 ## 1.10.28 · September 24, 2026
 
