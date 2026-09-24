@@ -18,6 +18,7 @@ For video creators. This guide is generated from the app’s own Help (Help → 
   - [What Things Are Called Now](#what-things-are-called-now)
   - [The Analyze Hub](#the-analyze-hub)
   - [Progress and Messages](#progress-and-messages)
+  - [Terms of Use](#terms-of-use)
 
 - [Setup & Network](#setup--network)
   - [Setting Up MediaFlow](#setting-up-mediaflow)
@@ -424,6 +425,28 @@ Messages raised inside a sheet — the Import sheet’s “No card selected”, 
 
 See also: [Understanding the Interface](#understanding-the-interface), [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Smart Notifications](#smart-notifications)
 
+## Terms of Use
+
+*MediaFlowSwift is sold by Long Road Software LLC under terms of use you agree to once, before you first use the app, and again only when they change.*
+
+The first time MediaFlowSwift opens, it shows the terms of use before anything else: four points in plain words, and the full terms below them. Click Agree to start using the app. Quit closes it without changing anything, and it asks again the next time it opens.
+
+Until you agree, the window shows only the terms and nothing else starts: MediaFlowSwift opens no project, connects to no database or share, and does not check for updates. Every menu is unavailable except Help, where you can still read Help, the user guide and the terms. On a new copy, the free trial’s 14 days start when you agree, not when you first open the app.
+
+### What agreeing records
+
+MediaFlowSwift keeps the version of the terms you agreed to and the date, on this Mac only: in your Keychain, and in a small file in MediaFlow’s folder under Library › Application Support. Two places, because some Macs do not keep an app’s preferences. Nothing is sent anywhere. If neither can be saved, the app opens anyway and asks again next time.
+
+### When the terms change
+
+An update that changes the terms shows them again, with a short list of what changed, and the app goes on once you agree to the new version. An update that does not change them asks nothing.
+
+### Reading them again
+
+Choose Help → Terms of Use to read the terms at any time. The window also says when you agreed to them on this Mac. The same terms are on the website at mediaflowswift.com/terms.html, with the refund policy beside them.
+
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [What Is MediaFlow?](#what-is-mediaflow)
+
 ---
 
 # Setup & Network
@@ -432,7 +455,7 @@ See also: [Understanding the Interface](#understanding-the-interface), [Understa
 
 *The welcome tour explains the app; the Setup Wizard then asks three questions, and you can skip any of them.*
 
-A new copy of MediaFlow knows nothing about your equipment: no NAS, no shared database, no destination. Two things greet you on first launch. The welcome tour explains the app. The Setup Wizard then asks three questions so the app can find your storage.
+A new copy of MediaFlow knows nothing about your equipment: no NAS, no shared database, no destination. Three things greet you on first launch. First come the terms of use, which you agree to once (see Terms of Use). The welcome tour then explains the app, and the Setup Wizard asks three questions so the app can find your storage.
 
 You do not have to answer anything. MediaFlow works without a NAS and without a database, and every answer can be changed later in Settings.
 
@@ -458,7 +481,7 @@ The wizard opens when the tour closes, if nothing is set up yet. It does not ope
 
 Choose Settings › General › Run Setup Again…. The wizard opens showing your current settings, not an empty form. Choosing None on the database step turns the shared database off.
 
-See also: [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [What Is MediaFlow?](#what-is-mediaflow)
+See also: [Terms of Use](#terms-of-use), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [What Is MediaFlow?](#what-is-mediaflow)
 
 ## Choosing and Connecting Your NAS
 
@@ -466,7 +489,7 @@ See also: [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas),
 
 MediaFlow has no built-in NAS. Until you choose one, Settings › Network reads “No NAS chosen yet” and nothing is assumed. A NAS is optional: you can organize to any folder, including a drive attached to this Mac.
 
-When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, as the host offered for a PostgreSQL server, and as the place it looks for app updates. It also connects the share when it is needed: see below.
+When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, and as the host offered for a PostgreSQL server. It also connects the share when it is needed: see below.
 
 ### Choose a share
 
@@ -491,7 +514,7 @@ macOS asks for the NAS password, not MediaFlow. MediaFlow never sees or stores i
 
 - The status line reads Connected with the mount path, Looking for the NAS…, or Not connected
 - Connect now tries the stored address, then searches the network, then mounts the share. It is available only while the share is not connected
-- Forget stops using this NAS. Settings that follow it, such as the update source, go back to unset. The path to your database file is kept
+- Forget stops using this NAS. Settings that follow it go back to unset. The path to your database file is kept
 
 ### No servers found
 
@@ -512,7 +535,7 @@ Passwords and API keys are never in it. They stay in your Keychain.
 - Your NAS share and its address
 - The shared database settings: on or off, the store, the file path, and the server host, port, database and user
 - The default destination, recent destinations and the verification setting
-- The update source and whether to check automatically
+- Whether to check for new versions automatically
 - Import analysis and model settings, including the daily spending limit
 - The category and camera lists that new projects start with
 
@@ -535,26 +558,21 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#u
 
 ## Updating MediaFlow
 
-*MediaFlow updates itself from the MediaFlow website, or from a copy of the app in a folder you choose, and keeps your settings.*
+*MediaFlow updates itself from the MediaFlow website and keeps your settings.*
 
 MediaFlow looks for a newer version of itself, tells you when there is one, and installs it when you say so. Your settings and projects are not touched by an update.
 
 ### Where new versions come from
 
-Settings › General › Updates has two choices. The MediaFlow website is right for most people: MediaFlow reads one small file from mediaflowswift.com that names the newest version, and nothing about you or your Mac goes with the request. A folder or share of your own is for keeping your own copy of the app, on a NAS say, and needs no internet.
-
-- A fresh install checks the website. A Mac that already followed a NAS or a chosen folder keeps doing so until you pick the website
-- With a folder or share: Choose… picks the copy of the app to update from; Follow the NAS goes back to the MediaFlowSwift folder on the NAS chosen in Settings › Network
-- Not set means a folder was chosen but nothing was picked, so MediaFlow does not look for new versions
-- “No app found there” means the share is not connected or the app is somewhere else
+New versions come from the MediaFlow website. MediaFlow reads one small file from mediaflowswift.com that names the newest version, and nothing about you or your Mac goes with the request. Every copy of MediaFlow updates this way; earlier versions could also update from a copy of the app on a share, and that choice is gone.
 
 ### Who may sign an update
 
-An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else in that folder can be handed to you as an update. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so your Keychain asks once more and then not again. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
+An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else can be handed to you as an update, whatever the website says. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so your Keychain asks once more and then not again. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
 
 ### Automatic checks
 
-With “Check for new versions automatically” on, MediaFlow looks shortly after launch, when the Mac wakes, and then every few hours; while the website or share cannot be reached it tries again sooner, every half hour for the website and every minute for a share. Checking reads one small file. A newer version appears as a banner, never a dialog, and never while an import or organize is running.
+With “Check for new versions automatically” on, MediaFlow looks shortly after launch, when the Mac wakes, and then every few hours; while the website cannot be reached it tries again every half hour. Checking reads one small file. A newer version appears as a banner, never a dialog, and never while an import or organize is running.
 
 - Install… opens the Software Update window
 - Later hides the banner until a version newer than that one appears
@@ -564,13 +582,13 @@ With “Check for new versions automatically” on, MediaFlow looks shortly afte
 
 1. Choose Check for Updates… in the app menu, or click Install… on the banner
 2. Click Install Update. The button is unavailable while a background operation is running; wait for it to finish
-3. MediaFlow copies the new version (from the website: downloads it and checks that it is exactly the file, and the version, the site promised), checks that it is genuine and from the same maker as the one you are running, closes, puts it in place of the old one and reopens. It reopens only once the old copy has fully closed, which can take some seconds while the shared database is saved. Do not quit or reopen it yourself while it works
+3. MediaFlow downloads the new version and checks that it is exactly the file, and the version, the website promised, checks that it is genuine and from the same maker as the one you are running, closes, puts it in place of the old one and reopens. It reopens only once the old copy has fully closed, which can take some seconds while the shared database is saved. Do not quit or reopen it yourself while it works
 
-The update window lists what is new in the version on offer: every version newer than yours, its headline and its points, taken from the change log the website publishes beside the version file, or from the change log inside the new copy on a share. Notes are read before anything is installed and are not signed, so treat the list as a preview; the copy itself is checked for its maker’s signature when it is installed. A copy made before this feature carries no change log, and the list is simply absent.
+The update window lists what is new in the version on offer: every version newer than yours, its headline and its points, taken from the change log the website publishes beside the version file. Notes are read before anything is installed and are not signed, so treat the list as a preview; the copy itself is checked for its maker’s signature when it is installed. When the website has no change log to offer, the list is simply absent.
 
 Your settings are written to disk and to the saved setup before the app restarts.
 
-MediaFlow looks for a new version a few seconds after launch, again until it can reach the place new versions come from (every half hour for the website, every minute for a share), and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept whole for Revert, in MediaFlow’s own folder under Library › Application Support, not beside the app: two copies of MediaFlow in Applications made macOS judge the wrong one when the app asked for your local network after an update. A copy an earlier version left beside the app is moved there the first time this version opens. Every version is the same signed app to macOS, and before the new one reopens the installer tells Launch Services about it, so that permissions you have given MediaFlow carry over from one update to the next; the Keychain’s do. Reaching your local network is the one macOS has sometimes made the new version ask for again; see It Stopped Connecting After an Update. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
+MediaFlow looks for a new version a few seconds after launch, again every half hour until it can reach the website, and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept whole for Revert, in MediaFlow’s own folder under Library › Application Support, not beside the app: two copies of MediaFlow in Applications made macOS judge the wrong one when the app asked for your local network after an update. A copy an earlier version left beside the app is moved there the first time this version opens. Every version is the same signed app to macOS, and before the new one reopens the installer tells Launch Services about it, so that permissions you have given MediaFlow carry over from one update to the next; the Keychain’s do. Reaching your local network is the one macOS has sometimes made the new version ask for again; see It Stopped Connecting After an Update. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
 
 ### Going back
 
@@ -626,7 +644,9 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connectin
 
 *MediaFlow works on this Mac and your own network; each service that reaches an outside company is off until you turn it on.*
 
-MediaFlow has no account, collects no usage data and contacts no server of its own. Your media, projects and shared database stay on this Mac and on your own network.
+MediaFlow has no account and collects no usage data. Your media, projects and shared database stay on this Mac and on your own network.
+
+On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a random id it made up for this Mac, and the Mac’s name. Settings › Privacy lists both, with the exact details. A problem report reaches its maker too, but only when you have turned on Sending problem reports and click Send on a report you have read.
 
 A few features need a service run by another company. Settings › Privacy lists every one: what is sent, to whom, and what it is for. Each is off until you turn it on, and you can turn it off again at any time.
 
@@ -639,6 +659,7 @@ A few features need a service run by another company. Settings › Privacy lists
 - Uploading to YouTube — sends the finished video you chose, with its title, description, chapters, tags, category, visibility, publish time and made-for-kids answer, the file’s size and type, and the thumbnail if you chose to send it, to Google. Signing in opens your browser at Google; MediaFlow never sees your password. Signing in and staying signed in send your client ID and secret to Google. The permission cannot read your channel or delete videos. Nothing is sent until you click Upload and confirm. While it is off, uploading is refused and sign-in does not ask for permission to upload; with both YouTube switches off, signing in is refused too. See Uploading to YouTube
 - Reading your videos’ statistics from YouTube — asks Google which channel you signed in to, and sends the YouTube IDs of the videos your database records as uploaded by MediaFlow with the span of dates from the first upload to today, and nothing else. Google answers with their views, likes, comments, watch time, average view, subscribers gained, shares, visibility and publish time. Turning it on makes the next sign-in ask Google for two more permissions, both read-only, which would allow reading your whole channel; MediaFlow asks only about those videos. Read only when you click Read from YouTube Now on the Results tab. See How Your Videos Are Doing
 - Maps of where you shot — showing a map sends the area you are looking at to Apple, which is how the map images arrive. While it is off, the Shoot Map and GPS scene review list locations without a map, with a Turn On Maps button.
+- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to the report relay whose address you entered in Settings › Privacy. While it is off, the Send button is not there, and reports can only be copied or saved.
 
 ### A model that suggests categories
 
@@ -648,9 +669,8 @@ The local model’s Server address may be this Mac or another computer on your o
 
 ### What stays on your network
 
-- Your NAS: finding it, connecting to it, and reading and writing media, the database file and app updates.
+- Your NAS: finding it, connecting to it, and reading and writing media and the database file.
 - Your PostgreSQL server, when you use one. That connection is not encrypted, so keep the server on a network you trust.
-- App updates: from a folder you choose, never from a web site.
 
 ### Things that open your browser
 
@@ -3336,7 +3356,7 @@ Choose MediaFlow → Settings (Cmd+,). The window has nine tabs. This topic says
 ### General
 
 - Setup — Run Setup Again… reopens the first-run setup questions. MediaFlow saves your setup whenever you quit and puts it back if this Mac’s settings are ever lost. Save Setup Now saves it at once. Restore Saved Setup puts every saved setting back, replacing what is set now. Passwords and API keys are not part of the saved setup; they stay in the Keychain
-- Updates — “New builds come from” is where MediaFlow looks for a newer version: Choose… a location, or Follow the NAS. Until one is set, the app does not look. “Check for new versions automatically” looks shortly after launch and on wake, and shows a banner, never a dialog. To look now, choose MediaFlow → Check for Updates
+- Updates — New versions come from mediaflowswift.com. “Check for new versions automatically” looks shortly after launch and on wake, and shows a banner, never a dialog. To look now, choose MediaFlow → Check for Updates
 - About — The version and build you are running
 
 ### Network
