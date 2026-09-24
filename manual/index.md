@@ -504,6 +504,8 @@ Picking a mounted share fills in both the share name and its address, so there i
 
 Once a share is chosen, MediaFlowSwift connects it by itself whenever something needs it and it is not mounted: a couple of seconds after launch, a few seconds after the Mac wakes, and before opening a project whose file lives on it. The status area reads “Connecting to ‘share’…” meanwhile. The launch and wake attempts are made once, so a share that cannot be reached raises at most one password prompt; opening a project tries again, because you are there to answer. If the share still cannot be connected, the project is not opened and a message says so, rather than opening it from the database with every clip called missing. A project on some other drive that is unplugged gets the same treatment: the message names the drive.
 
+If the share is dropped while MediaFlowSwift is open, because the network blinked or the server stopped answering for a minute and macOS removed it, MediaFlowSwift reconnects it. It waits 10 seconds before the first try, then 30 seconds, one minute and two minutes between tries, then five minutes, until the share is back. A strip at the top of the window says so, with Try Now and Stop. These tries never ask for a password; if macOS has not saved it, use Connect now. A share you eject in Finder is left alone, and nothing is tried while the Mac sleeps. Finder may still list the server under Network while the share itself is gone: seeing the server does not mean the share is connected.
+
 While a drive is not connected, the clips on it read Volume not connected in the Where column, in grey, and Re-check files leaves their last known state alone. Nothing is called Missing because its drive is away.
 
 ### Passwords
