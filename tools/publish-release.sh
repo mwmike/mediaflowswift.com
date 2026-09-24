@@ -3,10 +3,14 @@
 #
 #   tools/publish-release.sh <notarized-and-stapled MediaFlowswift.app> <CHANGELOG.md>
 #
-# The zip is served from this site (downloads/MediaFlowswift-<version>.zip): the app refuses
-# redirects, and GitHub Release assets always redirect. Only the newest zip is kept in the repo;
-# a GitHub Release keeps the history. Order matters so that a re-run is safe: files first,
-# commit, push, and only then the archival release. Run it AFTER stapling.
+# Two copies of each zip. The app's updater downloads the one on this site (manifest "url"),
+# because it refuses redirects and GitHub Release assets always redirect. The website's Download
+# button uses the GitHub Release copy (manifest "download"), because GitHub counts those downloads:
+#   gh api repos/mwmike/mediaflowswift.com/releases --jq '.[].assets[] | "\(.name) \(.download_count)"'
+# Only the newest zip is kept in the repo; the Releases keep the history. The release is made first,
+# so the manifest never points the button at a copy that is not there yet; if it cannot be made,
+# the manifest leaves "download" out and the button falls back to the site copy. A re-run is safe.
+# Run it AFTER stapling.
 set -u
 APP="${1:?the stapled .app}"
 LOG="${2:?CHANGELOG.md}"
@@ -29,13 +33,24 @@ SHA=$(shasum -a 256 "$ZIP" | awk '{print $1}')
 URL="https://mediaflowswift.com/downloads/$NAME"
 TAG="v$VERSION"
 
+# The counted copy for the website's button. A release that already exists is left alone.
+if ! gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+  gh release create "$TAG" "$ZIP" --repo "$REPO" --title "MediaFlowSwift $VERSION" \
+    --notes "Build $BUILD. Notarized. What is new: https://mediaflowswift.com/downloads/CHANGELOG.md" \
+    || echo "the GitHub Release failed; the Download button will use the site copy until it exists"
+fi
+DOWNLOAD_FIELD=""
+if gh release view "$TAG" --repo "$REPO" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$NAME"; then
+  DOWNLOAD_FIELD=",\"download\":\"https://github.com/$REPO/releases/download/$TAG/$NAME\""
+fi
+
 mkdir -p "$SITE/downloads" || exit 1
 # One zip in the repo at a time: the old one goes, its GitHub Release stays.
 find "$SITE/downloads" -name 'MediaFlowswift-*.zip' ! -name "$NAME" -delete
 cp "$ZIP" "$SITE/downloads/$NAME" || { echo "zip copy failed"; exit 1; }
 cp "$LOG" "$SITE/downloads/CHANGELOG.md" || { echo "change log copy failed"; exit 1; }
 cat > "$SITE/downloads/latest.json" <<EOF
-{"version":"$VERSION","build":$BUILD,"url":"$URL","size":$SIZE,"sha256":"$SHA","notesURL":"https://mediaflowswift.com/downloads/CHANGELOG.md","published":"$(date -u +%Y-%m-%d)"}
+{"version":"$VERSION","build":$BUILD,"url":"$URL","size":$SIZE,"sha256":"$SHA","notesURL":"https://mediaflowswift.com/downloads/CHANGELOG.md","published":"$(date -u +%Y-%m-%d)"$DOWNLOAD_FIELD}
 EOF
 python3 - "$SITE/downloads/latest.json" "$SITE/downloads/$NAME" <<'PY' || exit 1
 import hashlib, json, os, sys
@@ -43,6 +58,7 @@ m = json.load(open(sys.argv[1]))
 assert m["build"] > 0 and len(m["sha256"]) == 64 and m["url"].startswith("https://mediaflowswift.com/downloads/"), m
 assert os.path.getsize(sys.argv[2]) == m["size"], "size"
 assert hashlib.sha256(open(sys.argv[2], "rb").read()).hexdigest() == m["sha256"], "hash"
+assert "download" not in m or m["download"].startswith("https://github.com/mwmike/mediaflowswift.com/releases/download/"), m
 print("manifest ok:", m["version"], m["build"], m["size"], "bytes")
 PY
 
@@ -55,12 +71,4 @@ else
 fi
 git push -q || { echo "push failed; the files are committed locally, run the script again when online"; exit 1; }
 
-# Archival copy. A release that already exists is left alone.
-if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
-  echo "release $TAG already exists; left as is"
-else
-  gh release create "$TAG" "$ZIP" --repo "$REPO" --title "MediaFlowSwift $VERSION" \
-    --notes "Build $BUILD. Notarized. What is new: https://mediaflowswift.com/downloads/CHANGELOG.md" \
-    || echo "the site is published; the archival GitHub Release failed and can be created later"
-fi
 echo "published $VERSION ($BUILD): $URL"

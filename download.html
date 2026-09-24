@@ -82,7 +82,9 @@
       version.textContent = "MediaFlowSwift " + m.version;
       var mb = Math.round(m.size / 1048576 * 10) / 10;
       meta.textContent = "· " + mb + " MB" + (m.published ? " · " + m.published : "");
-      get.href = m.url;
+      // The button uses the GitHub Release copy, which GitHub counts; the app's updater keeps using m.url.
+      var counted = typeof m.download === "string" && m.download.indexOf("https://github.com/mwmike/mediaflowswift.com/releases/download/") === 0;
+      get.href = counted ? m.download : m.url;
       get.removeAttribute("aria-disabled");
       get.textContent = "Download MediaFlowSwift " + m.version;
     })
