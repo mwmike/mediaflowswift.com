@@ -41,15 +41,18 @@
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
 
-  function successUrl() {
+  function thanksUrl(transactionId) {
     var url = new URL("/thanks.html", window.location.origin);
     if (cfg.isSandbox()) url.searchParams.set("sandbox", "1");
+    if (transactionId) url.searchParams.set("_ptxn", transactionId);
     return url.toString();
   }
 
   function open(tier) {
+    // No successUrl here: Paddle does not add the transaction number to it, and the thank-you page needs it.
+    // The checkout.completed event below carries the number, and we go to the thank-you page ourselves.
     var open = { items: [{ priceId: priceId(tier), quantity: 1 }],
-      settings: { displayMode: "overlay", variant: "one-page", theme: theme(), successUrl: successUrl(), showAddDiscounts: false } };
+      settings: { displayMode: "overlay", variant: "one-page", theme: theme(), showAddDiscounts: false } };
     var email = new URLSearchParams(window.location.search).get("email");
     if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) open.customer = { email: email };
     Paddle.Checkout.open(open);
@@ -94,6 +97,11 @@
   Paddle.Initialize({
     token: cfg.environment().token,
     eventCallback: function (event) {
+      if (event.name === "checkout.completed") {
+        var txn = event.data && (event.data.transaction_id || event.data.id);
+        say("Payment complete. Fetching your licence key\u2026");
+        setTimeout(function () { window.location.href = thanksUrl(txn); }, 1500);
+      }
       if (event.name === "checkout.error" || event.name === "checkout.payment-error") console.warn(event.name, event);
     }
   });
