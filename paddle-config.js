@@ -12,7 +12,7 @@ window.MediaFlowPaddle = (function () {
   var environments = {
     sandbox: {
       token: "test_d0cea1cf17f1a158f59bf9463cd",
-      licenceService: "", // the sandbox Worker's URL once it is deployed (wrangler dev / *.workers.dev)
+      licenceService: "https://mediaflow-licence.mediaflow-licence.workers.dev", // the sandbox Worker, deployed 2026-09-23
       prices: {
         studio: { month: "pri_01m34gke51kwmnr5j02jb58jmm", year: "pri_01m34gkee4cdhzv7n2q6xw4j4q" },
         pro:    { month: "pri_01m34gkepr3f0e2nc4p9vhxpvf", year: "pri_01m34gkezxvzagajm4vay46waa" }
