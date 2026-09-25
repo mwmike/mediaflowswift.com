@@ -2063,7 +2063,9 @@ With auto-advance on, rating a clip with 1–5, rejecting it with X, or pressing
 
 ### Review Queue
 
-The review queue is based on your current filters in the main window. Filter by category, scene, camera or smart group before you open Review to focus on a specific subset of clips. The bottom bar shows your progress (for example “12 of 47”) and how many clips have been rated.
+The review queue is the clips your filters show in the main window when you open Review. Filter by category, scene, camera or smart group before you open Review to focus on a specific subset of clips. The bottom bar shows your progress (for example “12 of 47”) and how many clips in the queue have been rated.
+
+The queue stays as it was until you close Review. A clip you rate while only unrated clips are showing stays in it: Up Arrow goes back to it, and the progress and the rated count keep moving.
 
 > **Tip:** For the fastest selects workflow: click the Review segment of the pipeline strip to show only unrated clips, open Review, and use 1–5 to rate each clip.
 
