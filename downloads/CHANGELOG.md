@@ -6,7 +6,15 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.30.
+Nothing waiting. Everything finished so far is in 1.10.31.
+
+## 1.10.31 · September 25, 2026
+
+**Clearer progress, a Review count you can trust, and no clip wrongly marked missing.**
+
+- **Three small things on screen, put right.** The organize progress window lights Verify while each file is read back, instead of jumping back to Prepare. The card that ends an import points to the pipeline strip’s Auto-suggest or Workflow → Analyze… → Categories, not to a Tags menu that no longer exists. And Review, opened on unrated clips, keeps them in its queue as you rate them: the bar counts “2 of 10”, “3 of 10” and the rated count climbs, where it used to sit at “1 of …” with nothing rated, and Up Arrow goes back to a clip you just rated.
+
+- **A clip on its way to a new category folder is no longer marked missing.** When you change a clip's category, MediaFlowSwift moves it into the new folder quietly in the background; it now waits for that move to finish before it re-checks where your clips are, so a clip caught halfway no longer shows up as missing.
 
 ## 1.10.30 · September 24, 2026
 
