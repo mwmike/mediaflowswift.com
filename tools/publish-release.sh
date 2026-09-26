@@ -27,7 +27,7 @@ xcrun stapler validate "$APP" >/dev/null 2>&1 || { echo "$APP is not stapled; st
 
 NAME="MediaFlowswift-$VERSION.zip"
 ZIP="$WORK/$NAME"
-ditto -c -k --keepParent "$APP" "$ZIP" || { echo "zip failed"; exit 1; }
+ditto -c -k --norsrc --noextattr --keepParent "$APP" "$ZIP" || { echo "zip failed"; exit 1; }
 SIZE=$(stat -f %z "$ZIP")
 SHA=$(shasum -a 256 "$ZIP" | awk '{print $1}')
 URL="https://mediaflowswift.com/downloads/$NAME"
