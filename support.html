@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Support — MediaFlowSwift</title>
-<meta name="description" content="How to get help with MediaFlowSwift, report a problem, and what to include.">
+<meta name="description" content="How to get help with MediaFlowSwift, what to do if it won't open, how to report a problem, and what to include.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,6 +45,37 @@
     <li>What you were doing when it happened, in a sentence.</li>
     <li>Whether it happens every time or happened once.</li>
     <li>Where the project and its footage live: the Mac, an external drive, or a network share.</li>
+  </ul>
+
+  <h2 id="wont-open">If MediaFlowSwift won&rsquo;t open</h2>
+  <p>Go through these in order; one of them usually finds the problem.</p>
+  <ol class="steps">
+    <li><strong>Check your Mac.</strong> MediaFlowSwift needs macOS 14 Sonoma or later on a Mac with Apple silicon (M1 or newer). Choose <strong>Apple menu &rsaquo; About This Mac</strong>: the <em>Chip</em> line should name an Apple M chip, and the <em>macOS</em> line should say 14 or higher. If you see a <em>Processor</em> line naming Intel instead, this Mac cannot run MediaFlowSwift.</li>
+    <li><strong>Check the download finished.</strong> If the file name still ends in .download, .crdownload or .part, it did not. Otherwise select the zip in Finder, choose <strong>File &rsaquo; Get Info</strong>, and compare its size with the one on the <a href="/download.html">download page</a>. If it is smaller, or the zip will not unzip, download it again.</li>
+    <li><strong>Unzip it in Finder, then move it to Applications.</strong> Double-click the zip in Finder; that makes the app, named <strong>MediaFlowswift</strong>. (Safari may have unzipped it for you already, leaving the app in Downloads; that is fine.) Drag the app into your Applications folder and open it from there. Other unzip apps can leave hidden files inside the app, and macOS then says it is damaged.</li>
+    <li><strong>Open it the ordinary way.</strong> Double-click it. The first time, macOS says it is an app downloaded from the internet and asks whether to open it: click <strong>Open</strong>. MediaFlowSwift is signed with our Apple Developer ID and notarized by Apple, so you do not need to right-click and choose Open, or change anything in Privacy &amp; Security settings.</li>
+  </ol>
+
+  <h3>What macOS&rsquo;s messages mean</h3>
+  <dl class="messages">
+    <dt>&ldquo;MediaFlowswift&rdquo; is damaged and can&rsquo;t be opened. You should move it to the Trash.</dt>
+    <dd>The copy on your Mac is not exactly the one we published: usually the download stopped early, or another app unzipped it. Move it to the Trash, download it again from the <a href="/download.html">download page</a>, and unzip it in Finder. Please don&rsquo;t use a Terminal command or a setting to open that copy anyway; a fresh download opens normally.</dd>
+    <dt>&ldquo;MediaFlowswift&rdquo; can&rsquo;t be opened because Apple cannot check it for malicious software. On newer macOS: Apple could not verify &ldquo;MediaFlowswift&rdquo; is free of malware.</dt>
+    <dd>A copy from this site should never show this, because Apple has already checked it. The copy you have came from somewhere else or was changed. Move it to the Trash and download it again from the <a href="/download.html">download page</a>.</dd>
+    <dt>You can&rsquo;t use this version of the application &ldquo;MediaFlowswift&rdquo; with this version of macOS.</dt>
+    <dd>Your Mac is running a version of macOS older than 14. If your Mac can take macOS 14 or later, install it with Software Update in System Settings (System Preferences on older versions), then open MediaFlowSwift again.</dd>
+    <dt>You can&rsquo;t open the application &ldquo;MediaFlowswift&rdquo; because it is not supported on this type of Mac.</dt>
+    <dd>This Mac has an Intel processor. MediaFlowSwift runs only on Macs with Apple silicon.</dd>
+    <dt>&ldquo;MediaFlowswift&rdquo; quit unexpectedly.</dt>
+    <dd>The app started and then stopped. Click <strong>Reopen</strong>. If it stops again, macOS keeps a report of each time: in Finder choose <strong>Go &rsaquo; Go to Folder&hellip;</strong>, type <code>~/Library/Logs/DiagnosticReports</code> and press Return, and attach the newest file whose name starts with MediaFlowswift to your email. It is plain text, so you can read it before you send it. The <strong>Report&hellip;</strong> button in macOS&rsquo;s message sends a report to Apple, not to us. If the app opens on a later try, <strong>Help &rsaquo; Report a Problem&hellip;</strong> adds a summary of its recent crashes to the report, with your names taken out.</dd>
+  </dl>
+
+  <h3>Still won&rsquo;t open?</h3>
+  <p>Write to <a href="mailto:support@mediaflowswift.com?subject=MediaFlowSwift%20will%20not%20open">support@mediaflowswift.com</a> and include:</p>
+  <ul>
+    <li>Your macOS version and chip, from <strong>Apple menu &rsaquo; About This Mac</strong>.</li>
+    <li>The exact words of macOS&rsquo;s message, or a screenshot of it (press Shift&#8209;Command&#8209;5).</li>
+    <li>The crash report, if macOS said the app quit unexpectedly.</li>
   </ul>
 
   <h2>Help inside the app</h2>

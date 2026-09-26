@@ -18,6 +18,7 @@
     <nav class="menu" aria-label="Site">
       <a href="/">Overview</a>
       <a href="/download.html" aria-current="page">Download</a>
+      <a href="/#how">How it works</a>
       <a href="/#plans">Plans</a>
       <a href="/manual/">Manual</a>
       <a href="/support.html">Support</a>
@@ -40,17 +41,18 @@
 
   <h2>Requirements</h2>
   <ul>
-    <li>macOS 14 Sonoma or later, on a Mac with Apple silicon (M1 or newer). Intel Macs are not supported yet.</li>
+    <li>macOS 14 Sonoma or later, on a Mac with Apple silicon (M1 or newer). Intel Macs are not supported.</li>
     <li>Signed with an Apple Developer ID and notarized by Apple, so macOS opens it without a fuss.</li>
     <li>No account, no sign-in. The app never contacts a server of ours except to check for new versions and, once you enter a key, to check your licence; the <a href="/privacy.html">privacy page</a> lists exactly what is sent.</li>
   </ul>
 
   <h2>Installing</h2>
   <ol class="steps">
-    <li>Unzip the download and drag <strong>MediaFlowswift</strong> into your Applications folder.</li>
-    <li>Open it. The 14-day trial of Studio Pro starts the first time it opens.</li>
-    <li>If you use a NAS or a shared drive, macOS asks once whether the app may use your local network. Say yes; the <a href="/manual/">manual</a> explains why.</li>
+    <li>Double-click the downloaded zip in Finder to unzip it (Safari may have done this for you), and drag <strong>MediaFlowswift</strong> into your Applications folder.</li>
+    <li>Open it from Applications. The 14-day trial of Studio Pro starts the first time it opens.</li>
+    <li>If you use a network share or a database server on your network, macOS asks once whether the app may use your local network. Say yes; the <a href="/manual/">manual</a> explains why.</li>
   </ol>
+  <p class="note">Won&rsquo;t open, or macOS says it is damaged? See <a href="/support.html#wont-open">what to do when MediaFlowSwift won&rsquo;t open</a>.</p>
 
   <h2>Updating</h2>
   <p>The app looks for new versions here itself and offers each one with what is new. You never need to come back to this page unless you want to.</p>
@@ -80,7 +82,8 @@
     .then(function (m) {
       if (!m || !m.version || !m.url || !m.size) throw new Error("bad manifest");
       version.textContent = "MediaFlowSwift " + m.version;
-      var mb = Math.round(m.size / 1048576 * 10) / 10;
+      // Megabytes as Finder counts them (1,000,000 bytes), so File › Get Info shows the same number; Support asks people to compare.
+      var mb = Math.round(m.size / 1000000 * 10) / 10;
       meta.textContent = "· " + mb + " MB" + (m.published ? " · " + m.published : "");
       // The button uses the GitHub Release copy, which GitHub counts; the app's updater keeps using m.url.
       var counted = typeof m.download === "string" && m.download.indexOf("https://github.com/mwmike/mediaflowswift.com/releases/download/") === 0;
