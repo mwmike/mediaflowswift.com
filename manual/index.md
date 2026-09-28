@@ -19,10 +19,11 @@ For video creators. This guide is generated from the app’s own Help (Help → 
   - [The Analyze Hub](#the-analyze-hub)
   - [Progress and Messages](#progress-and-messages)
   - [Terms of Use](#terms-of-use)
+  - [About MediaFlowSwift](#about-mediaflowswift)
 
 - [Setup & Network](#setup--network)
   - [Setting Up MediaFlow](#setting-up-mediaflow)
-  - [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas)
+  - [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share)
   - [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings)
   - [Updating MediaFlow](#updating-mediaflow)
   - [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab)
@@ -91,14 +92,16 @@ For video creators. This guide is generated from the app’s own Help (Help → 
 
 - [Shared Database](#shared-database)
   - [Shared Database Overview](#shared-database-overview)
-  - [Global Search](#global-search)
+  - [Who Else Has a Project Open](#who-else-has-a-project-open)
+  - [Searching All Projects](#searching-all-projects)
   - [Finding Duplicate Files](#finding-duplicate-files)
   - [Migrating Projects to the Database](#migrating-projects-to-the-database)
   - [Storage Dashboard](#storage-dashboard)
-  - [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server)
-  - [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server)
+  - [Database File or Database Server?](#database-file-or-database-server)
+  - [Connecting to a Database Server](#connecting-to-a-database-server)
   - [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server)
   - [Working Offline and Syncing Later](#working-offline-and-syncing-later)
+  - [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file)
 
 - [Storage Maintenance](#storage-maintenance)
   - [Relinking Missing Media](#relinking-missing-media)
@@ -128,7 +131,6 @@ For video creators. This guide is generated from the app’s own Help (Help → 
   - [Deleting a Project](#deleting-a-project)
   - [Moving Clips Between Projects](#moving-clips-between-projects)
   - [Duplicating a Project](#duplicating-a-project)
-  - [Project Checklist](#project-checklist)
   - [Archiving a Project to USB](#archiving-a-project-to-usb)
   - [Restoring an Archived Project](#restoring-an-archived-project)
   - [Managing Archive Volumes](#managing-archive-volumes)
@@ -144,9 +146,10 @@ For video creators. This guide is generated from the app’s own Help (Help → 
 - [Troubleshooting](#troubleshooting)
   - [Clips Showing as Missing](#clips-showing-as-missing)
   - [Reporting a Problem](#reporting-a-problem)
+  - [Contacting Support](#contacting-support)
   - [Database Connection Issues](#database-connection-issues)
-  - [Global Search Finds Nothing](#global-search-finds-nothing)
-  - [NAS 'Resource Busy' Errors](#nas-resource-busy-errors)
+  - [Searching All Projects Finds Nothing](#searching-all-projects-finds-nothing)
+  - [Network Share 'Resource Busy' Errors](#network-share-resource-busy-errors)
   - [Import Not Detecting Files](#import-not-detecting-files)
   - [Understanding the Where Column](#understanding-the-where-column)
 
@@ -160,6 +163,10 @@ For video creators. This guide is generated from the app’s own Help (Help → 
 
 MediaFlow keeps track of the footage from a shoot. You import clips from cards, phones and folders, sort them into categories, review them, and copy them into a tidy folder structure at the project’s destination folder, ready for editing and archiving.
 
+### System Requirements
+
+Requires macOS 14 Sonoma or later on a Mac with Apple silicon (M1 or newer). MediaFlowSwift does not run on Intel-based Macs. About MediaFlowSwift, in the MediaFlowSwift menu, says the same.
+
 ### Key Capabilities
 
 - Import media from SD cards, USB drives, folders, iPhones and cameras connected over USB
@@ -167,7 +174,7 @@ MediaFlow keeps track of the footage from a shoot. You import clips from cards, 
 - Preview video with frame-by-frame playback controls
 - Add categories, tags, notes and star ratings to your clips
 - Generate PDF, HTML, and CSV reports for your projects
-- Search across projects and find duplicates with an optional shared database — a single file, or a PostgreSQL server several Macs can use
+- Search across projects and find duplicates with an optional shared database — a single file, or a database server several Macs can use
 
 ### Basic Workflow
 
@@ -181,7 +188,7 @@ The pipeline strip under the toolbar follows these steps and always offers the n
 
 ### First-Run Setup
 
-The first time you open MediaFlow, a short tour explains the app. A Setup Wizard follows it with three questions: your NAS, a shared database, and where organized media goes. You can skip any of them. To answer them later, choose Settings › General › Run Setup Again…
+The first time you open MediaFlow, a short tour explains the app. A Setup Wizard follows it. It first asks where your footage goes: this Mac, an external drive, or a network share. Then it asks where organized media goes. Only for a network share does it ask more: which share, and whether to use a database every Mac shares. You can skip any question. To answer them later, choose Settings › General › Run Setup Again…
 
 ### Where to Get Help
 
@@ -191,7 +198,7 @@ The first time you open MediaFlow, a short tour explains the app. A Setup Wizard
 - Help → Getting Started Guide re-opens the welcome tour shown the first time MediaFlowSwift opens. It opens by itself once only; to have it open every time, tick “Show this welcome when MediaFlowSwift opens” on the tour, or the same switch in Settings › General
 - MediaFlowSwift keeps its own copy of your setup, including what you have already seen, the size and place of its windows and your view choices, and puts it back at launch if macOS has lost them
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Creating a New Project](#creating-a-new-project), [Opening an Existing Project](#opening-an-existing-project), [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Keyboard Shortcuts Reference](#keyboard-shortcuts-reference)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Creating a New Project](#creating-a-new-project), [Opening an Existing Project](#opening-an-existing-project), [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Keyboard Shortcuts Reference](#keyboard-shortcuts-reference), [About MediaFlowSwift](#about-mediaflowswift)
 
 ## Creating a New Project
 
@@ -209,7 +216,7 @@ A project is a .vpm file that records your clips and everything you know about t
 
 MediaFlow creates a folder named after the project and saves the .vpm project file inside it.
 
-An orange “This folder is on this Mac’s own drive” note appears when the destination is on this Mac’s own disk rather than an external or network volume. If that is where you want your organized media, you can ignore it.
+When the destination is on this Mac’s own drive, a plain note under it says so; keeping everything on your Mac is a fine way to work. The note turns into an orange warning only when your setup points somewhere else: when your default destination in Settings › Storage is on another drive or a share, or, with no default destination set, when you use a network share. Then a folder on this Mac usually means that drive or share was not connected when the project was made. When the default destination in Settings › Storage is on this Mac, this Mac is your choice and there is no warning, even if a network share is also set up, for a shared database say. If this Mac is where you want the organized media, you can ignore the warning.
 
 ### Create from Existing Folder
 
@@ -240,11 +247,12 @@ The File → Open Recent submenu lists your recently opened projects for quick a
 
 ### Project Browser
 
-The Project Browser shows all known projects, including those registered in the shared database. Access it via Projects → Browse Projects (Cmd+Shift+P) or from the main screen when no project is open.
+The Project Browser shows all known projects, including those registered in the shared database. It is in the main window: there whenever no project is open, and shown in place of the open project by Projects → Browse Projects… (Cmd+Shift+P). Back to, followed by the project’s name, returns to that project just as you left it. Opening another project from the list asks about unsaved changes first, as opening always does.
 
 - Double-click a project to open it. Or select it and click Open Selected at the top right, or press Return
 - Right-click anywhere on a project’s row for options: Open, Delete Project…, Remove from List, Show in Finder
-- Use the search bar to filter by project name
+- Type in the Filter projects by name field above the list to narrow it by project name. The count under Projects is of the projects listed, for example 3 of 12 projects
+- The search field in the toolbar searches the clips of every project in the shared database, in the list’s place, under a line that says so; Clear brings the list back. See Searching All Projects
 - Click a column header to sort the list; MediaFlow remembers your choice the next time you open it
 
 See also: [Creating a New Project](#creating-a-new-project), [Deleting a Project](#deleting-a-project)
@@ -283,14 +291,14 @@ The main window is divided into five areas:
 
 ### Metadata Panel
 
-- Seven tabs: Workflow Tools, Edit, Full Metadata, Metadata, Enhanced, Scene Log and Transcript. When the panel is too narrow to show them all, scroll the row of tabs sideways. The tab you last used is remembered
+- Six tabs: Workflow Tools, Edit, Full Metadata, Metadata, Scene Log and Transcript. When the panel is too narrow to show them all, scroll the row of tabs sideways. The tab you last used is remembered
 - Drag the divider between the preview and this panel to give either more room; the panel can be as narrow as the tabs’ contents allow and much wider than before
 - Workflow Tools — Extract a thumbnail, mark in and out points, create a subclip, and manage and process the Proxy queue
 - Edit — Change the category, favorite flag, tags and notes of the selected clips
-- Full Metadata — Every available metadata field in one long listing
-- Metadata — Basic file and media information (size, dates, dimensions, duration)
-- Enhanced — Technical details such as codec, bit rate, frame rate, and camera/lens data
+- Full Metadata — Everything read from the file, in sections you can open and close: file details; video (resolution, frame rate, codec, bit rate); color and HDR; audio; camera and lens; and, when the clip has them, GPS, weather, drone, GoPro and iPhone data
+- Metadata — A short summary: filename, type, size, date created, duration, category, Camera and Where, and the clip’s thumbnail and proxy files
 - Scene Log — Scene, shot type, take, Camera angle and Circle Take for the selected clip
+- Transcript — Read, search, correct and export the clip’s transcript, or transcribe it if it has none
 
 ### Rearranging Panels
 
@@ -314,7 +322,7 @@ The pipeline strip shows the seven steps of a shoot and how much work each one s
 - Categorize — clips with no category (a blank category counts). Button: Auto-suggest
 - Review — clips with no star rating. Button: Rapid Review…, the same as Workflow → Review (Cmd+Opt+R)
 - Organize — clips whose file is not at the destination folder. Button: Organize N clips. A clip that is at the destination with a size mismatch counts as organized here; the Where column still shows the mismatch
-- Free up space — an estimate of the space the working-directory copies of organized clips still take on this Mac. Button: Free Up Space…, which scans the disk and shows exactly what it will reclaim
+- Free up space — the space the working-directory copies of organized clips still take on this Mac. A copy Free Up Space has moved to Cleanup or deleted no longer counts, and one Restore from Cleanup puts back counts again. Button: Free Up Space…, which checks each file and shows exactly what it will reclaim
 - Archive — Pending, or the volume the project was archived to (“USB #0007”) with the date. Button: Archive…
 - Eject — removable cards and drives still mounted. Button: Eject &lt;name>, or an Eject menu when more than one is connected
 
@@ -326,10 +334,6 @@ Until you click one, the strip follows the first step that still has work to do.
 
 The Organize count turns orange once 10 or more clips are still waiting and the project has a destination.
 
-### The Old Screens
-
-Workflow → Plan & Deliver → Project status (legacy)… and Workflow → Plan & Deliver → Project Checklist (legacy)… still open the earlier overview screens. They count categorized, organized and verified clips with the same rules the strip uses, so the three always agree.
-
 See also: [Understanding the Interface](#understanding-the-interface), [Organizing Media to Storage](#organizing-media-to-storage), [Freeing Up Space](#freeing-up-space), [Smart Notifications](#smart-notifications)
 
 ## What Things Are Called Now
@@ -340,7 +344,7 @@ The same thing used to have several names and the same name used to mean several
 
 ### The Table
 
-- Organize Media keeps its name, and the pipeline strip now says Organize too instead of Copy to NAS — the menu item, the toolbar button, the right-click action, the strip and the confirmation sheet all read the same. With clips selected it copies the selection; with nothing selected it copies the whole project, and the sheet says which
+- Organize Media keeps its name, and the pipeline strip now says Organize too, instead of naming a device — the menu item, the toolbar button, the right-click action, the strip and the confirmation sheet all read the same. With clips selected it copies the selection; with nothing selected it copies the whole project, and the sheet says which
 - Device is now Camera wherever it means the camera that shot the clip — the table column, the sidebar section, the Import sheet’s picker and the Set Camera menu. “Device” now means an import source: a card, a drive, an iPhone.
 - The Scene Log’s Camera field is now Camera angle — A, B, C, the angle a take was shot from, not the camera body
 - The Location column is now Where, and the sidebar’s Locations section is now Places. Where is about the file; Places is about the world
@@ -348,7 +352,7 @@ The same thing used to have several names and the same name used to mean several
 - Reconnect Destination is now Change destination folder, under Workflow → Repair
 - Refresh Storage Locations is now Re-check files, under Workflow → Repair
 - Do Not Copy now reads Skip (don’t copy). It is still stored as “Do Not Copy”
-- Dashboard is now Project status
+- The Dashboard and the Project Checklist are gone. The pipeline strip across the top of the window shows where the project stands
 - Batch Queue is now Proxy queue — the queue for thumbnails and proxies
 - Remove Selected Assets is now Remove from Project
 - Kill is now Reject. It is still stored as “Kill”
@@ -356,9 +360,9 @@ The same thing used to have several names and the same name used to mean several
 
 ### Where the Workflow Menu Went
 
-- Import…, Organize Media…, Review, Free Up Space…, Archive to USB… — the five things you do to footage, at the top level. Restore from Cleanup sits under Free Up Space…
+- Organize Media…, Review, Free Up Space…, Archive to USB… — the things you do to footage once it is in, at the top level. Restore from Cleanup sits under Free Up Space…. Import… is in the File menu
 - Analyze… — one sheet holding every optional analysis pass. See The Analyze Hub
-- Plan & Deliver — Shot List, Storyboard, Shoot Map, Day Summary, Storage Forecast, Import Field Notes, Generate Dailies, NLE Template Export, Export FCPXML, Report, and the two legacy overview screens
+- Plan & Deliver — Shot List, Storyboard, Shoot Map, Day Summary, Storage Forecast, Import Field Notes, Generate Dailies, NLE Template Export, Export FCPXML, Report and Prepare for YouTube
 - Repair — Re-check files, Relink Missing Media, Change destination folder, Re-file folders by category. Library Moved is here too: it points every project at a library you have copied to a new drive
 - Run Workflow Template… (Cmd+Shift+R) — at the bottom of the menu
 
@@ -445,7 +449,23 @@ An update that changes the terms shows them again, with a short list of what cha
 
 Choose Help → Terms of Use to read the terms at any time. The window also says when you agreed to them on this Mac. The same terms are on the website at mediaflowswift.com/terms.html, with the refund policy beside them.
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [What Is MediaFlow?](#what-is-mediaflow)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [What Is MediaFlow?](#what-is-mediaflow), [About MediaFlowSwift](#about-mediaflowswift)
+
+## About MediaFlowSwift
+
+*The version you are running, who makes MediaFlowSwift, what it needs to run, links to the website, and the open-source acknowledgements.*
+
+Choose MediaFlowSwift → About MediaFlowSwift. The window shows the version and build you are running and © 2026 Long Road Software LLC, the maker and seller of MediaFlowSwift. Its links open the website, the support page, the terms of use and the privacy page in your web browser; nothing is opened until you click. Settings › General › About shows the same.
+
+### System Requirements
+
+Requires macOS 14 Sonoma or later on a Mac with Apple silicon (M1 or newer). MediaFlowSwift does not run on Intel-based Macs. The app is built for Apple silicon only, so on an Intel-based Mac macOS will not open it. Check the Apple menu → About This Mac: a Mac with Apple silicon names its chip there, such as Apple M1 or Apple M3.
+
+### Acknowledgements
+
+MediaFlowSwift is built with open-source packages, among them PostgresNIO and Apple’s SwiftNIO, Swift Log and Swift Crypto, and the BoringSSL code SwiftNIO SSL carries. Acknowledgements…, in About and in Settings › General, lists each package with its version and licence, then the full text of each licence and the notices the packages ask to be passed on, including BoringSSL’s OpenSSL, SSLeay and ISC licences. Copy All copies all of it as plain text.
+
+See also: [What Is MediaFlow?](#what-is-mediaflow), [Terms of Use](#terms-of-use), [Contacting Support](#contacting-support), [The Settings Window](#the-settings-window)
 
 ---
 
@@ -453,11 +473,11 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Privacy: What Leaves T
 
 ## Setting Up MediaFlow
 
-*The welcome tour explains the app; the Setup Wizard then asks three questions, and you can skip any of them.*
+*The welcome tour explains the app; the Setup Wizard then asks where your footage goes and only what follows from that, and you can skip any of it.*
 
-A new copy of MediaFlow knows nothing about your equipment: no NAS, no shared database, no destination. Three things greet you on first launch. First come the terms of use, which you agree to once (see Terms of Use). The welcome tour then explains the app, and the Setup Wizard asks three questions so the app can find your storage.
+A new copy of MediaFlow knows nothing about your equipment: no network share, no shared database, no destination. Three things greet you on first launch. First come the terms of use, which you agree to once (see Terms of Use). The welcome tour then explains the app, and the Setup Wizard asks where your storage is.
 
-You do not have to answer anything. MediaFlow works without a NAS and without a database, and every answer can be changed later in Settings.
+You do not have to answer anything. MediaFlow works on a single Mac, with or without an external drive, and needs neither a network share nor a database; every answer can be changed later in Settings.
 
 ### The welcome tour
 
@@ -465,11 +485,12 @@ Four pages: Welcome, the workflow, your workspace, and a closing page of tips. U
 
 ### The Setup Wizard
 
-The wizard opens when the tour closes, if nothing is set up yet. It does not open when your saved setup was put back at launch.
+The wizard opens when the tour closes, if nothing is set up yet. It does not open when your saved setup was put back at launch. Its first answer decides which steps follow: two for this Mac or an external drive, four for a network share. A step you leave behind by changing that answer changes nothing: a server typed on the database step, for instance, is put back as it was, password included.
 
-1. Your NAS — shares that are connected now are listed with a Use this button. Look for servers searches the network, and Connect to… opens a server in Finder so you can sign in and mount a share. Use this takes effect as soon as you click it
-2. Shared database — choose None, SQLite file or PostgreSQL server. For a SQLite file, click Choose… to pick the file. For a server, fill in the connection fields
-3. Where organized media goes — click Choose… to pick the default destination for new projects. A project can always use a different one
+1. Where your footage goes — This Mac, An external drive, or A network share. Nothing is set by this answer alone; it chooses the steps that follow and where the folder picker opens
+2. Your network share (a network share only) — shares that are connected now are listed with a Use this button. Look for servers searches the network, and Connect to… opens a server in Finder so you can sign in and mount a share. Use this takes effect as soon as you click it
+3. Shared database (a network share only, or when a database is already set up) — choose None, Database file (a single file, one Mac at a time) or Database server (several Macs at once). For a database file, click New Database File… to choose where it will live (MediaFlow makes it at once, and connects when you click Done), or Use an Existing Database File… to use one another Mac made. For a server, fill in the connection fields
+4. Where organized media goes — click Choose… to pick the default destination for new projects. It opens in your Movies folder for this Mac, among your drives for an external drive, and on the share for a network share. If the folder you pick is not where your first answer said, the step says so; a project can always use a different one
 
 ### Skipping
 
@@ -479,17 +500,17 @@ The wizard opens when the tour closes, if nothing is set up yet. It does not ope
 
 ### Running it again
 
-Choose Settings › General › Run Setup Again…. The wizard opens showing your current settings, not an empty form. Choosing None on the database step turns the shared database off.
+Choose Settings › General › Run Setup Again…. The wizard opens showing your current settings, not an empty form: the first answer reads A network share when one is chosen in Settings › Network, and otherwise follows your default destination. Choosing None on the database step turns the shared database off. Answering This Mac or An external drive does not forget a network share you chose before; Forget in Settings › Network does that.
 
-See also: [Terms of Use](#terms-of-use), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [What Is MediaFlow?](#what-is-mediaflow)
+See also: [Terms of Use](#terms-of-use), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Database File or Database Server?](#database-file-or-database-server), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [What Is MediaFlow?](#what-is-mediaflow)
 
-## Choosing and Connecting Your NAS
+## Choosing and Connecting Your Network Share
 
 *Settings › Network is where you tell MediaFlow which network share holds your projects and media.*
 
-MediaFlow has no built-in NAS. Until you choose one, Settings › Network reads “No NAS chosen yet” and nothing is assumed. A NAS is optional: you can organize to any folder, including a drive attached to this Mac.
+MediaFlow has no built-in network share. Until you choose one, Settings › Network reads “No network share chosen yet” and nothing is assumed. A share is optional: you can organize to any folder, including a drive attached to this Mac.
 
-When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, and as the host offered for a PostgreSQL server. It also connects the share when it is needed: see below.
+When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, and as the host offered for a database server. It also connects the share when it is needed: see below.
 
 ### Choose a share
 
@@ -498,7 +519,7 @@ When you do choose a share, MediaFlow uses it as the starting point for file pic
 3. If it is not listed, click Look for servers, then pick the server from the Connect to… menu. The server opens in Finder, which asks for the password and shows its shares
 4. Mount the share you want in Finder, return to Settings, and click Use this
 
-Picking a mounted share fills in both the share name and its address, so there is nothing to type. If you prefer, open “Type the address instead” and enter an smb:// address. A name ending in .local keeps working when the NAS gets a new network address.
+Picking a mounted share fills in both the share name and its address, so there is nothing to type. If you prefer, open “Type the address instead” and enter an smb:// address. A name ending in .local keeps working when the server gets a new network address.
 
 ### Connected when it is needed
 
@@ -510,19 +531,19 @@ While a drive is not connected, the clips on it read Volume not connected in the
 
 ### Passwords
 
-macOS asks for the NAS password, not MediaFlow. MediaFlow never sees or stores it. If you let macOS remember the password, macOS keeps it in your Keychain and uses it to reconnect.
+macOS asks for the share’s password, not MediaFlow. MediaFlow never sees or stores it. If you let macOS remember the password, macOS keeps it in your Keychain and uses it to reconnect.
 
 ### Connect now and Forget
 
-- The status line reads Connected with the mount path, Looking for the NAS…, or Not connected
+- The status line reads Connected with the mount path, Looking for the share…, or Not connected
 - Connect now tries the stored address, then searches the network, then mounts the share. It is available only while the share is not connected
-- Forget stops using this NAS. Settings that follow it go back to unset. The path to your database file is kept
+- Forget stops using this share. Settings that follow it go back to unset. The path to your database file is kept
 
 ### No servers found
 
-Check that the NAS is switched on and on the same network. Also check that MediaFlow is allowed to use the local network: System Settings › Privacy & Security › Local Network.
+Check that the server is switched on and on the same network. Also check that MediaFlow is allowed to use the local network: System Settings › Privacy & Security › Local Network.
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Database Connection Issues](#database-connection-issues), [NAS 'Resource Busy' Errors](#nas-resource-busy-errors)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](#database-file-or-database-server), [Database Connection Issues](#database-connection-issues), [Network Share 'Resource Busy' Errors](#network-share-resource-busy-errors)
 
 ## Saved Setup: A Copy of Your Settings
 
@@ -534,7 +555,7 @@ Passwords and API keys are never in it. They stay in your Keychain.
 
 ### What it holds
 
-- Your NAS share and its address
+- Your network share and its address
 - The shared database settings: on or off, the store, the file path, and the server host, port, database and user
 - The default destination, recent destinations and the verification setting
 - Whether to check for new versions automatically
@@ -547,7 +568,7 @@ API keys and the database password. They stay in your Keychain. The saved setup 
 
 ### When it is restored automatically
 
-Only at launch, and only into a copy of MediaFlow that has nothing configured: no NAS, no database file, no server and no default destination. It never overwrites settings you are already using.
+Only at launch, and only into a copy of MediaFlow that has nothing configured: no network share, no database file, no server and no default destination. It never overwrites settings you are already using.
 
 ### Doing it by hand
 
@@ -556,7 +577,7 @@ Only at launch, and only into a copy of MediaFlow that has nothing configured: n
 
 > **Warning:** Restore Saved Setup overwrites the settings on this Mac with the saved ones. It asks you to confirm first. The saved copy is normally the one written when you last quit.
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Connecting to a Database Server](#connecting-to-a-database-server)
 
 ## Updating MediaFlow
 
@@ -578,7 +599,7 @@ With “Check for new versions automatically” on, MediaFlow looks shortly afte
 
 - Install… opens the Software Update window
 - Later hides the banner until a version newer than that one appears
-- The banner waits its turn: while a card has just been connected, or the NAS is unreachable, that banner is shown instead
+- The banner waits its turn: while a card has just been connected, or the drive or share holding the database file is unreachable, that banner is shown instead
 
 ### Installing
 
@@ -596,7 +617,7 @@ MediaFlow looks for a new version a few seconds after launch, again every half h
 
 After an update, the Software Update window shows Revert to Previous Version (or Revert to a named version). It puts the version you had before back in place and relaunches.
 
-See also: [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab)
+See also: [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab)
 
 ## The Settings Window, Tab by Tab
 
@@ -612,11 +633,11 @@ Run Setup Again…, the saved copy of your settings (Save Setup Now, Restore Sav
 
 ### Network
 
-Which NAS share MediaFlow uses: shares connected now, Look for servers, Connect now and Forget. There is no built-in NAS; nothing is assumed until you choose one.
+Which network share MediaFlow uses: shares connected now, Look for servers, Connect now and Forget. There is no built-in share; nothing is assumed until you choose one.
 
 ### Storage
 
-The shared database: Enable Central Database, the Store (SQLite file or PostgreSQL server), its file or connection fields, and copying records between the two. Below it, the default destination for new projects and “Verify organized copies by reading them back”.
+The shared database: Enable Central Database, the Store (Database file or Database server), its file or connection fields, and copying records between the two. Below it, the default destination for new projects and “Verify organized copies by reading them back”.
 
 ### Cameras
 
@@ -640,7 +661,7 @@ One switch for each kind of Smart Notification.
 
 > **Tip:** The camera and category lists belong to the project, not to the app. With no project open, those two tabs show Open a Project… instead of a list.
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Adding, Renaming, Retiring and Removing Categories](#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [How MediaFlow Verifies Copies](#how-mediaflow-verifies-copies), [Smart Notifications](#smart-notifications)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](#database-file-or-database-server), [Adding, Renaming, Retiring and Removing Categories](#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [How MediaFlow Verifies Copies](#how-mediaflow-verifies-copies), [Smart Notifications](#smart-notifications)
 
 ## Privacy: What Leaves This Mac
 
@@ -648,7 +669,7 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connectin
 
 MediaFlow has no account and collects no usage data. Your media, projects and shared database stay on this Mac and on your own network.
 
-On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a random id it made up for this Mac, and the Mac’s name. Settings › Privacy lists both, with the exact details. A problem report reaches its maker too, but only when you have turned on Sending problem reports and click Send on a report you have read.
+On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a random id it made up for this Mac, and the Mac’s name. Settings › Privacy lists both, with the exact details. A problem report reaches its maker only when you send it: from your own mail app with Email Report…, or, on a Mac set up with the maker’s report relay, when you have turned on Sending problem reports and click Send on a report you have read.
 
 A few features need a service run by another company. Settings › Privacy lists every one: what is sent, to whom, and what it is for. Each is off until you turn it on, and you can turn it off again at any time.
 
@@ -661,7 +682,7 @@ A few features need a service run by another company. Settings › Privacy lists
 - Uploading to YouTube — sends the finished video you chose, with its title, description, chapters, tags, category, visibility, publish time and made-for-kids answer, the file’s size and type, and the thumbnail if you chose to send it, to Google. Signing in opens your browser at Google; MediaFlow never sees your password. Signing in and staying signed in send your client ID and secret to Google. The permission cannot read your channel or delete videos. Nothing is sent until you click Upload and confirm. While it is off, uploading is refused and sign-in does not ask for permission to upload; with both YouTube switches off, signing in is refused too. See Uploading to YouTube
 - Reading your videos’ statistics from YouTube — asks Google which channel you signed in to, and sends the YouTube IDs of the videos your database records as uploaded by MediaFlow with the span of dates from the first upload to today, and nothing else. Google answers with their views, likes, comments, watch time, average view, subscribers gained, shares, visibility and publish time. Turning it on makes the next sign-in ask Google for two more permissions, both read-only, which would allow reading your whole channel; MediaFlow asks only about those videos. Read only when you click Read from YouTube Now on the Results tab. See How Your Videos Are Doing
 - Maps of where you shot — showing a map sends the area you are looking at to Apple, which is how the map images arrive. While it is off, the Shoot Map and GPS scene review list locations without a map, with a Turn On Maps button.
-- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to the report relay whose address you entered in Settings › Privacy. While it is off, the Send button is not there, and reports can only be copied or saved.
+- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to a report relay run by MediaFlowSwift’s maker, whose address is entered in Settings › Privacy. The relay fields stay folded away until a relay is set up; a customer has no relay, and needs none. While it is off, or no relay is set up, the Send button is not there. Email Report… needs no switch: it opens the report in your own mail app, for you to send.
 
 ### A model that suggests categories
 
@@ -671,18 +692,18 @@ The local model’s Server address may be this Mac or another computer on your o
 
 ### What stays on your network
 
-- Your NAS: finding it, connecting to it, and reading and writing media and the database file.
-- Your PostgreSQL server, when you use one. That connection is not encrypted, so keep the server on a network you trust.
+- Your network share: finding it, connecting to it, and reading and writing media and the database file.
+- Your database server, when you use one. That connection is not encrypted, so keep the server on a network you trust.
 
-### Things that open your browser
+### Things that open your browser or mail app
 
-Buttons such as a provider’s API-key page or the Ollama download open a web page only when you click them. MediaFlow itself sends nothing.
+Buttons such as a provider’s API-key page, the Ollama download or Help → Support Website open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. MediaFlow itself sends nothing.
 
 > **Tip:** A saved setup keeps your Privacy switches, but they are not restored automatically on a new install — only when you choose Restore Saved Setup…, which says so before it does.
 
 macOS may separately ask permission for speech recognition or for finding devices on your local network. Those prompts come from macOS and are managed in System Settings › Privacy & Security.
 
-See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [Running a Model on This Mac](#running-a-model-on-this-mac), [Speech Transcription](#speech-transcription), [Historical Weather Lookup](#historical-weather-lookup), [Interactive Shoot Map](#interactive-shoot-map), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings)
+See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [Running a Model on This Mac](#running-a-model-on-this-mac), [Speech Transcription](#speech-transcription), [Historical Weather Lookup](#historical-weather-lookup), [Interactive Shoot Map](#interactive-shoot-map), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Contacting Support](#contacting-support)
 
 ---
 
@@ -694,7 +715,7 @@ See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [U
 
 An import copies media from a card, a drive or a folder into your project’s working folder on this Mac and adds the clips to the project. The original files are not changed.
 
-1. Choose File → Import… (File → Import from Folder… opens the same sheet with the Folder segment selected)
+1. Choose File → Import…
 2. Pick a source at the top of the sheet: Cards & drives lists the SD cards and USB drives MediaFlow has detected; Folder lets you browse to any directory
 3. For a card, choose it from the Choose Card… menu (a single connected card is picked for you; Rescan looks again). For a folder, click Choose Folder…
 4. MediaFlow scans the source, including subfolders, for supported video, image and audio files
@@ -705,6 +726,10 @@ An import copies media from a card, a drive or a folder into your project’s wo
 
 Once the copy starts, the bottom of the sheet shows “Importing to:” with the folder the files are going to.
 
+### Previewing a File
+
+Click a file in the list to see it in the Preview on the right, with details such as its size, length and date. Press Space to play or pause a video there, whatever you clicked last in the sheet. While a video is showing, Space never ticks a checkbox or presses a button. A photo shows as a still picture; with a photo or nothing showing, Space does what it does elsewhere on your Mac (with Keyboard navigation on, it presses the button you moved to with Tab).
+
 ### Duplicates
 
 Files that are already in the project are marked Duplicate in the list. A line at the bottom of the sheet says how many duplicates were detected, and they are skipped when you import.
@@ -714,6 +739,8 @@ Files that are already in the project are marked Duplicate in the list. A line a
 The working folder’s disk needs room for the selected files plus 10 GB of headroom. If it has less, the import does not start and MediaFlow tells you there is not enough free space.
 
 ### Cancelling
+
+To close the sheet without importing anything, click Cancel at the top or press Esc.
 
 To stop a long import, click Cancel on the progress window. The copy stops between files, the partly written file is discarded, and every file already copied is added to the project and kept in the working folder.
 
@@ -754,10 +781,12 @@ See also: [Importing from iPhone or Camera](#importing-from-iphone-or-camera), [
 The iPhone segment of the Import sheet copies photos and videos straight from a phone or camera connected by USB into your project’s working folder.
 
 1. Connect your iPhone or camera via USB. Unlock the iPhone and tap Trust if it asks
-2. Choose File → Import from iPhone…, or choose File → Import… and select the iPhone segment at the top of the sheet
+2. Choose File → Import… and select the iPhone segment at the top of the sheet
 3. Select your device from the Device picker
 4. Check the items to import in the list. Items already in the project are marked Duplicate and are skipped
 5. Click Import Selected
+
+Click an item to preview it on the right; MediaFlow copies it to this Mac to show it. Press Space to play or pause a video, as for a card or folder.
 
 MediaFlow uses Apple’s Image Capture framework to talk to the device. While an iPhone is locked, the sheet asks you to unlock it and tap Trust.
 
@@ -783,7 +812,7 @@ See also: [Importing from a Card, Drive or Folder](#importing-from-a-card-drive-
 
 *One Import sheet for every source, its per-import options, and the card that appears when the import finishes.*
 
-File → Import… opens a single Import sheet. The segment at the top chooses the source: Cards & drives (detected SD cards and USB drives), iPhone (phones and cameras over USB), or Folder (any directory). Import from Folder… and Import from iPhone… open the same sheet with that segment preselected. The banner that appears when a card or phone is plugged in opens the sheet on Cards & drives.
+File → Import… opens a single Import sheet. The segment at the top chooses the source: Cards & drives (detected SD cards and USB drives), iPhone (phones and cameras over USB), or Folder (any directory). The banner that appears when a card or phone is plugged in opens the sheet on Cards & drives.
 
 ### Ask a Model to Suggest Categories
 
@@ -822,6 +851,7 @@ The media list shows the clips in the project that match the current filter. Use
 - One row per clip, with columns: Thumbnail, Filename, Type, Date, Duration, Category, Camera, Where, Audio, Rating, Select, Notes
 - Click the Filename, Date, Where, Audio, Rating, Select or Notes header to sort by that column; click again to reverse the order. MediaFlow remembers the column and direction you chose, in every project and the next time you open the app; until you choose one, the list is sorted by Date, newest first
 - A GoPro splits a long recording into several files, such as GX012324 and GX022324. In the Table they appear as one row: the first chapter, with a label such as “2 chapters · 20:54” giving the count and the total length. Click the arrow at the left of the row to show the other chapters beneath it. The recording stays together whatever column you sort by. Each row is still one file: rating, tagging or playing the first row affects that file only, so expand the row to work on the others. Files are grouped only when they come from the same camera, are the same kind of file and were made within a day of each other. To list every file on its own row, turn off Group Chapters of One Recording in the Filter menu
+- A clip you made subclips of with Create Subclip… Add to This Project has an arrow too, and a label such as “2 subclips”. Its subclips are beneath it, in order of where they start in the clip, each labeled with its range, such as 0:12–0:41, whatever column you sort by. A GoPro recording’s first chapter shows its other chapters first and then its own subclips; a later chapter’s subclips are under that chapter’s own arrow, inside the recording. When a search or filter shows a subclip but not the clip it came from, or that clip has been removed from the project, the subclip is on a row of its own with a Subclip label; hold the pointer over the label to see where it came from
 - Sorting by Filename follows Finder’s order, so clip2 comes before clip10, and keeps the chapters of one GoPro recording together: a GoPro splits a long recording into files such as GX012324 and GX022324, and MediaFlow lists them one after the other instead of sending the second to the end
 - A Category or Camera shown in italics with a confidence badge is a proposal from import analysis. Click the cell to accept it
 - Right-click any row for the context menu
@@ -831,9 +861,10 @@ The media list shows the clips in the project that match the current filter. Use
 - Shows clips as thumbnail cards in a grid that adapts to the window width
 - Each card shows the filename, the category, a ★ when the clip is a favorite, a colored Where icon with its label, the camera name and, when they are set, its star rating and its Hero, Maybe or Reject badge
 - Video thumbnails carry the clip’s duration in the corner
+- The Grid shows every clip as a card of its own, subclips too: a subclip’s card has a Subclip badge, and holding the pointer over it names the clip it was cut from and the range
 - Right-click any card for the context menu
 
-See also: [Selecting Clips](#selecting-clips), [Context Menu Actions](#context-menu-actions), [Understanding the Where Column](#understanding-the-where-column)
+See also: [Selecting Clips](#selecting-clips), [Context Menu Actions](#context-menu-actions), [Understanding the Where Column](#understanding-the-where-column), [Extracting Thumbnails and Subclips](#extracting-thumbnails-and-subclips)
 
 ## Selecting Clips
 
@@ -845,6 +876,7 @@ Most commands act on the selected clips: batch editing, organizing, rating, movi
 - Cmd+Click adds a clip to the selection or takes it out
 - Shift+Click selects every clip between the one you last clicked and this one, in Table and Grid view alike. Shift+Click again, further up or down, re-measures from that same starting clip. Cmd+Shift+Click adds the range to what is already selected
 - Cmd+A selects every clip the current filter shows. While you are typing in a field, Cmd+A selects the text in that field instead
+- Delete removes the selected clips from the project while you are working in the clip list or grid, as File → Remove from Project does. While you are typing in a field, Delete only deletes text
 
 ### The Selection Bar
 
@@ -878,7 +910,7 @@ See also: [Selecting Clips](#selecting-clips), [Filtering and Searching](#filter
 
 ## Filtering and Searching
 
-*Narrow the media list with a filter, and search within it by name, notes, tags, category, camera or scene.*
+*Narrow the media list with a filter, and search it, or every project, by name, notes, tags, category, camera or scene.*
 
 A filter limits the media list to the clips you want to work on. One filter is active at a time; choosing another replaces it.
 
@@ -886,7 +918,7 @@ A filter limits the media list to the clips you want to work on. One filter is a
 
 `Cmd+F` — Find Clips
 
-Type in the search field in the toolbar, or press Cmd+F to put the cursor there. The list narrows as you type, in Table and Grid view alike, and a line above it tells you how many clips match out of how many are in the project.
+Type in the search field in the toolbar, or press Cmd+F to put the cursor there. With This Project chosen under the field (Cmd+F chooses it), the list narrows as you type, in Table and Grid view alike, and a line above it tells you how many clips match out of how many are in the project.
 
 - A clip is found by its file name, its notes, its tags, its category, the camera it came from and its scene. Capital letters do not matter
 - Type more than one word and every word must be found, each wherever it likes: gopro beach finds the beach clips from the GoPro, not every GoPro clip and every beach clip
@@ -918,11 +950,11 @@ Click the filter menu in the toolbar (its label shows the current filter) to cho
 
 The active filter appears as a chip under the project name in the sidebar. Click the chip to remove that filter, or Clear All to return to All Media. The pipeline strip also sets filters: clicking a segment shows that step’s remaining clips.
 
-### Searching Across Projects
+### Searching All Projects
 
-To find a clip in any project, choose Database → Global Search… This needs the shared database.
+Choose All Projects under the search field, or press Cmd+Shift+F, to search the clips of every project in the shared database instead. The results take the list’s place, and Add to This Project copies the clips you choose into this project; see Searching All Projects.
 
-See also: [Table and Grid Views](#table-and-grid-views), [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Global Search](#global-search)
+See also: [Table and Grid Views](#table-and-grid-views), [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Searching All Projects](#searching-all-projects)
 
 ## Editing Clip Metadata
 
@@ -1020,7 +1052,7 @@ Edit → Undo (Cmd+Z) and Edit → Redo (Cmd+Shift+Z) reverse and re-apply metad
 ### Not Undoable
 
 - Imports, Organize Media, Re-file folders by category, Free Up Space, Clear Card and Archive to USB — these copy, move or delete files. Restore from Cleanup brings back files that Free Up Space staged; files deleted by Free Up Space or Clear Card cannot be brought back
-- Edits made in the Scene Log tab, and Shot List, Storyboard and Project Checklist edits
+- Edits made in the Scene Log tab, and Shot List and Storyboard edits
 - Removing clips from the project (they can be re-imported)
 
 Undo restores the previous values and saves the project. When the undone step changed the category of an organized clip, MediaFlow also moves the copy at the destination back into the matching folder, in the background.
@@ -1046,13 +1078,19 @@ Organize Media copies your clips into a tidy folder layout at the project destin
 5. Click Organize Media. MediaFlow creates the category and camera folders, copies each file, and verifies each copy
 6. When the progress window finishes, click Done. Each copied clip now reads “At destination” in the Where column, with a green check
 
-The confirmation can also warn you. Organize is disabled when the destination does not have enough free space. An orange line reading “This folder is on this Mac’s own drive” appears when the destination is on this Mac’s startup disk rather than a mounted drive or share; if you meant to use a drive, check that it is connected. Another orange line counts clips that still carry an unconfirmed proposal; organizing does not apply proposals.
+The confirmation can also warn you. Organize is disabled when the destination does not have enough free space. An orange line appears when the destination is on this Mac’s own drive while your setup points somewhere else — your default destination in Settings › Storage is on another drive or a share, or, with no default destination, you use a network share — since that usually means the drive or share was not connected; if you meant to use it, check that it is connected. When your default destination is on this Mac, or everything you do is, there is no warning. Another orange line counts clips that still carry an unconfirmed proposal; organizing does not apply proposals.
+
+Clips that read On another Mac or Not on this Mac are left out of the copy, and the confirmation says how many. This Mac cannot read them. Organize them on the Mac they were imported on.
 
 If the clips came from a memory card, the Clear Card review opens when you click Done. Nothing is deleted unless you confirm it there.
 
 ### How copies are verified
 
 MediaFlow computes a SHA-256 checksum of each source file as it copies it, then finishes writing the copy to the disk. By default it then reads the whole copy back and compares its SHA-256 with the source. If the check fails, the copy is deleted and made again once; if it fails a second time, that clip is reported as failed and its source is left alone.
+
+On a drive connected to your Mac, the copy is written and read back without passing through the Mac’s memory, so the check reads it from the drive itself. On a network share, every byte is read back over the network from the server; the server may answer from its own memory.
+
+Drives keep a little memory of their own for what is being written. Once the last file is copied, MediaFlow asks the destination drive to empty it, once for the whole run rather than after every file, and only then points your clips at the copies. Move Project, Move to Editing Drive, Return to Library, Archive, Restore and Duplicate Project do the same before they point anything at their copies or remove anything, and an archive has the drive confirm it is in place under its own name, before any older one it replaces is removed. If the drive cannot be asked, because MediaFlow is not allowed to open the folder for example, the operation says so instead of carrying on as if it had been; after Organize, the card is then not offered for clearing. Clear Card, however you open it, asks the drive again for each organized copy just before it deletes that clip from the card, and keeps the card file if it cannot.
 
 Settings › Storage › Organize Media has the switch “Verify organized copies by reading them back (slower, safest)”. With it off, MediaFlow checks the size of the copy plus three 1 MB samples at the start, middle and end. That is much faster over a network, but it does not detect corruption outside the sampled ranges.
 
@@ -1068,11 +1106,11 @@ Settings › Storage › Organize Media › “Default destination for new proje
 
 ### Keeping the folder layout in sync
 
-When you change the category or the camera of an organized clip, MediaFlow moves its copy at the destination into the matching folder. This happens in the background and only interrupts you if a file fails to move. To bring the whole project into line at once, for example after an interrupted move or a relink, choose Workflow → Repair → Re-file folders by category.
+When you change the category or the camera of an organized clip, MediaFlow moves its copy at the destination into the matching folder. This happens in the background, keeps any edit you make meanwhile, and only interrupts you if a file fails to move or you open another project before the move could be saved. While any of these moves is still running, even when a later one has finished, MediaFlow holds back its automatic check of where your clips are, so a clip caught between two folders is not marked Missing. To bring the whole project into line at once, for example after an interrupted move or a relink, choose Workflow → Repair → Re-file folders by category.
 
 ### Cancelling a long operation
 
-Every long file operation (organize, import, project move, cleanup move and restore, relink, re-file and archive) has a Cancel button on its progress window. Cancelling stops the work between files. The file being written at that moment is discarded, so no half-copied file is left behind. Every file that finished before you cancelled stays where it landed; nothing already copied, moved or deleted is put back. The window then reports what did finish, for example “Cancelled after 12 of 40 files, 6.2 GB copied”, and waits for you to click Done.
+Every long file operation (organize, import, project move, cleanup move and restore, relink, re-file and archive) has a Cancel button on its progress window. Cancelling stops the work between files. The file being written at that moment is discarded, so no half-copied file is left behind. Every file that finished before you cancelled stays where it landed; nothing already copied, moved or deleted is put back. The window then reports what did finish, for example “Cancelled after 12 of 40 files, 6.2 GB copied”, and waits for you to click Done. Cancel stops the work its own window shows and nothing else: clips being moved into their category folders in the background after a category change carry on.
 
 > **Tip:** Clips in the Skip (don’t copy) category are never copied. The category is stored as “Do Not Copy” in the .vpm file and the database; only the label changed.
 
@@ -1131,8 +1169,18 @@ It does not read file contents or recompute checksums, so it cannot detect damag
 - Not at destination — the file is somewhere other than the destination and not on a card, such as the folder you imported from or another drive. It is not lost; hover over it to see which drive. If a whole project reads this way after a library was moved, you may have opened the old copy of the project: see After Moving Your Library to a New Drive
 - Missing — no file was found at the recorded path
 - Volume not connected — the drive or share the path names is not mounted right now. The file is neither checked nor called missing; its last known state stands until the drive is back
+- On another Mac — the file is in the home folder of another account, where a clip imported on another Mac that shares this project is usually kept. This Mac cannot see it, so it is not called missing and nothing is changed for it. The Mac it was imported on keeps it up to date
+- Not on this Mac — the file is not where the project says, and this Mac has never had it. It was most likely imported on another Mac that shares this project and kept somewhere this Mac cannot see, such as that Mac’s Shared folder or its own drive. It is not called missing and nothing is changed for it. The Mac that has it keeps it up to date
+
+Each Mac remembers the clips it has had: the ones it imported, organized, relinked, reconnected or moved, and every file Re-check files has found on it. Only those can read Missing on that Mac when their file goes. So a clip imported on another Mac does not read Missing here, even when both Macs’ accounts share a name or the clip is kept in the Shared folder, and the two Macs stop changing it back and forth.
+
+The first time a Mac checks a project file after the update, it checks it as before: every clip whose file is gone reads Missing, including one that went missing before the update, and one on another Mac. The same goes for the first check of any other copy of the project file, such as one made with Save As, copied in the Finder or restored from a backup. Once that first check is saved in the file, the Mac remembers what it found; if it cannot be saved, because the app quits first or the folder cannot be written to, the next check is a first check again. On a project shared with another Mac, that Mac’s clips may read Missing once; the next time the other Mac checks them, it finds them and puts them right, and they read Not on this Mac here after that.
+
+If that memory cannot be read or kept, which is rare, the Mac puts it aside and checks as before, so every clip whose file is gone reads Missing.
 
 Re-check files only looks at recorded paths. It does not search for files that have moved; use Workflow → Repair → Relink Missing Media… for that.
+
+A clip whose file is being moved into its category folder at that moment, after a category change, is left to the move: its file has already left the recorded path, and the move records where it went. The clip is looked at again once the move is done. Anything else you change while the check runs, including the category itself, is kept.
 
 > **Tip:** Run this after reconnecting a drive or moving files by hand, or when the Where column does not match what you expect.
 
@@ -1178,6 +1226,8 @@ Before MediaFlow deletes a staged file, it checks it again, the same way: a clip
 ### Restore from Cleanup
 
 Workflow → Restore from Cleanup, also a link inside the Free Up Space sheet, moves staged files back where they came from: the working folder, or the card or source path for files staged from there. Projects staged by earlier versions, in folders named by project ID, are still recognized. Files you deleted from the staged group cannot be restored.
+
+A file goes back only to a place this Mac has had it. When two Macs share a project, a working copy staged on the other Mac stays in Cleanup, and the summary says so: restore it on that Mac. Otherwise, with two accounts of the same name, it would land in your home folder on the wrong Mac.
 
 ### Re-file folders by category
 
@@ -1238,7 +1288,7 @@ A .MP4 owns the .LRV proxy and .THM thumbnail that share its name; they are list
 
 1. Review the list. Click Rescan if you have connected the destination or organized more clips since the scan
 2. Click the red Delete button. A confirmation restates the clip count, the file count, the total size and the file types, and has a checkbox you must tick before it enables
-3. MediaFlow checks again that each file is inside the card’s DCIM folder immediately before deleting it
+3. MediaFlow checks again that each file is inside the card’s DCIM folder immediately before deleting it, and asks the drive holding its organized copy to finish writing it. A clip whose copy’s drive cannot be asked is kept, and the reason is listed
 4. When it finishes, click Eject to eject the card, or Done
 
 A list of everything that was removed is written to the card’s MISC folder as cleared-files-&lt;date and time>.txt. Each cleared clip is also marked in the project so the Import sheet does not offer it again. Emptied folders such as 100GOPRO are left on the card on purpose.
@@ -1373,6 +1423,10 @@ As MediaFlow copies a clip it computes a checksum of the original (SHA-256, a fi
 If the check fails, the copy is deleted and made again once. A second failure fails that clip and is reported. The original’s checksum is recorded on the clip; Clear Card relies on it later.
 
 One exception: if a file with the same name and the same size is already at the destination, Organize reuses it. It is not copied, not read, and no checksum is recorded for it.
+
+### Read from the drive, not from memory
+
+Every check in this topic reads with the Mac’s file cache turned off, and every copy MediaFlow checks afterwards (Organize, Move Project, Move to Editing Drive and Return to Library, Archive, Restore, Duplicate Project) is written that way too. So on a drive connected to your Mac, the read-back of a copy reads it from the drive itself, not from the memory the copy was just written from, and a fault on the way to the drive is caught rather than read past. On a network share, every byte is read back over the network from the server. Two limits: a file the Mac already holds in memory for another reason can still be read from there, such as a clip you just played, or a card file Organize has just read (so Clear Card’s check of the card, right after organizing, may come from memory; the organized copy itself was read back from its drive when it was made); and a network share’s server may answer from its own memory, which MediaFlow cannot see past.
 
 ### Clear Card
 
@@ -1759,7 +1813,7 @@ Per-row buttons reset an item to Pending or remove it. Every change is saved to 
 
 > **Tip:** Fill in Scene and Shot in the Scene Log tab as you review footage. Auto-Match Clips then does the linking for you.
 
-See also: [Logging Scene, Shot and Take](#logging-scene-shot-and-take), [Storyboard](#storyboard), [Project Checklist](#project-checklist)
+See also: [Logging Scene, Shot and Take](#logging-scene-shot-and-take), [Storyboard](#storyboard)
 
 ## Storyboard
 
@@ -1864,7 +1918,7 @@ The Audio pass finds sound problems before you cut. Choose Workflow → Analyze�
 - Low — average level below −30 dBFS
 - Good — none of the above
 
-The flag appears as an icon in the Table view, and the levels are listed in the Full Metadata tab. Clips with a Clipping, Low or Silent flag are counted as audio issues in the Day Summary and in Project status (legacy). Clips that already carry a flag are skipped; MediaFlow tells you when nothing is left to analyze.
+The flag appears as an icon in the Table view, and the levels are listed in the Full Metadata tab. Clips with a Clipping, Low or Silent flag are counted as audio issues in the Day Summary. Clips that already carry a flag are skipped; MediaFlow tells you when nothing is left to analyze.
 
 See also: [Day Summary](#day-summary), [Smart Selects](#smart-selects), [Audio Waveform Sync](#audio-waveform-sync), [The Analyze Hub](#the-analyze-hub)
 
@@ -1972,6 +2026,8 @@ Select a video clip to load it in the preview panel. The controls appear below t
 - Time display — Current position and total length in minutes and seconds, for example 1:05 / 12:30
 - Pop-out button — Open the video in its own window
 
+Press Space to play or pause after clicking the preview, so that it has keyboard focus, as for I and O. Elsewhere in the window, such as the clip list or a text field, Space keeps its usual job. At the end of a clip, Play and Space start it again from the start.
+
 > **Tip:** Use frame stepping for precise positioning when extracting thumbnails or creating subclips.
 
 Making proxies is part of the Studio plan; see Plans and Pricing.
@@ -1990,7 +2046,7 @@ See also: [Video Playback Controls](#video-playback-controls)
 
 ## Extracting Thumbnails and Subclips
 
-*Save the current video frame as a PNG image, or export part of a clip as an MP4 using in and out points.*
+*Save the current video frame as a PNG image, or make part of a clip a clip of its own: added to this project under the clip it came from, or saved to a folder.*
 
 Use the Workflow Tools tab in the metadata panel for these operations:
 
@@ -2000,18 +2056,39 @@ Saves the current video frame (or the full image for a photo) as a PNG file. Mov
 
 ### Create Subclip
 
-Exports part of a video as an MP4 file. Mark in and out points to choose the range, then click Create Subclip and choose where to save it. What is exported depends on the marks:
+Makes part of a video a clip of its own. Mark in and out points to choose the part, then click Create Subclip in the Workflow Tools tab, or choose Workflow → Create Subclip… (Cmd+U) with one video selected. What is taken depends on the marks:
 
 - Both marks set — the range between them
 - Only an in-point — from the in-point to the end of the clip, up to 30 seconds
 - Only an out-point — from the start of the clip to the out-point
 - No marks — a 5-second clip around the current position, starting 2 seconds before it
 
+MediaFlow then asks what to do with it:
+
+- Add to This Project — The part is saved as a new file in MediaFlow’s import working folder (Documents › MediaFlow Projects › Imports): in the folder the clip was imported to, when that folder is still there, otherwise in a Subclips folder there. It joins the project the way an imported clip does, is analyzed like one, and is listed under the clip it was cut from. Organize later files it beside that clip, in the same category and camera folder. A notice says when it is done, with a Show in Finder button
+- Save to a Folder… — Saves the part as a file wherever you choose, without adding it to the project. The save panel opens in the folder you used last time. You can replace a file that is already there: the old file is set aside only once the new one is finished, and put back as it was if the new one cannot take its place. If the drive cannot confirm that it has written the new file, MediaFlow says the save did not finish and keeps the old file hidden beside it until the next save under that name. MediaFlow never saves over a file of any clip in the project, the clip being cut included: the clip itself, its working copy, the original on its card, its copy in Cleanup or its proxy, however the folder is reached
+
+### What a Subclip Keeps
+
+A subclip added to the project takes the category, camera, scene, shot, take, camera angle, tags and notes of the clip it was cut from. It does not take its rating, Select, favorite, circle take, review state or import suggestions: you judge the part on its own. Its date is the clip’s date plus the in-point, so it sorts where it was filmed. It remembers the clip it was cut from and where in that clip it starts and ends. A subclip cut from a subclip is linked to the original clip, in that clip’s time.
+
+### The File
+
+A subclip keeps the clip’s own format: a .mov stays a .mov and an .mp4 stays an .mp4. The picture and sound are copied as they are, so there is no loss of quality and it is quick. For a clip where that is not possible, the part is encoded afresh at high quality instead, and the notice says so. The name says where the part lies in the clip, for example GX010042_subclip_0m12s-0m41s.MP4, so several subclips of one clip never collide. In the working folder, a subclip whose name is already taken, by a file or by a clip of the project that still records it, gets _1 added to its name.
+
+The export shows in the activity panel at the bottom right of the window and in the Workflow Tools tab, each with a Cancel button, and carries on if you switch tabs or select another clip. Cancel stops it and keeps nothing of it, not even over a file you chose to replace. One subclip is made at a time. If MediaFlowSwift quits while it is making one, the unfinished file is hidden, and is removed the next time a subclip is saved under that name.
+
+### Subclips in the Project
+
+In the Table, a clip with subclips has an arrow at the left of its row and a label such as “2 subclips”. Click the arrow to see them beneath it, in order of their in-points, each labeled with its range, such as 0:12–0:41. In the Grid, each subclip is a card of its own with a Subclip badge; hold the pointer over the badge to see the clip it came from. With a subclip selected, the metadata panel shows “Subclip of” and the clip’s name with the range, and a Show Parent button that selects that clip, clearing the search and the filter first when they hide it. See Table and Grid Views.
+
+If you remove the clip a subclip was cut from, the subclip stays in the project as an ordinary clip on its own row, and the metadata panel says its parent is not in this project. Move to Project, Duplicate, Relink and Archive keep the link when the clip goes too. A project saved by an older version of MediaFlowSwift drops the links, and its subclips become ordinary clips.
+
 ### Marking In/Out Points
 
 In the Workflow Tools tab, click Mark In (I) or Mark Out (O) to set a mark at the current playback position. You can also press I or O after clicking the preview panel, so that it has keyboard focus. The marked range is highlighted on the seek slider, the In, Out and Duration times are listed in the tab, and the Create Subclip button shows the duration. Click Clear in the Workflow Tools tab to remove both marks.
 
-See also: [Video Playback Controls](#video-playback-controls), [Processing the Proxy Queue](#processing-the-proxy-queue)
+See also: [Video Playback Controls](#video-playback-controls), [Table and Grid Views](#table-and-grid-views), [Processing the Proxy Queue](#processing-the-proxy-queue)
 
 ## Reviewing Clips with the Keyboard
 
@@ -2022,7 +2099,7 @@ Rapid Review is a focused review sheet for evaluating clips quickly. Use the key
 ### Playback Controls
 
 - J / K / L — Shuttle reverse / stop / forward (press repeatedly to increase speed: 1×, 2×, 4×, 8×)
-- Space — Play / pause
+- Space — Play / pause, whatever you clicked last. At the end of a clip, it plays again from the start
 - Left Arrow — Step back one frame
 - Right Arrow — Step forward one frame
 - Home — Jump to clip start
@@ -2059,7 +2136,7 @@ Both keys do what the menu commands do: you can undo them, MediaFlow re-files an
 
 ### Auto-Advance
 
-With auto-advance on, rating a clip with 1–5, rejecting it with X, or pressing A or R moves to the next clip after a short delay. Auto-advance starts on; press T to turn it off or on, and MediaFlow remembers your choice. The Auto indicator in the bottom bar is green while it is on.
+With auto-advance on, rating a clip with 1–5, making it a favorite with F, rejecting it with X, or pressing A or R moves to the next clip after a short delay. Taking a favorite or a Reject off, clearing the rating with 0, or pressing C stays on the clip. The last rating or mark you give a clip decides, so pressing X twice quickly stays put instead of skipping a clip, and Up or Down Arrow during the delay goes only where you asked. Auto-advance starts on; press T to turn it off or on, and MediaFlow remembers your choice. The Auto indicator in the bottom bar is green while it is on.
 
 ### Review Queue
 
@@ -2126,7 +2203,7 @@ Once a clip has a proxy, the preview, the pop-out player and Review play the pro
 
 ### Clips on a Network Drive
 
-A clip on a NAS or another network drive is read across the network as it plays, and macOS does not read ahead for a file the way it does for a stream, so a short pause on the network is a pause in the picture. A large clip, such as 4K footage, over a wireless connection is where this shows. When the preview is playing such a clip and it has no proxy, a badge at the top-left says Over the network:
+A clip on a network share or another network drive is read across the network as it plays, and macOS does not read ahead for a file the way it does for a stream, so a short pause on the network is a pause in the picture. A large clip, such as 4K footage, over a wireless connection is where this shows. When the preview is playing such a clip and it has no proxy, a badge at the top-left says Over the network:
 
 - Make Proxy — Makes a proxy for this clip now, without touching the Proxy queue. When it is finished the preview changes to the proxy at the same moment in the clip
 - All Clips — Makes a proxy for every video in the project that has none, one after another. Each is kept as it is finished, so you can carry on working, and Cancel in the Workflow Tools tab keeps what was made
@@ -2191,7 +2268,7 @@ With two or more clips selected, the Edit tab shows three tag buttons:
 - Replace Tags — Replaces all existing tags with the new ones
 - Clear Tags — Removes all tags from selected clips
 
-> **Tip:** The search field above the media list matches tags, and so does Global Search across every project in the shared database.
+> **Tip:** The search field above the media list matches tags, in this project or, with All Projects chosen, in every project in the shared database.
 
 See also: [Working with Categories](#working-with-categories), [Filtering and Searching](#filtering-and-searching)
 
@@ -2245,9 +2322,11 @@ Organize files each clip in a folder named after its category. When you change a
 
 ### What you see
 
-A row titled “Filing clips by category” appears in the progress panel while the move runs, then disappears. There is no summary and no Done button when it succeeds.
+A row titled “Filing clips by category” appears in the progress panel while the move runs, then disappears. There is no summary and no Done button when it succeeds. You can carry on working while it runs: a rating, a note or another category change made meanwhile is kept, and the file then moves on to the folder for the newer category.
 
 You hear about it only if it fails. If a file cannot be moved, the row stays and says so until you clear it, and the details are written to the log. The clip keeps its new category; its file is still in the old folder.
+
+The row also stays if you open another project before the move finishes. The file has moved, but the project you left was closed before that could be saved in it, so its clip reads Missing when you open that project again. Workflow → Repair → Relink Missing Media…, pointed at the destination, finds it.
 
 ### Putting things right
 
@@ -2294,39 +2373,71 @@ See also: [Working with Categories](#working-with-categories), [Vision (AI Scene
 
 ## Shared Database Overview
 
-*The optional shared database lets you search and track clips across projects; it is a SQLite file or a PostgreSQL server.*
+*The optional shared database lets you search and track clips across projects; it is a database file or a database server.*
 
 The shared database (the app calls it the Central Database) keeps a record of every project so you can search, compare and track clips across all of them. It is optional. Import, organize, preview and editing all work without it.
 
-The project file (.vpm) is the authority. The database holds a copy of what the project file says, and MediaFlow updates that copy each time you save.
+Each project lives in its project file (.vpm), and every project opens and works from it without the database. The database keeps a record of each project and its clips for all your Macs to share, but not the whole project: transcripts, sound levels, what Vision found, GPS, weather, sun position and camera details, the checklist, the shot list, the storyboard, the projects it shares media with and retired categories are kept only in the project file. Neither one simply overrides the other: a save sends the database what changed on this Mac, and opening a project from its file doesn’t copy the database’s clips into it.
+
+### What a Save Sends
+
+A save writes the project file, then sends the database what changed on this Mac since its last save there (or, the first time, since the project was open here with the database connected):
+
+- Each clip you changed on this Mac, whole: its rating, notes, tags, category, camera and where its file is, as this copy has them, not only the part you changed
+- The clips you added, and the clips you removed, recorded as removed
+- What MediaFlow fills in by itself, after a project opens or when it re-checks where files are: a video’s length, picture size, frame rate and format, where its working copy is, and whether its file is at the destination, in the working folder, somewhere else or missing (the Where column). When nothing else about the clip changed here, these go on their own, without the rest of the clip, and not at all once another Mac has moved or relinked that clip
+- The project’s name, where its file is and its destination, only when the database doesn’t have the project yet, when they changed on this Mac, when this copy has just become the project’s home, or in the first-time case below
+
+Everything else is left as the database has it, with two small additions: a save that sends a clip also records when the project last changed and on which Mac, and any of the project’s category and camera names the database doesn’t have yet are added to its shared lists. A clip you didn’t change is not sent (except the first time, below), so a copy of the project that hasn’t got another Mac’s latest changes can’t undo a rating, note or tag made there. A clip your copy doesn’t have is not removed: another Mac may have added it. A clip another Mac removed is not brought back just because your copy still has it. A save doesn’t change whether the database records the project as archived, or to which drive: Archive and Restore write that themselves.
+
+### When the File and the Database Differ
+
+Opening a project from its file doesn’t copy clips from the database into it. The first time this Mac has a project open with this database connected, a clip whose copy here differs from the database’s (another Mac changed it and saved to its own copy of the file, say) keeps the database’s version there, while the project shows this copy’s, until you change that clip on this Mac; then your save sends the whole clip as this copy has it.
+
+There is one exception. If this copy already has changes the database hasn’t had (saved while the database was off or out of reach, or made before it connected), every clip that differs from the database’s is sent as this copy has it instead, even one you didn’t touch, and so are the project’s name, where its file is and its destination, if they differ; see Working Offline below.
+
+After that first time, this Mac sends what differs from what it last sent there, so a clip another Mac has changed since is left alone until you change it here. That is what “changed” means to a save: different from what this Mac last sent. So if you open an older copy of the file on this Mac than the one it last saved (a backup put back in place, say), its older clips count as changes, and a save sends them over what the database has now.
+
+This Mac keeps its record of what it last sent for each database. Connect to another database, copy the records between a database file and a server, or reach the same server under another address or user name, and each project’s next open there is a first time again.
+
+A few things about the project itself do come from the database. When you open a project the database records as archived, it opens archived, with the drive, path and date, even if its file has lost them; once a restore has made another copy the project, an older copy opens as not archived, when the restored copy is within reach. If the database records the project as living in another file that is still there, MediaFlow asks which copy to use before this one sends the database anything (at the latest at your first save with the database connected), and sends nothing from it until you answer; see The Old Copy of a Project in After Moving Your Library to a New Drive. And for a project out on an editing drive, the database says where its library copy is now.
+
+### Two Macs, One Clip
+
+Changes to different clips don’t get in each other’s way, except in the two cases under When the File and the Database Differ where a save sends clips you didn’t touch: the first time a Mac sends a copy that has changes the database hasn’t had, and an older copy of the file opened on a Mac that has saved a newer one. Then the clips that differ are sent as that copy has them, which can undo another Mac’s change to a clip this Mac never touched. Changes to the same clip can get in each other’s way whenever one Mac changes it on a copy of the project that hasn’t got the other Mac’s change to it yet. That Mac’s save sends the whole clip, so the other Mac’s change is replaced in the database, even when the two changed different things: a rating given on one Mac can take out a note written on the other. The other Mac’s project file still has its change.
+
+That happens when the Macs work from different copies of the project file. When both work in the same file, on a share both reach, each save first takes in what the other Mac has saved to the file since this Mac last read or wrote it, so a rating given on one Mac and a note written on the other both land, and when both changed the same thing, the saving Mac’s change is kept and the other version is set aside (see Saving Projects). To work on a project from two Macs, keep one project file on a share both reach: File › Move Project To… puts it there. With a database server, MediaFlow tells you when someone else has the project open; see Who Else Has a Project Open.
 
 ### What the Database Adds
 
-- Global Search — Find clips in any project by filename, tag or note
+- Search All Projects — Find clips in any project from the search field, and copy the ones you want into the open project
 - Find Duplicates — List files with identical content across projects
 - Storage Dashboard — Capacity history and database-wide counts
 - Migrate Projects — Add existing .vpm files to the database
-- Browse Projects — Projects → Browse Projects lists every project the database knows
+- Browse Projects — Projects → Browse Projects… shows the Projects list in the main window, with every project the database knows
 
 ### File or Server
 
 The database is kept in one of two stores. You choose with the Store picker in Settings › Storage.
 
-- SQLite file — A single file, usually on shared storage. Nothing to install. One Mac at a time: MediaFlow works on a local copy of the file and writes it back when you disconnect or quit, so Macs must take turns, and the last Mac to quit wins
-- PostgreSQL server — A server that keeps the records itself, so several Macs can work at the same time
+- Database file — A single file, usually on shared storage. Nothing to install. One Mac at a time: MediaFlow works on a local copy of the file and writes it back when you disconnect or quit. While one Mac is connected, another is told who has the file and can wait or work without it; see One Mac at a Time on a Database File
+- Database server — A server that keeps the records itself, so several Macs can work at the same time
 
 ### Turning It On
 
-1. Open Settings › Storage and turn on Enable Central Database, or choose Database → Enable & Connect Database
-2. Choose the Store: SQLite file or PostgreSQL server
-3. For a file, click Choose… and pick the database file. If you chose a NAS in Settings › Network, Reset to Default points at MediaFlow/mediaflow.db on it. A file that does not exist yet is created when you connect
-4. For a server, fill in Host, Port, Database, User and Password, then click Test Connection
+1. Open Settings › Storage
+2. For a database file, click New Database File… and choose where it will live: MediaFlow makes it there, turns the database on and connects. To use a database file another Mac already made, click Use an Existing Database File… instead
+3. For a server, turn on Enable Central Database, choose Database server as the Store, fill in Host, Port, Database, User and Password, then click Test Connection
+
+A database file is never replaced. New Database File… never makes a file at the name of the database file in use, even before that file has first been written. If the name you choose for a new one is already taken by a database file, MediaFlow asks whether to use that one or choose another name; a file that isn’t a MediaFlow database is refused, and left as it is. The new file is made on this Mac first and put in place only if nothing is there, so a file that appears in the meantime is never written over. The Save dialog opens beside the usual place on the network share chosen in Settings › Network, or in Documents on this Mac.
 
 ### Moving Between a File and a Server
 
-With PostgreSQL server selected, Settings › Storage offers Copy the SQLite File to This Server… and Copy This Server to a SQLite File…. Both copy every record and leave the source unchanged. Switching the Store picker alone does not move any records.
+With Database server selected, Settings › Storage offers Copy the Database File to This Server… and Copy This Server to a Database File…. Both copy every record and leave the source unchanged. Switching the Store picker alone does not move any records.
 
 ### Working Offline
+
+Changes waiting to be sent are kept for the database they were made for. If you switch to another database file or server meanwhile, they are not sent there: they wait until you connect to their own database again. They go without asking only to that database, reached the same way. When MediaFlow connects to a database that may be theirs, it asks, and names both: one it can’t tell apart from theirs, one with the same identity reached another way, or a different database made since where theirs was (a new file where a deleted one was; if theirs comes back there, they go to it). One with the same identity is the same database moved, renamed or reached by another name or address, or a copy of it: a copy made in the Finder, a backup restored somewhere else or a server restored from a dump carries the same identity. Send Them Here sends them to the database connected now, only while it is still connected; if it has changed since, nothing is sent and MediaFlow asks again when it next connects. Keep Waiting keeps them for their own database; MediaFlow asks again the next time it opens. When the database connected now may be a copy, or is a different one, Return means Keep Waiting. Don’t Send stops keeping them for that database. Nothing else is deleted: the changes stay in your project files, and the next time you save one of those projects (File › Save) with a database connected, what changed is sent. An archive waiting to be recorded stays on its drives and in its project, but isn’t listed in the database. Changes waiting for any database other than the one in use, including one MediaFlow knows is another and so never asks about, are listed in Settings › Storage under Changes waiting for another database, where Don’t Send lets go of them if that database is gone for good. Changes saved while the database is turned off go to the next database you turn on. Switching also waits for your last save to reach the database in use, and for a connect already under way; if either is still going, or the last save couldn’t be written, nothing is changed and MediaFlow tells you why. A project opened from the database alone, without its file, can’t be saved to a file: close it (File › Close Project), choosing Save, then switch.
 
 If the database cannot be reached, keep working. MediaFlow notes which projects changed and syncs them when the connection returns. The status line then reads “Connected”, or “Connected · offline changes still to sync: …” followed by the names of projects that are waiting. Open a named project to finish its sync.
 
@@ -2335,29 +2446,102 @@ If the database cannot be reached, keep working. MediaFlow notes which projects 
 - Enable & Connect Database / Reconnect Database — Connect; the title changes once you are connected
 - Disable & Disconnect — Close the connection and turn the database features off
 - Migrate Projects… — Add existing .vpm files to the database
-- Global Search…, Find Duplicates…, Storage Dashboard… — The cross-project tools
-- Reconnect to NAS — Mount the share chosen in Settings › Network again when it has dropped. It is dimmed while the share is mounted
+- Find Duplicates…, Storage Dashboard… — The cross-project tools. Searching every project is in the search field: Edit → Search All Projects… (Cmd+Shift+F)
+- Reconnect Network Share — Mount the share chosen in Settings › Network again when it has dropped. It is dimmed while the share is mounted
 - Status — The last line of the menu shows the connection and sync state
 
-See also: [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Global Search](#global-search), [Database Connection Issues](#database-connection-issues)
+See also: [Database File or Database Server?](#database-file-or-database-server), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Connecting to a Database Server](#connecting-to-a-database-server), [Who Else Has a Project Open](#who-else-has-a-project-open), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Searching All Projects](#searching-all-projects), [Database Connection Issues](#database-connection-issues)
 
-## Global Search
+## Who Else Has a Project Open
 
-*Search every project in the shared database by filename, tag or note, then add a result to the open project.*
+*With a database server, when someone else has the project you open, MediaFlow tells you once, and the window title shows it while they are in.*
 
-Global Search finds clips in any project the shared database knows about. It needs a connected database; when there is none, the window says “Database not connected” and Search is dimmed.
+This works with a database server only. With a database file nothing is shown: each Mac works on its own copy of the file until it disconnects, so Macs take turns with it anyway.
 
-1. Choose Database → Global Search (Cmd+Shift+F)
-2. Type a filename, tag or word from a note, then press Return or click Search. Results do not update as you type
-3. Narrow the results with the Category and Camera filters
-4. Each result shows the clip and the project it belongs to
-5. Select a result to see a preview and its details
+While the server is connected, each Mac with a project open lets the others know, about every 45 seconds. When you open a project that someone has open on another Mac, MediaFlow tells you once: “Sheri Smith has this project open on Sheri’s MacBook Air.” When several people do, it says “Sheri and 2 others have this project open.”
 
-From a result you can choose Add to Current Project, or Reveal in Finder to find the file on disk.
+While they are in, the window title says where: “Road Trip · also open on Sheri’s MacBook Air”. It appears within a minute of someone opening the project, and goes within a minute of them closing it or quitting.
 
-> **Tip:** If search finds nothing on a database file made by an early version, connect once with this version. MediaFlow rebuilds the search index on its own.
+### What It Means
 
-See also: [Shared Database Overview](#shared-database-overview), [Filtering and Searching](#filtering-and-searching), [Database Connection Issues](#database-connection-issues)
+Changes don’t arrive on the other Mac while you both work. When you both have the same project file open, what one of you saves reaches the other Mac when that Mac next saves (each save first takes in what the other saved to the file) or next opens the project, and changes to different things in the same clip both land. When you work from different copies of the project file, one Mac’s changes don’t reach the other’s file, and changing a clip the other Mac has changed replaces their change in the database; see Two Macs, One Clip in Shared Database Overview. Work on different clips, or share one project file. Taking turns doesn’t help with separate copies: one Mac’s copy doesn’t get the other’s changes, however long it waits. On one shared file you can take turns on the same clip: once the other Mac has saved its change, choose File › Revert to Saved before making yours, and neither is set aside.
+
+### Good to Know
+
+- Your own Mac is never announced, even if it left the project open when it quit unexpectedly and you reopen it after a restart
+- A Mac that goes to sleep drops out as it does; one that crashed or lost its connection stops counting after two minutes, by the server’s clock
+- The person is the name of the macOS account that is signed in, and the Mac is the name set in System Settings › General › Sharing. Macs are told apart by their hardware, so two Macs with the same network name are still two Macs
+- Nothing is shown while the database is off or not connected
+
+See also: [Shared Database Overview](#shared-database-overview), [Connecting to a Database Server](#connecting-to-a-database-server), [Database File or Database Server?](#database-file-or-database-server)
+
+## Searching All Projects
+
+*Search the clips of every project from the search field, and copy the ones you want into the open project. It needs a shared database: a database file on any plan, or a database server with Studio Pro.*
+
+The search field in the toolbar has two scopes. This Project narrows the media list, as Filtering and Searching describes. All Projects searches the clips of every project in the shared database as you type, and lists what it finds in place of the media list.
+
+### What It Needs
+
+Searching every project needs a shared database, which keeps a record of every project’s clips so one search can look through them all. It can be either of these:
+
+- A database file, on this Mac or on a network share. It works with any plan. One Mac uses it at a time
+- A database server, so several Macs can use it at the same time. It needs Studio Pro
+
+To set one up, open Settings › Storage; All Projects’ Set Up a Shared Database… button takes you there. For a database file, click New Database File… and choose where it will live, on this Mac or a network share: MediaFlow makes it, turns the database on and connects. Use an Existing Database File… uses one another Mac made. For a server, Database File or Database Server? has the steps.
+
+A project is added to the shared database each time you save it with the database on. To add the projects you already have, choose Database → Migrate Projects… and pick their project files.
+
+### Searching
+
+`Cmd+Shift+F` — Search All Projects
+
+1. Choose Edit → Search All Projects… (Cmd+Shift+F), or click in the search field and choose All Projects under it
+2. Type a word or two. A clip is found by its file name (any part of it: 0042 finds GX010042.MP4), its notes, category, camera, scene or tags, or by its project’s name. Capital letters don’t matter, accented ones included (HĀNA finds Hāna), and every word you type must be found
+3. Choose one or more clips in the results, then use the buttons above them, or right-click
+
+### The Results
+
+- One row for each clip in each project: a clip in two projects is listed twice, and a clip taken out of a project isn’t listed
+- Each row shows the clip, its project, category, camera and tags, and where its file is. A green check means this Mac can reach the file now; an orange triangle means it can’t, and the clip can’t be added until it can
+- A clip this project already has reads In this project, and can’t be added again. So does one you added before
+- Clips in archived projects are listed too. Their files are usually on an archive drive: until it is connected, Where shows they can’t be reached, and Add to This Project skips them with that reason
+- Choose one clip to see a preview and its details beside the list
+- Up to 300 clips are listed, file-name matches first, then the newest. Type more words to narrow the search
+- Choose This Project, or press Cmd+F, to go back to searching the open project
+
+### Add to This Project
+
+Add to This Project copies each chosen clip’s file into this project, the way an import does: into the working folder (Documents → MediaFlow Projects → Imports), where every copy is read back and compared with its file before the clip is added. Each comes in as a new clip of this project, with its category, camera, scene, shot, take, tags, notes and rating. When the other project’s file can be read, it also brings the clip’s transcript, GPS, weather and camera details. Then it goes through an import’s steps: the project is saved, the database is told, and the new clips are analyzed like any imported clip.
+
+- A clip whose file can’t be reached, or whose copy doesn’t read back the same, is skipped. The summary says how many were added and from which project, and names each clip skipped, with the reason. The same clip chosen in two projects is copied once, from one whose file can be reached
+- The other project isn’t changed, and nothing is deleted. Its clip stays where it is, and changing the copy here doesn’t change it there. The copy in the working folder is the new clip’s own original, as the card is for an imported clip: Free Up Space only ever offers that copy, Clear Card never offers the other project’s file for deletion because of it, and opening the other project later never takes the copy for its own
+- A progress window shows the copying, and Cancel stops it; the clips copied before then are added. When it is done, Show in Finder in the notice shows the copies
+- The working folder’s disk needs room for the clips plus 10 GB, as for an import
+- Adding needs a plan that includes importing; searching doesn’t
+
+### Open Its Project and Reveal in Finder
+
+Open Its Project, or a double-click on a result, opens the project the clip is in, with the clip selected. If this project has unsaved changes, you are asked about them first. Reveal in Finder shows the chosen clips’ files in the Finder.
+
+### In the Projects List
+
+The Projects list, there when no project is open or from Projects → Browse Projects…, has the same search field in its toolbar, searching all projects only. While it has words in it, the results take the place of the list, under a line that says so, such as Showing clips in every project that match “beach”; Clear empties the field and brings the list back. Opening, switching or closing a project empties the field too, so a word left behind never hides your projects. Open Its Project (or a double-click) opens a clip’s project. With no project open, New Project with These Clips… makes a new project, exactly as File → New Project does, then adds the chosen clips to it as Add to This Project would; with the list shown over an open project, Add to This Project adds them to that project.
+
+### When All Projects Can’t Search
+
+Until it can search, All Projects says what it needs in place of the results, with a button for the next step. The line under the search field gives the same reason, shorter, and All Projects is dimmed there; Search All Projects (Cmd+Shift+F) still chooses it, and typing shows the whole message. This Project works as always.
+
+- No shared database is set up — Set Up a Shared Database… opens Settings › Storage. Learn More opens this topic
+- The shared database is turned off — Turn On & Connect turns it on and connects, as Database → Enable & Connect Database does
+- It can’t be reached — the network share holding the file isn’t connected, or the server isn’t answering. Try Again connects once it is back. The last line of the Database menu says what happened
+- Another Mac is using the database file — All Projects names that Mac, as the question at connecting does. Wait for, followed by the Mac’s name, connects as soon as that Mac has finished; see One Mac at a Time on a Database File
+- Your plan doesn’t include the database server — Choose a Plan… shows the plans, and Storage Settings… opens Settings › Storage to use a database file, which works with any plan
+- No other projects are in the shared database yet — said instead of “no results” when nothing else has been added. Migrate Projects… adds the projects you already have
+
+> **Tip:** A project’s clips can be found once it has been saved with the database connected. Projects made before you turned the database on need Database → Migrate Projects.
+
+See also: [Shared Database Overview](#shared-database-overview), [Database File or Database Server?](#database-file-or-database-server), [Migrating Projects to the Database](#migrating-projects-to-the-database), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Filtering and Searching](#filtering-and-searching), [Searching All Projects Finds Nothing](#searching-all-projects-finds-nothing), [Importing from a Card, Drive or Folder](#importing-from-a-card-drive-or-folder)
 
 ## Finding Duplicate Files
 
@@ -2387,7 +2571,7 @@ Migrate Projects reads project files and records them in the shared database. Us
 
 > **Tip:** Migration does not change your .vpm files. The database stores a copy of what they say.
 
-To move the database itself between a SQLite file and a PostgreSQL server, see Copying Records Between the File and the Server.
+To move the database itself between a database file and a database server, see Copying Records Between the File and the Server.
 
 See also: [Shared Database Overview](#shared-database-overview), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server)
 
@@ -2412,62 +2596,74 @@ A reading is kept only when it tells you something the last one did not: an hour
 
 The bottom of the dashboard says how long ago the volume was last measured. When that is more than a day, it turns orange: the figures describe the volume as it was then. Connect the volume and click Refresh.
 
-The dashboard shows the history of the NAS chosen in Settings › Network. With no NAS chosen, the history is empty.
+The dashboard shows the history of the network share chosen in Settings › Network. With no share chosen, the history is empty.
 
-See also: [Shared Database Overview](#shared-database-overview), [Finding Duplicate Files](#finding-duplicate-files), [Storage Forecast](#storage-forecast), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas)
+See also: [Shared Database Overview](#shared-database-overview), [Finding Duplicate Files](#finding-duplicate-files), [Storage Forecast](#storage-forecast), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share)
 
-## SQLite File or PostgreSQL Server?
+## Database File or Database Server?
 
-*The shared database is optional and can live in a SQLite file for one Mac or on a PostgreSQL server for several.*
+*The shared database is optional and can live in a database file for one Mac or on a database server for several.*
 
-The shared database tracks clips across all your projects. It powers Global Search, Find Duplicates, the Storage Dashboard and the project browser. It is optional. Your project files are the authority: every project opens, imports and organizes without a database, and the database is filled from the project files, not the other way round.
+The shared database tracks clips across all your projects. It powers searching all projects, Find Duplicates, the Storage Dashboard and the project browser. It is optional: every project opens, imports and organizes from its project file without a database. The database is filled from what each Mac saves, and opening a project from its file never copies the database’s clips into it; Shared Database Overview says what a save sends and what it leaves alone.
 
 If you turn it on, you choose where it keeps its records.
 
-- SQLite file — a single file, usually on the NAS. Nothing to install. One Mac at a time: each Mac works on its own copy of the file and writes it back when it disconnects or quits, so Macs must take turns, and the last one to quit wins
-- PostgreSQL server — a service that keeps the records itself, so several Macs can work at the same time. It needs a NAS or a computer that stays on and can run containers
+- Database file — a single file, usually on a network share. Nothing to install. One Mac at a time: each Mac works on its own copy of the file and writes it back when it disconnects or quits. MediaFlow keeps the turns: a second Mac is told which Mac has the file, and can wait for it or work without it
+- Database server — a service that keeps the records itself, so several Macs can work at the same time. It needs network storage or a computer that stays on and can run containers
 
-> **Tip:** Choose the SQLite file if you work on one Mac or have no NAS. Choose the server if two or more Macs use MediaFlow at the same time. You can move between them later, with your records.
+> **Tip:** Choose Database file if you work on one Mac, or have nothing that stays on to run a server. Choose Database server if two or more Macs use MediaFlow at the same time. You can move between them later, with your records.
 
 ### Choosing or switching
 
-1. Open Settings › Storage and turn on Enable Central Database
-2. Under Store, pick SQLite file or PostgreSQL server
-3. For a file, click Choose… beside Database and pick the file. For a server, fill in Host, Port, Database, User and Password
+1. Open Settings › Storage
+2. For a file, click New Database File… to make one where it will live, or Use an Existing Database File… to use one that is there, such as the one another Mac made. Either turns the database on and connects
+3. For a server, turn on Enable Central Database, pick Database server under Store, and fill in Host, Port, Database, User and Password
+
+MediaFlow works on this Mac’s own copy of a database file on a network share, and notes which file that copy belongs to. Whenever the database file changes, however it changed (the two buttons, a typed path, Reset to Default, a copy from the server, the setup wizard or a restored setup), the copy of the previous one is set aside (renamed and kept in MediaFlow’s cache folder, never deleted) and the file you chose is copied fresh, so another database never ends up in it. Changes still waiting to be sent to the previous database stay waiting for it, and go to it when you connect to it again; see Working Offline in Shared Database Overview. A copy made by an earlier version, which noted nothing, is set aside the same way the first time, unless the database itself shows it is the same one.
+
+A working copy is removed only when MediaFlow has read it and its file whole and found them the same: it was sent back in full, and neither has changed since. Dates and sizes alone are never enough. When another Mac has written the file since this Mac last connected, the newer file replaces this Mac’s copy only when the two are the same; otherwise the copy is kept to one side first. A copy that holds only what this Mac last sent, checked the same way, is kept to one side quietly, in case the other Mac sent an older copy over it. One that may hold work the file doesn’t have is set aside the same way, and its projects that hold work the file lacks (rows this Mac wrote that the file doesn’t have, or that it changed after the copy was last sent or taken; what another Mac wrote is never counted, whatever its clock says) are sent again from their project files the next time MediaFlow connects to that file, as offline changes are, and with the same risk (see Shared Database Overview): a clip another Mac changed meanwhile, and you didn’t, is written back as your project file has it. When it found such work, or couldn’t compare the copy with its file, MediaFlow tells you once where the copy is kept. A file that is only newer sends nothing back over it: a project another Mac deleted is never put back, a clip another Mac added back is never removed again, and a removal this Mac made that never reached the file is sent. A change MediaFlow couldn’t find stays out of the database until you change that clip again; your project files hold every change to your clips. Set-aside copies are kept for 30 days, then moved to the Trash, never deleted outright. A copy you renamed or duplicated yourself is left alone.
 
 Switching the Store reconnects at once; you do not need to relaunch. Switching does not move any records. The other store keeps what it had, and its settings are remembered, so switching back finds it again.
 
 ### Taking your records with you
 
-With PostgreSQL server selected, two buttons copy every record in either direction: Copy the SQLite File to This Server… and Copy This Server to a SQLite File…. Neither changes its source.
+With Database server selected, two buttons copy every record in either direction: Copy the Database File to This Server… and Copy This Server to a Database File…. Neither changes its source.
 
-See also: [Shared Database Overview](#shared-database-overview), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Setting Up MediaFlow](#setting-up-mediaflow)
+See also: [Shared Database Overview](#shared-database-overview), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Connecting to a Database Server](#connecting-to-a-database-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Setting Up MediaFlow](#setting-up-mediaflow)
 
-## Connecting to a PostgreSQL Server
+## Connecting to a Database Server
 
 *Enter the server’s host, port, database, user and password in Settings › Storage, or use the guide to set one up.*
 
-A PostgreSQL server lets several Macs use the shared database at the same time. The server keeps the records itself; nothing on this Mac is copied to or from it. If you already have a server, fill in the fields. If you do not, Set Up a Server… walks you through making one in about ten minutes. The button is in Settings › Storage under either store, so you can prepare a server before switching to it. MediaFlow does not install anything on the NAS itself: the guide saves one file, docker-compose.yml, which the NAS’s container app runs. The guide shows the port the server will answer on, which is the one in the Port field, and offers to put it back to 5432 if it is something else; use that same port when you connect.
+A database server lets several Macs use the shared database at the same time. The server keeps the records itself; nothing on this Mac is copied to or from it. The server must be PostgreSQL, free database software: one you already run will do, and Set Up a Server… starts one for you. If you already have one, fill in the fields. If you do not, Set Up a Server… walks you through making one in about ten minutes. The button is in Settings › Storage under either store, so you can prepare a server before switching to it. MediaFlow does not install anything on the server itself: the guide saves one file, docker-compose.yml, which the server’s container app runs. The guide shows the port the server will answer on, which is the one in the Port field, and offers to put it back to 5432 if it is something else; use that same port when you connect.
 
 > **Warning:** The connection to the server is not encrypted. Use it only on a home or studio network you trust, and never forward the server’s port to the internet.
 
 ### The fields
 
-- Host — the server’s name or address. Use NAS fills in the NAS chosen in Settings › Network. A name ending in .local keeps working when the address changes
+- Host — the server’s name or address. When a network share is chosen in Settings › Network, a button beside the field offers its server. A name ending in .local keeps working when the address changes
 - Port — 5432 unless you changed it
 - Database and User — the names the setup guide creates are filled in for you. Change them to match an existing server
-- Password — kept in your Keychain, never in preferences and never in the saved setup
+- Password — kept in your Keychain, never in preferences and never in the saved setup. What you type is saved when you press Return in the field, click Test Connection, click Set Up a Server… or close Settings, and only if it differs from what the field showed; typing and then deleting it changes nothing. Leaving it blank keeps the saved password: to remove it, click Remove Saved Password… beside the field, which asks first. If macOS would not let MediaFlow read the saved password, the field is blank, reads “Saved, but withheld by macOS” and says so under it, in Settings › Storage and in the setup wizard alike; the note goes once macOS lets MediaFlow read it. If macOS will not let MediaFlow save a password you typed, the form says so and the one saved before stays in use
 
 Changes take effect without restarting: when Test Connection succeeds, and when you close Settings, MediaFlow connects to the server the fields now describe. When a message says the name was found, the Host is right and the Port is what to check: it must be the number the server was started with, the one before the colon on the ports line of docker-compose.yml.
 
 The fields save as you type. On every other Mac, enter the same host, port and password; there is nothing to copy.
 
+### Every Mac on the same version
+
+Update MediaFlowSwift on every Mac that uses the server. Older versions saved whole copies of a project and could undo another Mac’s work, so once an up-to-date Mac has connected, the server refuses saves from those older versions. A Mac still on an older version can read the shared database, and its saves fail with “Update MediaFlowSwift on this Mac to keep working with the shared database”. Its changes stay in its project files and reach the server once it is updated. A later version that needs the same may ask every Mac to update again.
+
+A database file can’t tell which version is writing to it, so there the refusal is up to each Mac: a Mac on this version or later won’t use a file a newer version has set up, but an older version still writes to the file as it always did. Update every Mac that uses the file too.
+
+> **Tip:** A tool other than MediaFlowSwift that changes projects or clips on the server, such as psql, must first run SET mediaflow.protocol = '2'; without it the server refuses the change.
+
 ### Test Connection
 
-A successful test shows the server’s version, such as PostgreSQL 16. A failed test says why:
+A successful test says Connected, with the server’s version number, such as 16.4. A failed test says why:
 
-- “…could not be found on the network” — the Host name is wrong. MediaFlow tries the name as typed and then with .local on the end, which is what most NAS names need; when that works, Test Connection corrects the Host field and says so. Otherwise use the server’s address
-- “MediaFlow could not read the saved password from your Keychain” — the password is saved, but macOS would not hand it to this version without asking you. This happens once after an update. macOS cannot ask while the app is still opening, so MediaFlow tries again by itself a moment after its window appears: enter your Mac password when macOS asks, and click Always Allow. If you dismissed the question, choose Database → Reconnect Database to be asked again. macOS recognises an app across updates only when its maker has an Apple Developer ID; until MediaFlow has one, expect to be asked once after each update, for each password or key MediaFlow keeps
+- “…could not be found on the network” — the Host name is wrong. MediaFlow tries the name as typed and then with .local on the end, which is what most server names on a home network need; when that works, Test Connection corrects the Host field and says so. Otherwise use the server’s address
+- “MediaFlow could not read the saved password from your Keychain” — the password is saved, but macOS would not hand it to this version without asking you. This happens once after an update. macOS cannot ask while the app is still opening, so MediaFlow tries again by itself a moment after its window appears: enter your Mac password when macOS asks, and click Always Allow. If you dismissed the question, choose Database → Enable & Connect Database (Reconnect Database while it is connected) to be asked again. macOS recognises an app across updates only when its maker has an Apple Developer ID; until MediaFlow has one, expect to be asked once after each update, for each password or key MediaFlow keeps
 - “Nothing is listening at…” — the server is not running, or the port is wrong
 - “macOS is keeping MediaFlowSwift off your local network…” — macOS has told MediaFlowSwift so. It often follows an update. Click Open Local Network Settings…, turn MediaFlowswift off and on again, and MediaFlowSwift connects by itself within a few seconds
 - “…did not answer… macOS may be keeping MediaFlow off your local network” — macOS asks your leave before an app may reach other devices on your network, and refuses silently until you give it. Open System Settings › Privacy & Security › Local Network and turn MediaFlowswift on; if it is already on, turn it off and on again
@@ -2480,28 +2676,30 @@ A successful test shows the server’s version, such as PostgreSQL 16. A failed 
 ### Set Up a Server…
 
 1. Click Save docker-compose.yml…. This file describes the server to a container app. It contains the password, so it is saved readable only by you. Keep it private
-2. Put the file in a folder of its own on the NAS or computer that will run the server. The database keeps its data in a folder beside it
-3. Start it: in the NAS’s container app, create a project from that folder. On a computer with Docker, run docker compose up -d in that folder. The first start takes a minute or two
+2. Put the file in a folder of its own on the network storage or computer that will run the server. The database keeps its data in a folder beside it
+3. Start it: in your network storage’s container app, create a project from that folder. On a computer with Docker, run docker compose up -d in that folder. The first start takes a minute or two
 4. Back in Settings, set Host and click Test Connection
 
 ### Which password goes in the file
 
 - With no password stored yet, MediaFlow makes a new one, writes it into the file and puts it in your Keychain and the Password field
+- With a password stored that macOS will not let MediaFlow read, the guide asks the same question as below. Use the password already in my Keychain then stops and says so, rather than writing a new password over the one your server may already use: choose Database → Enable & Connect Database (Reconnect Database while it is connected), click Always Allow when macOS asks, and save again
+- The password goes into your Keychain before the file is written. If macOS will not let MediaFlow save it there, the file is not saved and the guide says so, since a server started from it would have a password this Mac does not know
 - Use the password already in my Keychain — for saving the file again for the server you already use. A server reads its password only the first time it starts, so the file must keep the same one
 - Make a new password — for a server that has never been started. It replaces the one in your Keychain, so MediaFlow can no longer sign in to the old server
 
 The database server is part of Studio Pro; without it the app keeps working with a database file. See Plans and Pricing.
 
-See also: [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Database Connection Issues](#database-connection-issues)
+See also: [Database File or Database Server?](#database-file-or-database-server), [Copying Records Between the File and the Server](#copying-records-between-the-file-and-the-server), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Database Connection Issues](#database-connection-issues)
 
 ## Copying Records Between the File and the Server
 
-*Copy every shared-database record from the SQLite file to the PostgreSQL server or back; the source is never changed.*
+*Copy every shared-database record from the database file to the database server or back; the source is never changed.*
 
-When you move from a SQLite file to a PostgreSQL server, or want a file copy of the server, MediaFlow copies every record for you. The copy reads the source and never changes or removes anything in it. Both buttons are in Settings › Storage, with PostgreSQL server selected as the Store.
+When you move from a database file to a database server, or want a file copy of the server, MediaFlow copies every record for you. The copy reads the source and never changes or removes anything in it. Both buttons are in Settings › Storage, with Database server selected as the Store.
 
-- Copy the SQLite File to This Server… — brings the records in your SQLite file into the server. Use it when you first set up a server
-- Copy This Server to a SQLite File… — writes the server’s records into a new file that you name. If you pick an existing file, it is replaced. Use it as a backup, or to work without the server
+- Copy the Database File to This Server… — brings the records in your database file into the server. Use it when you first set up a server
+- Copy This Server to a Database File… — writes the server’s records into a new file that you name. If you pick an existing file, it is replaced. Use it as a backup, or to work without the server
 
 ### If the destination already has records
 
@@ -2526,27 +2724,26 @@ Click Switch to It Now to make the copy your store and reconnect, or Close to st
 
 Click Cancel at any time. Tables already finished stay at the destination; the table in progress is undone. The destination is then incomplete, so run the copy again and choose Replace. If the two databases are at different versions, update MediaFlow on every Mac and try again.
 
-See also: [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server), [Shared Database Overview](#shared-database-overview), [Migrating Projects to the Database](#migrating-projects-to-the-database)
+See also: [Database File or Database Server?](#database-file-or-database-server), [Connecting to a Database Server](#connecting-to-a-database-server), [Shared Database Overview](#shared-database-overview), [Migrating Projects to the Database](#migrating-projects-to-the-database)
 
 ## Working Offline and Syncing Later
 
 *Changes you make while the shared database is unreachable are remembered and synced when it reconnects.*
 
-You can keep working when the shared database is out of reach, for example when the NAS is off or you are away from your network. Your edits are saved in the project file as usual. MediaFlow remembers which projects changed and syncs them to the database when it reconnects. You do not need to do anything.
+You can keep working when the shared database is out of reach, for example when the network share is offline or you are away from your network. Your edits are saved in the project file as usual. MediaFlow remembers which projects changed and syncs them to the database when it reconnects. You do not need to do anything.
 
 ### What happens on reconnect
 
 The status line reads “Syncing offline changes…” while every project that changed is synced, not only the one that is open.
 
-- The open project syncs in full, including clips you removed from it
-- Every other project is read from its project file. Clips are added and updated in the database, but never unlinked from a project while nobody is looking at it
+- The open project syncs, including clips you removed from it
+- Every other project is read from its project file. Its clips are added and updated in the database, and the clips you removed from it on this Mac are recorded as removed. A clip the file doesn’t have is never taken out of the project: it may have been added on another Mac
 - A project is left alone if the database already holds a newer version, changed on another Mac
 
 ### Projects that wait
 
 A project stays on the waiting list, and is named in the status line, until you open it. This happens when:
 
-- Clips were removed from it while offline. Opening the project finishes the sync
 - The database holds a newer version. Opening the project syncs it
 - Its project file cannot be reached or read, for example because the drive it is on is not connected
 - The database did not accept the sync
@@ -2558,9 +2755,38 @@ The status line is at the bottom of the Database menu and in Settings › Storag
 - Connected — everything is synced
 - Connected · offline changes still to sync: followed by up to two project names and “and n more” — those projects are waiting. Open each one to finish
 
-> **Tip:** With a SQLite file, only one Mac should use the database at a time. With a PostgreSQL server, several Macs can reconnect and sync at once.
+> **Tip:** With a database file, one Mac uses the database at a time; another is told which Mac has it, and can wait or work without it. With a database server, several Macs can reconnect and sync at once.
 
-See also: [Shared Database Overview](#shared-database-overview), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Database Connection Issues](#database-connection-issues), [Saving Projects](#saving-projects)
+See also: [Shared Database Overview](#shared-database-overview), [Database File or Database Server?](#database-file-or-database-server), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Database Connection Issues](#database-connection-issues), [Saving Projects](#saving-projects)
+
+## One Mac at a Time on a Database File
+
+*A database file is used by one Mac at a time. Another Mac is told which Mac has it, and can wait or work without it.*
+
+With a database file, each Mac works on its own copy of the file and writes it back when it disconnects or quits. Two Macs using it at once would erase each other’s work, across every project. So MediaFlow lets one Mac use the file at a time. A database server has no such limit.
+
+### How the turns are kept
+
+A Mac that connects leaves a small file beside the database, mediaflow.session.lock. It names the person and the Mac and says since when. The Mac brings it up to date every minute while it is connected. When it disconnects, goes to sleep or quits, it writes its copy of the database back and then removes the file. If writing the copy back fails, the file is removed all the same, and the projects this Mac saved during its turn are noted and synced again the next time it connects.
+
+### When another Mac has the database
+
+A second Mac that tries to connect copies nothing. It says who has the file, for example “Sheri’s MacBook Pro (Sheri Williams) is using the shared database, since 10:42.” There are two choices:
+
+- Wait — MediaFlow looks again every ten seconds and connects as soon as the other Mac disconnects or quits. The progress panel shows Waiting for the shared database, with the time it last looked. Click Stop Waiting to give up and work without it
+- Work Without the Database — Keep working. Projects open and save as usual, and MediaFlow notes which ones changed and syncs them when this Mac connects, as in Working Offline and Syncing Later. The status line reads Working without the database
+
+While you work without it, MediaFlow does not ask again each time it reconnects by itself, for example after the network share comes back. To ask again, click the database status in the toolbar or choose Database → Enable & Connect Database.
+
+### A Mac that stopped answering
+
+If a Mac crashes, or loses its connection to the file without disconnecting, its file stops being brought up to date. Once another Mac has seen it stand still for five minutes, counted on that Mac’s own clock so that two Macs set to slightly different times cannot mislead each other, it takes the database over and says whose it was: “Sheri’s MacBook Pro (Sheri Williams) had the shared database but stopped checking in at 10:42, so this Mac has taken it over.” A file that stopped more than a quarter of an hour ago is taken over at once. The takeover is written to the log (Help → Show Log). Anything that Mac had not written back is not in the database; its project files still have it. When that Mac next connects, its own copy of the database, which may hold that work, is set aside rather than replaced, and it says so when the copy holds work the file lacks (see Database File or Database Server?). The same Mac, opened again after a crash, takes its own turn back at once.
+
+If a Mac finds that another took the database over while it was away, it stops using the database without writing its copy over the other Mac’s, and says so. Every project it saved during its turn, and the open one, syncs again when it next connects.
+
+> **Tip:** If the file beside the database cannot be written, MediaFlow connects anyway, as before, and says so. Until it can, make sure no other Mac uses the database at the same time. Every Mac needs this version or later: an older one does not look for the file.
+
+See also: [Database File or Database Server?](#database-file-or-database-server), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Shared Database Overview](#shared-database-overview), [Database Connection Issues](#database-connection-issues)
 
 ---
 
@@ -2574,7 +2800,9 @@ When a file is moved or renamed outside MediaFlow, its clip shows as Missing (a 
 
 ### Single Clip Relink
 
-Right-click a missing clip and choose Relink…, then pick the file. Relink… appears only when one missing clip is selected. Whenever the selection includes a missing clip, the same menu offers Relink Missing Media…, which scans a folder for the selected clips.
+Right-click a missing clip and choose Relink…, then pick the file. Relink… appears only when one clip is selected, and that clip is missing or reads On another Mac or Not on this Mac. Whenever the selection includes a missing clip, the same menu offers Relink Missing Media…, which scans a folder for the selected clips.
+
+A clip that reads On another Mac or Not on this Mac is not missing: its file is in another account’s home folder, or somewhere this Mac has never had it, usually on the Mac that imported it. Relink Missing Media never scans for it. If you have a copy of it on this Mac, you can still point the clip at it with Relink…. The other Mac then sees the clip where you pointed it.
 
 ### Batch Auto-Relink
 
@@ -2827,7 +3055,7 @@ This is off until you turn it on. In Settings › Privacy, switch on “A model 
 
 > **Warning:** Read what it writes before you publish it. The agent works from a transcript, and speech recognition mishears names, places and technical words. A wrong name in a title is your name on a mistake.
 
-Writing with the agent is part of Studio Pro, with a monthly fair-use limit; see Plans and Pricing.
+Writing with the agent is part of Studio Pro; see Plans and Pricing. The plan puts no monthly limit on it: a paid provider bills your own account, within the daily spending limit you set, and a model on this Mac costs nothing.
 
 See also: [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [The Publishing Checklist](#the-publishing-checklist), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories)
 
@@ -2934,7 +3162,7 @@ These are the words and settings the video went up with, even if you edit the dr
 
 > **Tip:** An upload uses most of a new Google Cloud project’s daily allowance of 10,000 units: 1,600 for the video and 50 for the thumbnail. That is about six videos a day. The allowance resets at midnight Pacific time.
 
-Uploading, and reading results, are part of Studio Pro, each with a monthly fair-use limit; see Plans and Pricing.
+Uploading, and reading results, are part of Studio Pro; see Plans and Pricing. The plan puts no monthly limit on them: they run on your own Google Cloud project, whose daily allowance is the only limit.
 
 See also: [Setting Up Your Google Client](#setting-up-your-google-client), [How Your Videos Are Doing](#how-your-videos-are-doing), [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [The Publishing Checklist](#the-publishing-checklist), [Making a Thumbnail](#making-a-thumbnail), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac)
 
@@ -3004,14 +3232,28 @@ See also: [Uploading to YouTube](#uploading-to-youtube), [Setting Up Your Google
 *Save the project file (.vpm), save it under a new name, or go back to the last saved version.*
 
 - Save (Cmd+S) — Save the current project to its existing location
-- Save As (Cmd+Shift+S) — Save the project file under a new name or in a new place, and carry on working in the new file. Media files are not copied
+- Save As (Cmd+Shift+S) — Save the project file under a new name or in a new place, and carry on working in the new file. Media files are not copied. With a shared database, the new file becomes where the project lives for every Mac that shares it, and the file you left is its old copy. Save As from an old copy of a project only makes another copy: the project stays where it lives
 - Revert to Saved — Discard all unsaved changes and reload from disk
 
 A project is saved as a .vpm file. It holds the list of clips and where their files are, plus your categories, tags, ratings, notes and project settings. It does not contain the media itself.
 
-The project file is the authority. When the shared database is connected, each save also updates the database. If the database cannot be reached, MediaFlow notes that the project changed and syncs it when the connection returns.
+The project file holds the whole project. When the shared database is connected, each save also sends the database what changed on this Mac, and as a rule leaves clips you didn’t change as the database has them; What a Save Sends in Shared Database Overview says when it doesn’t. If the database cannot be reached, MediaFlow notes that the project changed and sends the changes when the connection returns.
 
-See also: [Moving a Project](#moving-a-project), [Renaming a Project](#renaming-a-project), [Duplicating a Project](#duplicating-a-project), [Working Offline and Syncing Later](#working-offline-and-syncing-later)
+### When Another Mac Saved the File Too
+
+Two Macs can have the same project file open, on a share both reach. Before each save, MediaFlow checks whether the file changed since this Mac opened it or last saved it. Every save writes a new save number at the start of the file; while the file’s date and size are as this Mac left them, nothing more is read, and a file that was only touched costs a look at its first few bytes, so a save over the network costs no more than before. The file is replaced only if it is still as that check found it: if the other Mac saves in the moment between, MediaFlow looks again.
+
+- If the other Mac saved the file meanwhile, its changes are merged in before this Mac writes: the clips it added come in, with their transcripts, sound levels and other details, and the clips it removed are removed here too
+- A clip changed on both Macs keeps both changes when they are to different things: a rating made there and a note written here both stay. The project’s own settings merge the same way: its name, destination, categories and devices, shot list, storyboard, the projects it shares media with, where its library copy is, and its archive record (whether it is archived, and to which drive)
+- When both Macs changed the same thing differently (the same clip’s note, the storyboard, or the archive record), this Mac’s change is kept. The other Mac’s version of the whole project is kept in a folder called Copies Kept Aside, beside the project file, as “name (changed on another Mac date time).vpm”, and a notice says how many clips differed, with Show in Finder. It is written once for each such save, not at every save after it
+- A clip removed on one Mac but changed on the other since is kept, and counts as a change on both sides. When the Mac that removed it saves next, the clip stays: keeping it came after the removal
+- A file that holds another project, or can’t be read, is never saved over. That happens when a project opened from the shared database alone finds another project’s file where its own used to be. This Mac’s copy is saved in Copies Kept Aside as “name (this Mac’s copy date time).vpm”, and kept up to date there, until the project file can be read as this project again. New Project likewise won’t make a project where a project file of that name already is
+
+A copy kept aside opens like any project file, to look at or to copy back from. It says it is a copy kept aside, is never sent to the shared database, and is passed over by Library Moved and by Migrate Projects. Delete the folder once you have what you need from it.
+
+With the shared database connected, the merged project is what the database gets too. A clip brought in from the other Mac’s save doesn’t undo a removal the database has recorded for it, and isn’t written back as this Mac’s change, even when the database was out of reach at the time and MediaFlow was quit before it came back.
+
+See also: [Moving a Project](#moving-a-project), [Renaming a Project](#renaming-a-project), [Duplicating a Project](#duplicating-a-project), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Shared Database Overview](#shared-database-overview)
 
 ## Renaming a Project
 
@@ -3046,11 +3288,13 @@ See also: [Saving Projects](#saving-projects), [Moving a Project](#moving-a-proj
 
 Every file is read back after it is copied and compared with its original by checksum, and the copy must account for every file in the original folder, including hidden files. Permissions, Finder tags, and dates travel with each file. If any file fails, the partial copy is removed, the original is left exactly as it was, and the project stays where it is. The summary tells you how many files were copied and verified.
 
-The question about deleting the original is answered some time after the copy was made, so MediaFlow checks again at that moment. It deletes the original only if the copy can still be reached, still holds every file of the original, and is where the open project now lives. If the drive holding the copy has been unplugged, or you have opened a different project, the original is kept and MediaFlow says why. On a local drive the original goes to the Trash; on a network volume there is no Trash and it is deleted outright.
+The question about deleting the original is answered some time after the copy was made, so MediaFlow checks again at that moment. It deletes the original only if the copy can still be reached, still holds every file of the original, and is where the open project now lives, and only if the original is still exactly what was copied. Before copying, MediaFlow notes each file’s size and when it was last changed; a file added to the original since, or changed since even under the same name (an editing app saving into the old folder, say), keeps the original, and the message names the file. So does a file or folder whose name starts with .incoming- or .superseded- followed by eight characters and a dash: MediaFlow gives those names to its own unfinished copies, so no copy, move or archive ever takes them, and a Move leaves them exactly where they are. Rename it if it holds your work. The project file itself is the exception: the moved project writes its own afresh, and MediaFlow may save the old one while the copy runs. A rewrite to the same size within a second or two of the copy cannot be told apart on some network shares, so close any app using the old folder first. If the drive holding the copy has been unplugged, or you have opened a different project, the original is kept and MediaFlow says why. On a local drive the original goes to the Trash; on a network volume there is no Trash and it is deleted outright.
 
 If the project cannot be saved in its new folder, MediaFlow puts the project back at its original location and tells you. The copy is left in place for you to inspect or delete.
 
-Cancel on the progress window stops the copy between files. The original project folder is never touched, so nothing is lost, and the partly copied folder is removed.
+The progress window shows each file being copied and then checked, as the Copying and Checking steps. To save time, the next file is already being copied while the last one is checked; a file counts only once its own check has passed, and if any check fails, everything stops and the partial copy is removed. The bar and the time left move through both, even inside a single large file.
+
+Cancel on the progress window stops the copy at once, even part-way through copying or checking a large file. The original project folder is never touched, so nothing is lost, and the partly copied folder is removed.
 
 > **Tip:** Moving copies every file in the project folder, so check that the new location has enough free space first.
 
@@ -3060,7 +3304,7 @@ See also: [Saving Projects](#saving-projects), [Deleting a Project](#deleting-a-
 
 *Copy the project you are editing to your fastest drive, keep the library copy safe where it is, and bring the project back when the edit is done.*
 
-A library lives on large storage, which is rarely the fastest you own. An editing drive is a folder on fast storage, such as an SSD volume on a NAS or an external SSD, for the projects you are editing now. Clips there start sooner, scrub more smoothly and drop fewer frames, in MediaFlowSwift and in your editor.
+A library lives on large storage, which is rarely the fastest you own. An editing drive is a folder on fast storage, such as an SSD volume on your network storage or an external SSD, for the projects you are editing now. Clips there start sooner, scrub more smoothly and drop fewer frames, in MediaFlowSwift and in your editor.
 
 1. Open Settings → Storage and choose the Editing drive folder. You do this once
 2. Open the project and choose File → Move to Editing Drive…
@@ -3068,10 +3312,10 @@ A library lives on large storage, which is rarely the fastest you own. An editin
 
 ### What Happens
 
-- The whole project folder is copied into the editing drive folder, under its own name. Every file is read back and compared with the original, and the number of files is checked. If anything differs the copy is removed and the project stays where it was
+- The whole project folder is copied into the editing drive folder, under its own name. Every file is read back and compared with the original, and the number of files is checked. If anything differs the copy is removed and the project stays where it was. The progress window shows each file being copied and then checked, with the bar and the time left moving even inside a large file
 - The project then points at the copy: its project file, its destination and every clip inside the project folder. Clips kept outside the project folder are not copied and keep pointing where they did
 - The copy in your library is kept exactly as it is. Nothing is deleted and nothing in it is changed, including its project file. The project remembers where that copy is
-- Cancel stops the copy; the partial copy is removed and the project is unchanged. The same happens if the project cannot be saved in the copy
+- Cancel stops the copy at once, even part-way through a large file or its check; the partial copy is removed and the project is unchanged. The same happens if the project cannot be saved in the copy
 - This Mac also keeps its own note of where the library copy is, so the way back is not lost if the editing drive is unplugged and the project is opened another way
 
 ### When It Is Refused
@@ -3088,10 +3332,10 @@ When the edit is finished, open the project from the editing drive and choose Fi
 - If anything cannot be carried or proved, the project stays on the editing drive, nothing is removed, and the list says which files. What was already carried stays in the library. A file that turned out to differ from the library’s, although it is the same size, is on the checklist as changed the next time you choose Return to Library, so it can be carried in beside the library’s own
 - Close your editor first. A file that is written to while it is being read or copied is not counted, and one that changes after it was checked keeps the editing copy from being removed
 - Then the project is saved in the library, pointing at the library’s files. The project file that was in the library is kept beside it as Name.vpm.before-repoint
-- Afterwards, choose Remove the editing copy or Keep the editing copy. It is removed only after one more look finds every file in it still exactly as it was when it was carried or checked, apart from those you unticked, and after the shared database, if you use one, has been told the project is home. It goes to the Trash where that works; on a network share, which has no Trash, it is deleted. Kept, its project file is renamed Name.vpm.returned, so there are not two of the project to open
+- Afterwards, choose Remove the editing copy or Keep the editing copy. It is removed only after one more look finds every file in it still exactly as it was when it was carried or checked, apart from those you unticked, and after the shared database, if you use one, has been told the project is home. A file named like MediaFlow’s own unfinished copies (starting .incoming- or .superseded-), or like the notes it keeps on archive drives (.mediaflow-leg.json, .mediaflow-archive), is never carried home, so it keeps the editing copy, and is named. It goes to the Trash where that works; on a network share, which has no Trash, it is deleted. Kept, its project file is renamed Name.vpm.returned, so there are not two of the project to open
 - If you untick files and choose to remove the editing copy, those files exist nowhere else. MediaFlowSwift names them and asks first
 
-Proving the library copy means reading it, so expect roughly the time it would take to copy the project from the library. Stop abandons a file that is being checked at once, and waits for one that is being copied to finish; the project stays on the editing drive and nothing is removed. Once everything is checked and the project is being saved in the library, Stop is no longer offered. If you use a shared database it must be connected.
+Proving the library copy means reading it, so expect roughly the time it would take to copy the project from the library. Stop abandons the file being carried or checked at once: a half-carried file is removed and the library’s own version, if it had one, is put back. The project stays on the editing drive and nothing is removed. Once everything is checked and the project is being saved in the library, Stop is no longer offered. If you use a shared database it must be connected.
 
 ### In the Projects List, and on Another Mac
 
@@ -3115,7 +3359,7 @@ See also: [Moving a Project](#moving-a-project), [After Moving Your Library to a
 
 *When you have copied your whole library to a new drive yourself, Library Moved points every project at the new place. Nothing is copied.*
 
-Use this when the footage is already where you want it: you copied your projects folder to a new drive or NAS, keeping the folders inside it as they were, and every project still points at the old one. Move Project is for the other case, where MediaFlowSwift does the copying.
+Use this when the footage is already where you want it: you copied your projects folder to a new drive or network share, keeping the folders inside it as they were, and every project still points at the old one. Move Project is for the other case, where MediaFlowSwift does the copying.
 
 1. Make sure both drives are connected
 2. Choose Workflow → Repair → Library Moved…
@@ -3140,11 +3384,15 @@ A clip is followed only if a file is at the same place under the new folder and 
 
 ### The Old Copy of a Project
 
-Library Moved never changes or removes the project file at the old location, so that file still opens, under the same name. It is an old copy: its clips point at the old location, so they read Not at destination, and work done in it stays in it. When you open one on the Mac that ran Library Moved, MediaFlowSwift says “This is an old copy” and offers to open the current copy instead. It knows from its own note of what Library Moved did. For a library moved before this version, choose Library Moved again with the same two folders and click Find Projects: every project already followed is noted, and nothing is changed. Another Mac has no such note until Library Moved has been opened on it the same way. Separately, if a project file is kept apart from its destination folder and another file for the same project is found in that folder, MediaFlowSwift says “There is another copy”, shows where each is and when each was saved, and does not claim to know which is current. Your answer is a decision about where the project lives, and is recorded at once in this Mac’s projects list and in the shared database. Open the Current Copy (or Open the Other Copy) makes that copy the project’s home, so it is the one that opens next time. Use This Copy and Don’t Ask Again, offered when MediaFlowSwift does not know which copy is current, makes the open copy the home and stops the question for that file. Stay Here only looks: nothing is recorded, this Mac’s projects list points at the other copy, saves made here are not sent to the database (the status line says Not synced), and you are asked again next time.
+Library Moved never changes or removes the project file at the old location, so that file still opens, under the same name. It is an old copy: its clips point at the old location, so they read Not at destination, and work done in it stays in it. When you open one on the Mac that ran Library Moved, MediaFlowSwift says “This is an old copy” and offers to open the current copy instead. It knows from its own note of what Library Moved did. For a library moved before this version, choose Library Moved again with the same two folders and click Find Projects: every project already followed is noted, and nothing is changed. Another Mac has no such note until Library Moved has been opened on it the same way. Separately, if a project file is kept apart from its destination folder and another file for the same project is found in that folder, MediaFlowSwift says “There is another copy”, shows where each is and when each was saved, and does not claim to know which is current. With the shared database connected, the database settles it: if it records the copy you opened as the project, nothing is asked, and if it records the other copy, the question says so. Your answer is a decision about where the project lives, and is recorded at once in this Mac’s projects list and in the shared database. Open the Current Copy (or Open the Other Copy) makes that copy the project’s home, so it is the one that opens next time. Use This Copy and Don’t Ask Again, offered when MediaFlowSwift does not know which copy is current, makes the open copy the home and stops the question for that file. Stay Here only looks: nothing is recorded, this Mac’s projects list points at the other copy, saves made here are not sent to the database (the status line says Not synced), and you are asked again next time.
 
 The same question is asked when the shared database records the project as living in another file that is still there. A project is written to the database only from the file the database says it lives at, unless that file is gone, Library Moved has noted it as the old copy, or you have said otherwise. That is what keeps a stale copy, opened by mistake on any Mac, from overwriting what every Mac sees. When the old drive is retired, the old copies go with it.
 
-If the file the database names is not there at all when you open a project from the projects list — the drive is off, or the project was moved without Library Moved — MediaFlowSwift looks for the project where it may be: where Library Moved noted it went, in its destination folder, and in its library folder if it is out on an editing drive. A file that holds this very project is opened, and the projects list and the database are pointed at it. If none is found, the project opens from the database alone and one notice says so. Your changes are then kept in the shared database, and the project file is left as it is until its drive is back, when saving to it resumes on its own, or until you choose Save As to give the project a new home. If you quit before the drive is back, the file has not caught up: open the project from the projects list again rather than by the file, and it comes from the database.
+If the file the database names is not there at all when you open a project from the projects list — the drive is off, or the project was moved without Library Moved — MediaFlowSwift looks for the project where it may be: where Library Moved noted it went, in its destination folder, and in its library folder if it is out on an editing drive. A file that holds this very project is opened, and the projects list and the database are pointed at it. If none is found, the project opens from the database alone and one notice says so. Your changes are then kept in the shared database, and the project file is left as it is until its drive is back, when saving to it resumes on its own (what only the file keeps is kept), or until you choose Save As to give the project a new home. If you quit before the drive is back, the file has not caught up: open the project from the projects list again rather than by the file, and it comes from the database.
+
+When the file the database names is in someone else’s user folder (/Users/…), it is on another Mac, and this Mac will never reach it. The notice says so, and does not offer Save As. Your changes still go to the shared database, but the project file on that Mac does not get them. To work on a project from two Macs, open it on the Mac that has its file and choose File › Move Project To… to put it on a share both Macs reach.
+
+The database’s copy of a project is not all of it. Transcripts, sound levels, GPS, weather and camera details, the checklist, the shot list, the storyboard and retired categories are kept only in the project file. So Save As from a project opened from the database alone asks first, and says what the new file will be without. If you save onto a file of this same project (a copy someone put on the share, say), the two are merged: what the database keeps comes from the database, what only that file keeps is kept, and clips only that file has stay in the project unless they were removed. Saving onto such a file needs the database connected, to know which clips were removed.
 
 ### Stopping and Running It Again
 
@@ -3160,12 +3408,14 @@ See also: [Moving a Project](#moving-a-project), [Change destination folder](#ch
 
 *Take a project off the project list, or also delete its folder and everything in it.*
 
-Choose Projects → Browse Projects, right-click a project and choose Delete Project…. You are offered two things:
+Choose Projects → Browse Projects… to show the Projects list, right-click a project and choose Delete Project…. You are offered two things:
 
 - Remove from List Only — Takes the entry off the list. Every file stays on disk
 - Move Folder to Trash — Takes the entry off the list and deletes the project folder with everything in it
 
 Move Folder to Trash does not act at once. MediaFlow first counts what is in the folder and shows a second confirmation with the number of files and their total size. You must tick “I understand this cannot be undone” before the confirm button works.
+
+After you confirm, a progress window shows the folder being deleted. Clicking its Cancel in the moment before the deleting starts keeps the folder; the project is still taken off the list. Once the deleting has started it runs to the end.
 
 > **Warning:** The project folder usually holds media files as well as the project file. On a disk in this Mac the folder goes to the Trash, where you can still recover it. A network share has no Trash, so the folder is deleted outright and cannot be recovered.
 
@@ -3220,32 +3470,6 @@ With Share Media the duplicate becomes the open project; open the original again
 
 See also: [Saving Projects](#saving-projects), [Moving a Project](#moving-a-project), [Deleting a Project](#deleting-a-project), [Freeing Up Space](#freeing-up-space), [What Happens to Files When You Change a Category](#what-happens-to-files-when-you-change-a-category)
 
-## Project Checklist
-
-*Track nine milestones of a project, from import through archive, in the older checklist screen.*
-
-The Project Checklist shows how far a project has come. Choose Workflow → Plan & Deliver → Project Checklist (legacy)… to open a sheet with nine fixed milestones. Six carry an Auto badge and are ticked from the state of your clips. Three you mark yourself with the Done button beside them; Undo unmarks them. The pipeline strip above the media list now shows the same progress at a glance, which is why the menu item says legacy.
-
-### Milestones
-
-- Media Imported (auto) — At least one clip in the project
-- All Clips Categorized (auto) — Every clip has a category other than Uncategorized
-- Media Organized (auto) — Every clip is at the destination: its Where column reads At destination or Size mismatch
-- Organized Copies Verified (auto) — Every clip reads At destination, with no Size mismatch. This reflects the size check made by Re-check files; it does not re-read the files
-- Selects Picked (auto) — At least one clip marked Hero or Maybe
-- Exported to NLE (manual)
-- Local Originals Cleaned (manual)
-- Project Backed Up (manual)
-- Archived (auto) — Ticked when Archive to USB completes
-
-### Phase and Progress
-
-The header shows the project phase — Setup, then Production once media is imported, Post-Production once it is organized, and Delivered when all nine items are complete — together with an n/9 progress ring (orange below 50%, blue above, green at 100%). Completed items show the date they were completed.
-
-Click Refresh to re-evaluate the automatic items after you make changes. The checklist is saved inside the .vpm project file, and the automatic items are recomputed every time the project loads.
-
-See also: [Understanding the Pipeline Strip](#understanding-the-pipeline-strip), [Organizing Media to Storage](#organizing-media-to-storage), [Archiving a Project to USB](#archiving-a-project-to-usb), [Star Ratings & Selects](#star-ratings--selects)
-
 ## Archiving a Project to USB
 
 *Copy a finished project folder to a numbered USB drive for long-term storage, with every file checked before the original may go.*
@@ -3257,14 +3481,16 @@ Archive to USB frees your working storage by copying a finished project to a dri
 1. Plug in the drive and choose Workflow → Archive to USB…; click Scan if it is not listed
 2. A drive that has never been used shows “(not initialized)”. Select it, give it an optional label such as “Interviews 2026”, and click Set Up. MediaFlow writes a hidden marker file to the drive and assigns the next number. Numbers are permanent
 3. Pick a drive. The smallest initialized drive that still fits is marked Recommended; drives that are too small show an orange warning
-4. Click Archive. Progress moves through Preparing, Copying, Flushing, Verifying, Updating Database, and Done
+4. Click Archive. Progress moves through Preparing, Copying and Checking (each file is written, then read back; the bar and the time left move through both, even inside a large file), Flushing, Verifying, Updating Database, and Done
 5. Dismiss the progress dialog to reach the completion screen described below
 
-Every file is read back from the drive after it is written and compared with its original by checksum, so a file damaged on the way — even one that kept its size — fails the archive rather than being recorded. The Verifying step then confirms the number of files and their total size. Because each file is read twice, archiving takes noticeably longer than a plain copy, most of all on a USB hard drive or with a project made of many small files. File contents and dates are archived; Finder tags and similar extras are not, because most archive drives are formatted in a way that cannot hold them. On success the project is marked Archived with the volume number, date, and path, and the Project Checklist’s Archived item completes. In the project browser the row reads “Archived → USB #0007”.
+Every file is read back from the drive after it is written and compared with its original by checksum, so a file damaged on the way — even one that kept its size — fails the archive rather than being recorded. The Verifying step then confirms the number of files and their total size. Because each file is read twice, archiving takes longer than a plain copy, most of all on a USB hard drive or with a project made of many small files; to save time, the next file is already being copied while the last one is checked, and a file counts only once its own check has passed. File contents and dates are archived; Finder tags and similar extras are not, because most archive drives are formatted in a way that cannot hold them. On success the project is marked Archived with the volume number, date, and path. Its project file records the archive too, so the project still shows as archived when you open it again. The copy of the project file on the drive is left exactly as it was checked, and it shows as archived too when you open it from the drive, even with no shared database: the drive and the project folder on it say so, and the pipeline strip names the drive. In the project browser the row reads “Archived → USB #0007”.
 
 ### Completion screen
 
 After the progress dialog closes, an Archive Complete screen summarizes the result — “Archived 312 files (48.2 GB) to USB #0007 · verified” — and lists the drive (or every drive, for a split archive) with an Eject button for each one that is still connected. “Keep Original” closes the screen and leaves both copies in place. “Delete Original…” removes the original project folder, wherever it is stored. It scans the folder first and then shows the same confirmation used when you delete staged files or delete a project: the file count, the total size, a warning when the folder is on a network volume (where there is no Trash to recover from), and a checkbox you must tick before the delete button enables. Confirming moves the folder to the Trash, or deletes it outright on a network volume.
+
+Before it offers, and again at the moment of deleting, MediaFlow checks the folder against what this archive copied. Just before archiving it notes each file’s size and when it was last changed, and it keeps that note only for the files the archive then copied and checked. The folder is deleted only if every file in it is one of those, unchanged. A file the archive did not copy (one added since, one added after a split archive was planned, or one moved out of the folder while the archive ran and put back afterwards) or one changed since, even under the same name, keeps the folder; the message names it and offers Archive Again. Finder’s own .DS_Store files are left out. Once the archive is done, MediaFlow writes where the archive is into the project file; that change of its own does not count, but any other change to the project file does, and the delete button waits until that write is over. A file or folder whose name starts with .incoming- or .superseded- followed by eight characters and a dash is never archived, because MediaFlow gives those names to its own unfinished copies; nor is a .mediaflow-leg.json or .mediaflow-archive file, a note MediaFlow keeps on an archive drive about that drive. Either keeps the folder and is named, and the Archive Complete screen stays open, saying why, so that once you have renamed or removed the file, Delete Original works. An archive that cannot finish says why in the progress window. A split archive that picked up drives written in an earlier session is not deleted from here, because those drives were matched by size only; archive the project again in one go, or delete the folder by hand. A change of the same size within a second or two of the note cannot be told apart on some drives.
 
 > **Warning:** Deleting the original leaves the USB drive as the only copy of the project. Every file on it was compared with its original by checksum, but a single drive can still fail on the shelf; for footage you cannot replace, archive to a second drive as well before you delete. “Delete Original…” is disabled when the database update was queued instead of saved; keep the original until the database has recorded the archive.
 
@@ -3278,7 +3504,7 @@ If the drive already holds an archive of the project, the new archive is written
 
 ### Splitting Across Drives
 
-If the project is larger than any one drive, click Split Across Drives…. MediaFlow plans which folders go on Drive 1, Drive 2, and so on, then asks for each drive in turn. If a run is interrupted, opening the sheet again detects the partial copies and the button reads Resume Archive.
+If the project is larger than any one drive, click Split Across Drives…. MediaFlow plans which folders go on Drive 1, Drive 2, and so on, hidden files and folders included, then asks for each drive in turn. Every file is read back and checked as it is copied, and the archive fails if a drive then no longer holds every file copied to it, in full. Files an earlier run left on the drive do not make up for one that is missing. If a run is interrupted, opening the sheet again detects the partial copies and the button reads Resume Archive.
 
 ### Cancelling
 
@@ -3286,7 +3512,7 @@ Cancel on the progress window stops an archive between files. Files already writ
 
 Archiving needs the central database to record volumes and projects.
 
-See also: [Restoring an Archived Project](#restoring-an-archived-project), [Managing Archive Volumes](#managing-archive-volumes), [Project Checklist](#project-checklist), [Shared Database Overview](#shared-database-overview), [Freeing Up Space](#freeing-up-space), [Moving a Project](#moving-a-project)
+See also: [Restoring an Archived Project](#restoring-an-archived-project), [Managing Archive Volumes](#managing-archive-volumes), [Shared Database Overview](#shared-database-overview), [Freeing Up Space](#freeing-up-space), [Moving a Project](#moving-a-project)
 
 ## Restoring an Archived Project
 
@@ -3297,9 +3523,9 @@ To bring an archived project back, open the project browser, right-click the arc
 1. Plug in the archive drive. It does not have to mount under the same name it had when you archived; MediaFlow looks for the project on every connected archive drive
 2. Choose the folder to restore into. The project comes back as a folder inside it, with the name it was archived under. If a folder with that name is already there, the restore stops before copying anything; choose a different folder
 3. For a project split across drives, MediaFlow asks for each drive in turn and merges them into the one folder
-4. When it finishes, the project is no longer marked Archived and its clips point at the restored files
+4. When it finishes, the project is no longer marked Archived and its clips point at the restored files. An earlier copy of it, such as the original you kept after archiving, is not marked Archived either when you open it with the database connected and this Mac can reach the restored copy: the database records the restored copy as the project
 
-A restore is checked more strictly than an archive. Every file is read back after it is copied and compared with the file on the drive by checksum. Each drive is also checked against the number of files recorded when the project was archived, so a drive that has lost a file since then stops the restore rather than quietly bringing back less than you archived. (Projects archived before this check was added have no recorded count for a single drive; those are checked file by file only.) If anything fails, the partly restored folder is removed, the project stays marked Archived, and nothing on the drive is changed.
+A restore is checked more strictly than an archive. Every file is read back after it is copied and compared with the file on the drive by checksum. Each drive is also checked against the number of files recorded when the project was archived, so a drive that has lost a file since then stops the restore rather than quietly bringing back less than you archived. (Projects archived before this check was added have no recorded count for a single drive; those are checked file by file only.) If anything fails, the partly restored folder is removed, the project stays marked Archived, and nothing on the drive is changed. The same happens if you click Cancel, which stops at once, even part-way through copying or checking a large file.
 
 If the project lists a clip that was not on any of the drives, the restore still completes and tells you which clips: they are marked Missing, not shown as present. Media the project used from outside its own folder was never copied to the archive, so it is left where it was and shown as In Place if it is still there, or Missing if it is not.
 
@@ -3325,7 +3551,7 @@ See also: [Archiving a Project to USB](#archiving-a-project-to-usb), [Restoring 
 
 *Two plans, Studio and Studio Pro, a 14-day trial of the full app, and what stays open when a plan ends.*
 
-MediaFlowSwift comes in two plans. Studio is all the file management: importing from cards, phones and folders; categorizing, reviewing, rating and tagging; Organize with every copy proved; Free Up Space; Archive and restore; proxies; the editing drive; Library Moved; reports; Help; updates and problem reports. Studio Pro is everything in Studio, plus the title, description, chapters and tags written for you, uploading to YouTube with thumbnail and schedule, results read back from YouTube, and the database server that gives every Mac the same projects list.
+MediaFlowSwift comes in two plans. Studio is all the file management: importing from cards, phones and folders; categorizing, reviewing, rating and tagging; Organize with every copy proved; Free Up Space; Archive and restore; proxies; the editing drive; Library Moved; reports; Help; updates and problem reports. Studio Pro is everything in Studio, plus the title, description, chapters and tags written for you, uploading to YouTube with thumbnail and schedule, results read back from YouTube, and the database server that gives every Mac the same projects list. Neither plan limits how often you use what it opens.
 
 ### The trial
 
@@ -3335,21 +3561,23 @@ The first time this copy is opened, a 14-day trial of Studio Pro begins. No card
 
 Nothing you have made is taken away. Every project opens, every clip shows where it is, restoring from an archive and copying footage out work, and so do Help, reports, updates and problem reports. What pauses is what makes new work: importing, Organize, proxies, moving a project to the editing drive, writing, publishing, and the database server. Each of those says which plan opens it, with a Plans… button that shows the plans side by side.
 
-### Fair use
-
-Writing with the agent, uploading and reading results cost us something each time, so each has a monthly limit — generous, and shown in Settings › Plan. Reaching one pauses that feature until the start of the next month; nothing else is affected.
-
 ### Buying a plan
 
-Studio is $4.99 a month or $49.99 a year; Studio Pro is $9.99 a month or $99.99 a year, in US dollars, plus tax where it applies. Plans are bought on mediaflowswift.com; the app never asks for a card. The checkout is run by Paddle, who handle payment, tax and invoices, and whose receipt has the link for changing or cancelling a subscription.
+Studio is $4.99 a month or $49.99 a year; Studio Pro is $9.99 a month or $99.99 a year, in US dollars, plus tax where it applies. Plans are bought on mediaflowswift.com; the app never asks for a card. The checkout is run by Paddle, who handle payment, tax and invoices, and whose receipt has the link for managing or cancelling a subscription.
+
+### Changing your plan
+
+Already subscribed, and want Studio Pro instead of Studio, Studio instead of Studio Pro, or yearly instead of monthly? Do not buy again on the website: that starts a second subscription, with a second key, while the first one goes on billing. Write to support@mediaflowswift.com instead. Support changes the subscription you have, and your key stays the same: Settings › Plan shows the new plan at the next daily check, or at once when you click Check now.
+
+While a subscription is entered on this Mac, the Plans window and Settings › Plan say this in place of Buy on the website…, with an Email Support… button. The button only opens a new message to support in your mail app, addressed and with the last group of your key in it, for you to finish and send; MediaFlowSwift sends nothing itself. When a licence has ended, Buy on the website… comes back, since a new plan is a new purchase.
 
 ### Your licence key
 
 After buying, the thank-you page shows a licence key of the form MF-XXXXX-XXXXX-XXXXX-XXXXX. Enter it in Settings › Plan (or in the Plans window that a paused feature opens) and click Activate. The key follows you, not a Mac: it works on up to three Macs at once, and Settings › Plan lists them by name. Release this Mac frees its place for another; it needs a connection, so that the place is really freed before the key is forgotten here. Settings shows only the last group of the key, so a screenshot does not hand it on. Lost the key? The website’s Lost your key page finds it from the transaction number on your receipt.
 
-Once a day, and when you click Check now, the app asks the licence service whether the key still stands: it sends the key and a random id it made up for this Mac, nothing more (the Mac’s name goes only with the activation), and it says so in Settings › Privacy. Without a connection the last answer holds for two weeks, so a trip does not pause your work. When a subscription ends, or is refunded, the plan reads as ended at the next check, and everything you made still opens.
+Once a day, and when you click Check now, the app asks the licence service whether the key still stands: it sends the key and a random id it made up for this Mac, nothing more (the Mac’s name goes only with the activation), and it says so in Settings › Privacy. Without a connection the last answer holds for two weeks, so a trip does not pause your work. When a subscription ends, or is refunded, the plan reads as ended at the next check, and everything you made still opens. A complimentary key, one given rather than bought, has no subscription behind it: Settings › Plan shows the date it is valid until instead of a renewal date, and the plan reads as ended at the first check after that date.
 
-See also: [The Settings Window](#the-settings-window), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Importing from a Card, Drive or Folder](#importing-from-a-card-drive-or-folder), [Organizing Media to Storage](#organizing-media-to-storage), [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server)
+See also: [The Settings Window](#the-settings-window), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Importing from a Card, Drive or Folder](#importing-from-a-card-drive-or-folder), [Organizing Media to Storage](#organizing-media-to-storage), [Preparing a Video for YouTube](#preparing-a-video-for-youtube), [Connecting to a Database Server](#connecting-to-a-database-server)
 
 ## The Settings Window
 
@@ -3361,23 +3589,23 @@ Choose MediaFlow → Settings (Cmd+,). The window has nine tabs. This topic says
 
 - Setup — Run Setup Again… reopens the first-run setup questions. MediaFlow saves your setup whenever you quit and puts it back if this Mac’s settings are ever lost. Save Setup Now saves it at once. Restore Saved Setup puts every saved setting back, replacing what is set now. Passwords and API keys are not part of the saved setup; they stay in the Keychain
 - Updates — New versions come from mediaflowswift.com. “Check for new versions automatically” looks shortly after launch and on wake, and shows a banner, never a dialog. To look now, choose MediaFlow → Check for Updates
-- About — The version and build you are running
+- About — The version and build you are running, the maker, what MediaFlowSwift needs to run (a Mac with Apple silicon and macOS 14 Sonoma or later), links to the website, the support page, the terms of use and the privacy page, and Acknowledgements… for the open-source packages it is built with. The same as MediaFlowSwift → About MediaFlowSwift
 
 ### Network
 
-Where you choose the NAS that MediaFlow reconnects to. Nothing is assumed: until you choose one, the tab says “No NAS chosen yet”.
+Where you choose the network share that MediaFlow reconnects to. Nothing is assumed: until you choose one, the tab says “No network share chosen yet”.
 
 - Shares already mounted on this Mac are listed. Click Use this beside the one you want; it then reads In use
 - Look for servers searches the network. Connect to… opens a found server in Finder, which asks for the password and shows its shares. Mount one, then click Use this
-- Type the address instead takes an smb:// address. A name ending in .local keeps working when the NAS gets a new address
-- Once a NAS is chosen, the tab shows Connected or Not connected. Connect now mounts it again. Forget stops using it, and the settings that follow the NAS go back to unset
+- Type the address instead takes an smb:// address. A name ending in .local keeps working when the server gets a new address
+- Once a share is chosen, the tab shows Connected or Not connected. Connect now mounts it again. Forget stops using it, and the settings that follow the share go back to unset
 
 ### Storage
 
 - Enable Central Database — Turns the shared database on and connects
-- Store — SQLite file or PostgreSQL server. Changing it reconnects; it does not move any records
-- SQLite file — Choose… or Change… picks the database file; Type the path instead is there if you need it. The line below says whether the file can be reached. Reset to Default points at MediaFlow/mediaflow.db on the chosen NAS, and is dimmed until a NAS is chosen
-- PostgreSQL server — Host (Use NAS fills in the chosen NAS), Port, Database, User and Password. The password is kept in your Keychain. Test Connection shows the server version or the reason it failed. Set Up a Server… is a guide to making one. Two Copy buttons move every record between the file and the server
+- Store — Database file or Database server. Changing it reconnects; it does not move any records
+- Database file — New Database File… asks where a new database file will live, makes it there and connects; Use an Existing Database File… picks one that is already there, such as the one another Mac made. Neither ever replaces a file. The line under them says what a database file is for. Type the path instead is there if you need it. The line below says whether the file can be reached. Reset to Default points at MediaFlow/mediaflow.db on the chosen network share, and is dimmed until a share is chosen
+- Database server — Host (a button beside it offers the server of the chosen network share), Port, Database, User and Password. The password is kept in your Keychain. Test Connection shows the server version or the reason it failed. Set Up a Server… is a guide to making one. Two Copy buttons move every record between the file and the server
 - Organize Media — “Default destination for new projects” (Choose… or Clear) fills in the destination for a project that has none; a project’s own destination always wins
 - Verify organized copies by reading them back — On: every copy is read again in full and its SHA-256 compared with the source; slowest and safest. Off: copies are checked by size plus 1 MB samples at the start, middle and end; much faster over a network
 
@@ -3406,7 +3634,7 @@ Every connection MediaFlow can make to a service outside this Mac, each with its
 
 One switch for each Smart Notification: Uncategorized Clips, Missing Cards, Format Mismatch, Storage Warning, Unrated Clips and Stale Project.
 
-See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server), [Adding, Renaming, Retiring and Removing Categories](#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [How MediaFlow Verifies Copies](#how-mediaflow-verifies-copies), [Smart Notifications](#smart-notifications)
+See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](#database-file-or-database-server), [Connecting to a Database Server](#connecting-to-a-database-server), [Adding, Renaming, Retiring and Removing Categories](#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](#using-a-model-to-suggest-categories), [How MediaFlow Verifies Copies](#how-mediaflow-verifies-copies), [Smart Notifications](#smart-notifications)
 
 ## Smart Notifications
 
@@ -3436,7 +3664,7 @@ See also: [The Settings Window](#the-settings-window), [Understanding the Pipeli
 
 *Every keyboard shortcut in MediaFlow, grouped by menu, plus the single keys used in Review and the video preview.*
 
-Menu shortcuts work anywhere in the main window. The Review keys work while Review is open (Workflow → Review); they are single keys with no modifier. The Video Playback keys work while the video preview has keyboard focus: click the preview first.
+Menu shortcuts work anywhere in the main window. The Review keys work while Review is open (Workflow → Review); they are single keys with no modifier. In Review and in the Import sheet, Space plays and pauses the video showing, whatever you clicked last, except while you are typing in a text field. The Video Playback keys work while the video preview has keyboard focus: click the preview first.
 
 ### File Operations
 
@@ -3464,7 +3692,7 @@ Menu shortcuts work anywhere in the main window. The Review keys work while Revi
 
 ### Search & Projects
 
-`Cmd+Shift+F` — Global Search…
+`Cmd+Shift+F` — Search All Projects…
 
 `Cmd+Shift+P` — Browse Projects…
 
@@ -3472,9 +3700,9 @@ Menu shortcuts work anywhere in the main window. The Review keys work while Revi
 
 ### Editing
 
-`Cmd+F` — Find Clips…
+`Cmd+F` — Find Clips… (search this project)
 
-`Delete` — Remove from Project
+`Delete` — Remove from Project (in the clip list or grid, not while typing)
 
 ---
 
@@ -3507,6 +3735,8 @@ Menu shortcuts work anywhere in the main window. The Review keys work while Revi
 `Cmd+Opt+R` — Review
 
 `Cmd+Opt+M` — Shoot Map…
+
+`Cmd+U` — Create Subclip… (one video selected)
 
 `Cmd+Shift+T` — Increment Take (Scene Log tab)
 
@@ -3550,7 +3780,17 @@ Menu shortcuts work anywhere in the main window. The Review keys work while Revi
 
 ---
 
+### Import
+
+`Space` — Play or pause the preview
+
+`Esc` — Close the sheet without importing
+
+---
+
 ### Video Playback
+
+`Space` — Play or pause the preview
 
 `I` — Mark In Point
 
@@ -3598,16 +3838,24 @@ Symptom: a clip shows a red X and the word Missing in the Where column. MediaFlo
 
 ### Fixes
 
-1. Mount the drive or share. For the NAS you chose in Settings › Network, click Connect now there, or choose Database → Reconnect to NAS. Then choose Workflow → Repair → Re-check files
+1. Mount the drive or share. For the network share you chose in Settings › Network, click Connect now there, or choose Database → Reconnect Network Share. Then choose Workflow → Repair → Re-check files
 2. If the files moved, choose Workflow → Repair → Relink Missing Media and pick the folder they are in now
 3. If the whole destination moved, choose Workflow → Repair → Change destination folder
 4. For one file, right-click the clip, choose Relink… and pick the file
 
-See also: [Relinking Missing Media](#relinking-missing-media), [Change destination folder](#change-destination-folder), [Understanding the Where Column](#understanding-the-where-column), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas)
+### On another Mac and Not on this Mac are not Missing
+
+A clip imported on another Mac that shares this project usually sits in that person’s home folder. When its file is in another account’s home folder, it reads On another Mac on this Mac, in grey, not Missing. It is not in the Missing group or the missing counts, and Relink Missing Media leaves it alone. Work with it on the Mac it was imported on. To use a copy you have on this Mac instead, right-click the clip, choose Relink… and pick the file.
+
+A clip the other Mac keeps anywhere else, such as in the Shared folder, on its own drive, or in a home folder with the same name as yours, reads Not on this Mac instead, in grey, for as long as this Mac has never had it. Each Mac remembers the clips it has imported, organized or relinked, and the files Re-check files has found on it; only those can read Missing on it. Everything above holds for it too: it is not counted as missing, and Relink… can point it at a copy on this Mac. If you use only this Mac, a clip that reads Not on this Mac may have been moved or deleted: use Relink… to find it.
+
+The first time a Mac checks a project file after the update, or another copy of it such as one made with Save As, it checks it as before, so a file that went missing before the update reads Missing. A clip from the other Mac may read Missing once, until that Mac checks it again.
+
+See also: [Relinking Missing Media](#relinking-missing-media), [Change destination folder](#change-destination-folder), [Understanding the Where Column](#understanding-the-where-column), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share)
 
 ## Reporting a Problem
 
-*Put together a report of what went wrong, with personal details taken out, to copy or save. Nothing is sent.*
+*Put together a report of what went wrong, with personal details taken out, to email to support from your own mail app, copy or save.*
 
 Choose Help → Report a Problem…, or click Report a Problem… where it is offered: on an error message, and under the list of files that failed in a copy. Say what happened and what you were doing, and leave an email address if you would like a reply. MediaFlowSwift adds what helps find a fault, and shows you the whole report before anything else happens. You can change any of it.
 
@@ -3615,7 +3863,7 @@ Choose Help → Report a Problem…, or click Report a Problem… where it is of
 
 - What you wrote, exactly as you wrote it
 - The version of MediaFlowSwift and of macOS, whether the Mac is Apple silicon or Intel, the kind of shared database you use (never its address), and how many clips are in the open project
-- A summary of any crashes and hangs macOS recorded for MediaFlowSwift in the last two weeks: what kind of failure, how often (times are in UTC), and where in the program it happened. Two sources say so: the report files macOS writes in Logs/DiagnosticReports in your Library, of which MediaFlowSwift reads only the ones about itself, and MetricKit, Apple’s service that hands an app its own crash and hang diagnostics on a later launch. The same fault told by both is counted once. Neither leaves your Mac unless you send a report
+- A summary of any crashes and hangs macOS recorded for MediaFlowSwift in the last two weeks: what kind of failure, how often (times are in UTC), and where in the program it happened. Two sources say so: the report files macOS writes in Logs/DiagnosticReports in your Library, of which MediaFlowSwift reads only the ones about itself, not those of another program that shares its name, and MetricKit, Apple’s service that hands an app its own crash and hang diagnostics on a later launch. The same fault told by both is counted once. Neither leaves your Mac unless you send a report
 - Whether the last run ended without quitting
 - The last 150 lines of MediaFlowSwift’s log (Help → Show Log)
 
@@ -3627,7 +3875,11 @@ It errs on the side of taking out too much. It cannot know a name it has never b
 
 ### Sending It
 
-Copy Report puts the text on the clipboard; Save… writes it to a file; sending it by email or however you like is up to you. There is also a Send button, if Sending problem reports is turned on in Settings › Privacy; it needs the address and key of a report relay entered there, and Test tells you whether the relay is reachable. Whoever supports your copy of MediaFlowSwift gives you both, and can tell you whether the reports they receive are kept private; an email address you give for a reply goes with the report. Send sends the text exactly as it is in the window, with a title, a random identifier for this copy of the app, and the crash signature if there is one, to that relay, which files it as an issue for the people who make MediaFlowSwift. The window then shows the report’s number. If the same crash has been reported before, your report is added to it. Nothing is ever sent on its own, and while the switch is off MediaFlowSwift makes no connection to do with reports.
+Email Report… opens a new message to support@mediaflowswift.com in your own mail app, with the report exactly as it is in the window, for you to read and send. A short report is filled in for you. A longer one, which most are once the log is in, would not fit in a new message in every mail app, so MediaFlowSwift puts it on the clipboard instead and the message asks you to paste it in (⌘V). MediaFlowSwift itself makes no connection: the report goes only if you send the message, from your own email, so support can reply to you there.
+
+Copy Report puts the text on the clipboard; Save… writes it to a file; sending it however you like is up to you.
+
+On a Mac set up with a report relay run by MediaFlowSwift’s maker there is also a Send button. It needs Sending problem reports turned on in Settings › Privacy, and the relay’s address and key entered there; until a relay is set up those fields are folded away, since a customer has no relay and emails reports instead. Send sends the text exactly as it is in the window, with a title, a random identifier for this copy of the app, and the crash signature if there is one, to that relay, which files it as an issue for the people who make MediaFlowSwift, and the window then shows the report’s number. If the same crash has been reported before, your report is added to it. Nothing is ever sent on its own, and while the switch is off MediaFlowSwift makes no connection to do with reports.
 
 ### After a Crash
 
@@ -3639,30 +3891,46 @@ A full disk, a drive that is locked, cannot be read or written, or is no longer 
 
 Some failures could be either. A file that is not where it was expected may be on a drive that is unplugged, or may be a mistake in the program; so may a timeout, or a damaged database file. For these MediaFlowSwift says what to try and offers a report as well.
 
-See also: [Database Connection Issues](#database-connection-issues), [Clips Showing as Missing](#clips-showing-as-missing)
+See also: [Contacting Support](#contacting-support), [Database Connection Issues](#database-connection-issues), [Clips Showing as Missing](#clips-showing-as-missing)
+
+## Contacting Support
+
+*Write to support from your own mail app, or read the support page on the website. MediaFlowSwift sends nothing itself.*
+
+Choose Help → Contact Support… to write to support@mediaflowswift.com. It opens a new message in your own mail app, addressed to support, with this copy’s version and build, your macOS version and your Mac’s chip filled in at the bottom: the first things support needs to know. Nothing else about you, your Mac or your projects is in it. Write your question above them and send it as you would any email; support replies to the address you send from. We aim to reply within two working days.
+
+Choose Help → Support Website to open mediaflowswift.com’s support page in your web browser, with answers to common questions.
+
+Something went wrong? Help → Report a Problem… puts together what support needs to find a fault, with personal details taken out, and Email Report… there hands it to your mail app in the same way. See Reporting a Problem.
+
+> **Tip:** If your mail app does not open, or you write from webmail that is not set up as your Mac’s mail app, write to support@mediaflowswift.com from wherever you read your email. Include the version shown in Settings › General.
+
+Neither item makes a connection of its own: the message goes only when you send it, and the page is fetched by your browser. Settings › Privacy lists both.
+
+See also: [Reporting a Problem](#reporting-a-problem), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac)
 
 ## Database Connection Issues
 
-*What to check when the shared database will not connect, for a SQLite file and for a PostgreSQL server.*
+*What to check when the shared database will not connect, for a database file and for a database server.*
 
-The shared database is optional, and the project file (.vpm) is the authority. When the database is unreachable you can keep working; only the cross-project tools stop. The current state is on the last line of the Database menu and in Settings › Storage.
+The shared database is optional: every project opens and works from its project file (.vpm) without it. When the database is unreachable you can keep working; only the cross-project tools stop, and what you save is sent once it is back. The current state is on the last line of the Database menu and in Settings › Storage.
 
-### If You Use a SQLite File
+### If You Use a Database File
 
-Symptom: the status reads “Connection failed: …”, “NAS offline” or “Waiting for NAS…”. Cause: the file, or the drive or share it is on, cannot be reached.
+Symptom: the status reads “Connection failed: …”, “Database file offline” or “Waiting for the network share…”. Cause: the file, or the drive or share it is on, cannot be reached.
 
-1. Open Settings › Storage and read the line under Database. “Database file accessible” means the file can be reached. “Database file not found (will be created on connect)” means the path is reachable but holds no file yet. “No database file chosen yet” means you need to click Choose…
-2. If the file is on a NAS, open Settings › Network. If it says Not connected, click Connect now, or choose Database → Reconnect to NAS
-3. Choose Database → Reconnect Database
-4. If the path is wrong, click Change… and pick the file. Reset to Default points at MediaFlow/mediaflow.db on the chosen NAS; it is dimmed until you choose a NAS in Settings › Network
+1. Open Settings › Storage and read the line under Database. “Database file accessible” means the file can be reached. “Database file not found (will be created on connect)” means the path is reachable but holds no file yet. “No database file chosen yet” means you need to click New Database File… or Use an Existing Database File…
+2. If the file is on a network share, open Settings › Network. If it says Not connected, click Connect now, or choose Database → Reconnect Network Share
+3. Choose Database → Enable & Connect Database (Reconnect Database while it is connected)
+4. If the path is wrong, click Change… and pick the file. Reset to Default points at MediaFlow/mediaflow.db on the chosen network share; it is dimmed until you choose a share in Settings › Network
 
 MediaFlow watches the volume and connects again by itself when it comes back, including after the Mac wakes from sleep.
 
-### If You Use a PostgreSQL Server
+### If You Use a Database Server
 
 Open Settings › Storage and click Test Connection. It shows the server’s version, or one of these messages:
 
-- “Nothing is listening at host, port …” — PostgreSQL is not running there, or the Port is wrong. Start the server, or correct the Port (usually 5432)
+- “Nothing is listening at host, port …” — the database server is not running there, or the Port is wrong. Start the server, or correct the Port (usually 5432)
 - “… could not be found on the network. Check the host name.” — The Host is misspelled, or this Mac is on a different network
 - “… did not answer within 10 seconds” — Something between this Mac and the server, often a firewall, is dropping the connection. Check that the server allows connections from this Mac
 - “… is not reachable from this network.” — This Mac has no route to the server. Check your network or VPN
@@ -3687,41 +3955,48 @@ Help → Show Log reveals app.log in the Finder (it is in Logs/MediaFlow in your
 
 ### Several Macs
 
-Symptom: work done on one Mac is missing from the database after another Mac has used it. Cause: a SQLite file is for one Mac at a time. Each Mac works on its own local copy and writes the file back when it disconnects or quits, so the last Mac to quit wins. Fix: take turns, or switch to a PostgreSQL server, which several Macs can use at once. Your projects are not harmed either way, because the project files are the authority.
+A database file is for one Mac at a time. Each Mac works on its own local copy and writes the file back when it disconnects or quits, so MediaFlow lets only one Mac connect at a time. A second Mac is told which Mac has it, and can wait or work without the database; see One Mac at a Time on a Database File. A Mac that stopped answering loses its turn after five minutes. Every Mac needs this version or later, because an older one does not take turns. For several Macs at once, switch to a database server. Your project files are not harmed either way: a save writes the project file whenever its folder can be reached, whether or not the database is connected.
 
 ### What the Status Line Means
 
 - Connected, Synced — All is well
-- Connecting…, Reconnecting…, Waiting for NAS… — MediaFlow is trying; give it a moment
+- Connecting…, Reconnecting…, Waiting for the network share… — MediaFlow is trying; give it a moment
 - Sleeping, Disconnected — The connection was closed for sleep, or by Disable & Disconnect
-- NAS offline — The volume that holds the database file is not mounted
+- Database file offline — The drive or share that holds the database file is not connected
 - Connection failed: … — The reason follows the colon
+- In use on …, Waiting for … — Another Mac has the database file; see One Mac at a Time on a Database File
+- Working without the database — You chose to work without it while another Mac had it. Changes are noted and synced when this Mac connects
 - Sync failed — A save could not be written to the database. Your project file is saved. MediaFlow has noted the project and syncs it after the next successful connection. The reason is in the log: choose Help → Show Log
 - Syncing offline changes… — MediaFlow is sending the database what changed while it was away
 - Connected · offline changes still to sync: … — The named projects are still waiting. Open each one to finish its sync
 
-See also: [Shared Database Overview](#shared-database-overview), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [Connecting to a PostgreSQL Server](#connecting-to-a-postgresql-server), [SQLite File or PostgreSQL Server?](#sqlite-file-or-postgresql-server), [Choosing and Connecting Your NAS](#choosing-and-connecting-your-nas), [Global Search Finds Nothing](#global-search-finds-nothing)
+See also: [Shared Database Overview](#shared-database-overview), [Working Offline and Syncing Later](#working-offline-and-syncing-later), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Connecting to a Database Server](#connecting-to-a-database-server), [Database File or Database Server?](#database-file-or-database-server), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Searching All Projects Finds Nothing](#searching-all-projects-finds-nothing)
 
-## Global Search Finds Nothing
+## Searching All Projects Finds Nothing
 
-*Why Global Search can come back empty on an older database file, and how this version repairs the search index itself.*
+*Why the search field’s All Projects scope can come back empty, or says what it needs instead of searching, and what to do about each.*
 
-Symptom: Global Search returns no results, even for a filename you know is in a project.
+Symptom: with All Projects chosen, a clip you know is in another project isn’t listed, or All Projects says what it needs instead of searching. This Project works without a shared database.
 
-Cause: SQLite database files made by an early version have a search index that stores nothing, so every search comes back empty. A PostgreSQL server never had this fault.
+### When All Projects Says What It Needs
 
-Fix: nothing to do by hand. The first time this version connects to the file, it replaces the index and fills it again from the clips already in the database. If search is still empty, choose Database → Reconnect Database, or quit and open MediaFlow again.
+- “Searching every project needs a shared database” — no database file or server is set up. A network share chosen in Settings › Network is not a database on its own: the message stays until a database file is on it. Click Set Up a Shared Database… to open Settings › Storage, turn on Enable Central Database, and choose a database file (any plan) or a database server (Studio Pro). Learn More opens Searching All Projects, which has the steps
+- “The shared database is turned off” — click Turn On & Connect, or choose Database → Enable & Connect Database
+- “The shared database can’t be reached” — for a file, connect the network share it is on; for a server, check that it is on and that this Mac is on its network. Then click Try Again. The last line of the Database menu says what happened; see Database Connection Issues
+- “The shared database is in use” — another Mac has the database file, and only one Mac can use a file at a time. Click the button that reads Wait for, followed by that Mac’s name: this Mac connects as soon as the other has finished, and All Projects searches then. See One Mac at a Time on a Database File
+- “Your plan doesn’t include the database server” — click Choose a Plan… for Studio Pro, or Storage Settings… to use a database file, which works with any plan
+- “No other projects are in the shared database yet” — only projects saved with the database on are in it. Click Migrate Projects… to add the ones you already have
 
-### Other Things to Check
+### When It Searches but Finds Nothing
 
-- The database is connected. If the search window says “Database not connected”, see Database Connection Issues
-- You pressed Return or clicked Search. Results do not appear as you type
-- The Category and Camera filters are not hiding the clip
-- The project is in the database. Projects made before you turned the database on need Database → Migrate Projects
+- The project has been saved with the database connected. A project reaches the database when it is saved; projects made before you turned the database on need Database → Migrate Projects
+- The clip is still in its project. A clip taken out of a project isn’t listed
+- Every word you type must be found in the clip or its project’s name. Try one word, or part of the file name
+- Up to 300 clips are listed. If the line above the results says it shows the first 300, type more words to narrow the search
 
-See also: [Global Search](#global-search), [Database Connection Issues](#database-connection-issues), [Migrating Projects to the Database](#migrating-projects-to-the-database)
+See also: [Searching All Projects](#searching-all-projects), [Database Connection Issues](#database-connection-issues), [Migrating Projects to the Database](#migrating-projects-to-the-database), [One Mac at a Time on a Database File](#one-mac-at-a-time-on-a-database-file), [Database File or Database Server?](#database-file-or-database-server)
 
-## NAS 'Resource Busy' Errors
+## Network Share 'Resource Busy' Errors
 
 *Why deleting or moving a project folder on a network share can fail with “resource busy”, and what to try.*
 
@@ -3776,6 +4051,8 @@ The Where column (once called Location) shows where each clip’s file is. The s
 - Red X (Missing) — The file cannot be found at any recorded path
 - Yellow triangle (Size mismatch) — The file is at the destination, but its size does not match the source
 - Gray question mark (Unknown) — MediaFlow has not checked this file yet
+
+Three more labels can appear in grey instead, when this Mac cannot see the file. Volume not connected means the drive or share it is on is not mounted. On another Mac means the file is in another account’s home folder, usually because it was imported on another Mac that shares this project. Not on this Mac means this Mac has never had the file and cannot find it, usually because it was imported on another Mac and kept somewhere else there. The legend has a row for each, and none of them is Missing. A clip on another Mac or not on this Mac is also left out of the Missing and Not at destination groups and of the pipeline’s Organize count, because it is that Mac’s to organize. One in another account’s home folder is left out of the Free up space count too.
 
 The sidebar’s Smart Groups filter the media list to clips that still need attention: Not at destination, Missing, Uncategorized, Unrated, Unreviewed and Reject candidates. Unreviewed holds clips with an import-analysis proposal nobody has confirmed. Reject candidates holds clips import analysis flagged as probable rejects.
 
