@@ -6,7 +6,17 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.33.
+Nothing waiting. Everything finished so far is in 1.10.34.
+
+## 1.10.34 · September 29, 2026
+
+**Shared projects never undo another Mac’s work, archives land on the right drives, and updates show what’s new at a glance.**
+
+- **Your split archive is recorded on the right drives.** If MediaFlow couldn’t save an archive’s record right away, or another Mac took over the shared database while you worked, the record now goes onto each drive by what the drive is: its number, when you set it up, and its size. If MediaFlow can’t tell for certain which drive is which, it waits and tells you, rather than guessing.
+- **Another Mac's archive or restore is never undone by your saves.** When another Mac archives or restores a project you also work on, changing a clip's note or rating on your Mac, even while you were offline, no longer puts that clip back in your library or at its old file in the shared database, and MediaFlow's check of where your files are never writes over an archived clip. When you organize, move or relink clips yourself, the shared database takes their new place as long as it still has them where your Mac last saw them, and if it doesn't, Re-check files sets it right when your files are there and the old ones, on a drive or share connected to your Mac, are not.
+- **Archives split across drives keep your empty folders.** When a project is too big for one drive and a folder has to be spread over several, its empty folders, like a category you haven’t filed into yet or an empty event in your Final Cut library, now go onto a drive with it and come back when you restore. And before you delete the project from your library, MediaFlow checks that every folder is in the archive, not just every file, so nothing of your project’s layout is lost.
+- **A clip you edited before a crash keeps its archive.** If your Mac stopped right after you changed a clip, a note or a rating, say, and another Mac then archived the project, your change still arrives when you connect again, and the clip stays on the archive drive instead of showing up as back in your library.
+- **See what every update brings at a glance.** When a new version is offered, each version since yours now has a row of its own with its date, its one-line summary and how many changes it brings. The newest is open; click the + beside any other to see its changes. And See every change on mediaflowswift.com takes you straight to the full notes for that version online.
 
 ## 1.10.33 · September 29, 2026
 
@@ -358,7 +368,9 @@ Nothing waiting. Everything finished so far is in 1.10.33.
 
 ## 1.5.1 · September 11, 2026
 
-**Polish.** Steadier syncing of your library in the background, and a round of small fixes.
+**Polish.**
+
+- **Steadier syncing and small fixes.** Steadier syncing of your library in the background, and a round of small fixes.
 
 ## 1.5.0 · September 10, 2026
 

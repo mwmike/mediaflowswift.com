@@ -48,7 +48,19 @@
   </div>
 
   <div class="releases">
-    <details class="release" id="v1-10-33" open>
+    <details class="release" id="v1-10-34" open>
+      <summary><span class="release-row"><span class="release-version">1.10.34</span> <time class="release-date" datetime="2026-09-29">September 29, 2026</time> <span class="release-headline">Shared projects never undo another Mac’s work, archives land on the right drives, and updates show what’s new at a glance.</span> <span class="release-count">5 changes</span> <span class="release-icon" aria-hidden="true"></span></span></summary>
+      <div class="release-body">
+        <ul class="release-changes">
+          <li><strong>Your split archive is recorded on the right drives.</strong> If MediaFlow couldn’t save an archive’s record right away, or another Mac took over the shared database while you worked, the record now goes onto each drive by what the drive is: its number, when you set it up, and its size. If MediaFlow can’t tell for certain which drive is which, it waits and tells you, rather than guessing.</li>
+          <li><strong>Another Mac's archive or restore is never undone by your saves.</strong> When another Mac archives or restores a project you also work on, changing a clip's note or rating on your Mac, even while you were offline, no longer puts that clip back in your library or at its old file in the shared database, and MediaFlow's check of where your files are never writes over an archived clip. When you organize, move or relink clips yourself, the shared database takes their new place as long as it still has them where your Mac last saw them, and if it doesn't, Re-check files sets it right when your files are there and the old ones, on a drive or share connected to your Mac, are not.</li>
+          <li><strong>Archives split across drives keep your empty folders.</strong> When a project is too big for one drive and a folder has to be spread over several, its empty folders, like a category you haven’t filed into yet or an empty event in your Final Cut library, now go onto a drive with it and come back when you restore. And before you delete the project from your library, MediaFlow checks that every folder is in the archive, not just every file, so nothing of your project’s layout is lost.</li>
+          <li><strong>A clip you edited before a crash keeps its archive.</strong> If your Mac stopped right after you changed a clip, a note or a rating, say, and another Mac then archived the project, your change still arrives when you connect again, and the clip stays on the archive drive instead of showing up as back in your library.</li>
+          <li><strong>See what every update brings at a glance.</strong> When a new version is offered, each version since yours now has a row of its own with its date, its one-line summary and how many changes it brings. The newest is open; click the + beside any other to see its changes. And See every change on mediaflowswift.com takes you straight to the full notes for that version online.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="release" id="v1-10-33">
       <summary><span class="release-row"><span class="release-version">1.10.33</span> <time class="release-date" datetime="2026-09-29">September 29, 2026</time> <span class="release-headline">Final Cut Pro libraries move with their media, every Mac knows where a shared project organizes, and a crash can’t lose an archive.</span> <span class="release-count">9 changes</span> <span class="release-icon" aria-hidden="true"></span></span></summary>
       <div class="release-body">
         <ul class="release-changes">
@@ -469,9 +481,11 @@
       </div>
     </details>
     <details class="release" id="v1-5-1">
-      <summary><span class="release-row"><span class="release-version">1.5.1</span> <time class="release-date" datetime="2026-09-11">September 11, 2026</time> <span class="release-headline">Polish.</span> <span class="release-icon" aria-hidden="true"></span></span></summary>
+      <summary><span class="release-row"><span class="release-version">1.5.1</span> <time class="release-date" datetime="2026-09-11">September 11, 2026</time> <span class="release-headline">Polish.</span> <span class="release-count">1 change</span> <span class="release-icon" aria-hidden="true"></span></span></summary>
       <div class="release-body">
-        <p class="release-text">Steadier syncing of your library in the background, and a round of small fixes.</p>
+        <ul class="release-changes">
+          <li><strong>Steadier syncing and small fixes.</strong> Steadier syncing of your library in the background, and a round of small fixes.</li>
+        </ul>
       </div>
     </details>
     <details class="release" id="v1-5-0">
