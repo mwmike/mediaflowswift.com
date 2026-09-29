@@ -171,6 +171,9 @@ article.manual code { font-size: 0.95em; background: var(--paper-2); padding: 0.
 article.manual hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 article.manual table { border-collapse: collapse; margin: 1rem 0; font-size: 1rem; }
 article.manual th, article.manual td { text-align: left; padding: 0.5rem 0.7rem; border-top: 1px solid var(--line); vertical-align: top; }
+article.manual .chapter-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.75rem 1.5rem; align-items: start; max-width: var(--measure); margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--line); font-family: var(--display); font-weight: 600; }
+article.manual .chapter-nav a { text-decoration: none; }
+article.manual .chapter-nav a[rel="next"] { text-align: right; }
 
 /* Plans: billing toggle, prices from Paddle, Buy buttons */
 .billing { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-top: 0.5rem; background: var(--paper-2); }
