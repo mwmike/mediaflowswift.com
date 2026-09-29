@@ -190,11 +190,13 @@ def row(s, date, newest):
         count = f'<span class="release-count">{n} change{"" if n == 1 else "s"}</span>'
     return (
         f'    <details class="release" id="{anchor(v)}"{" open" if newest else ""}>\n'
+        # Spaces between the parts: the grid does not show them, but text read without the stylesheet (a
+        # crawler, a screen reader's name for the row) would otherwise run "1.10.33September 29, 2026…" together.
         f'      <summary><span class="release-row">'
-        f'<span class="release-version">{html.escape(v)}</span>'
-        f'<time class="release-date" datetime="{date.isoformat()}">{html.escape(s["date"])}</time>'
-        f'<span class="release-headline">{headline}</span>'
-        f'{count}'
+        f'<span class="release-version">{html.escape(v)}</span> '
+        f'<time class="release-date" datetime="{date.isoformat()}">{html.escape(s["date"])}</time> '
+        f'<span class="release-headline">{headline}</span> '
+        f'{count + " " if count else ""}'
         f'<span class="release-icon" aria-hidden="true"></span>'
         f'</span></summary>\n'
         f'      <div class="release-body">\n{body}      </div>\n'
