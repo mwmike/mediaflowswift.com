@@ -16,7 +16,8 @@ DIR="$(cd "$(dirname "$0")/.." && pwd)"
 [ -f "$SRC" ] || { echo "user guide not found at $SRC" >&2; exit 1; }
 mkdir -p "$DIR/manual"
 {
-  printf -- '---\nlayout: manual\ntitle: Manual\ndescription: The MediaFlowSwift user guide, generated from the Help inside the app.\n---\n'
+  # The layout uses the title as the whole <title>, so it names the site itself.
+  printf -- '---\nlayout: manual\ntitle: "MediaFlowSwift Manual — Import, Organize and Archive Footage"\ndescription: The MediaFlowSwift user guide, generated from the Help inside the app.\n---\n'
   sed -e 's/</\&lt;/g' -e 's/^# MediaFlow User Guide$/# MediaFlowSwift Manual/' "$SRC"
 } > "$DIR/manual/index.md"
 echo "manual/index.md written from $SRC ($(wc -l < "$SRC" | tr -d ' ') lines)"

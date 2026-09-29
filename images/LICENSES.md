@@ -7,3 +7,5 @@ All three photographs are from Envato Elements, downloaded on 2026-09-22 under M
 | hero-card-import.jpg, hero-card-import-900.jpg | Photographer Dumps Memory Card into Computer for Editing | bublikhaus | 5E8KMZ3 |
 | storage-devices.jpg | Laptop with Computer Storage Devices on Desk | kostinat | V2DVGGW |
 | memory-cards.jpg | Memory Cards For Digital Storage And Data | towfiqu_barbhuyia | NDRHH9E |
+
+og-image.png is not a photograph: it is drawn by `tools/make_og_image.swift` from the site's own mark and the system font. Run that script again to change it.
