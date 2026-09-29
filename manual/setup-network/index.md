@@ -1,0 +1,255 @@
+---
+layout: manual
+title: "Setup & Network — MediaFlowSwift Manual"
+description: "The welcome tour explains the app; the Setup Wizard then asks where your footage goes and only what follows from that, and you can skip any of it."
+permalink: /manual/setup-network/
+generated: tools/import-guide.sh
+---
+# Setup & Network
+
+## Setting Up MediaFlow
+
+*The welcome tour explains the app; the Setup Wizard then asks where your footage goes and only what follows from that, and you can skip any of it.*
+
+A new copy of MediaFlow knows nothing about your equipment: no network share, no shared database, no destination. Three things greet you on first launch. First come the terms of use, which you agree to once (see Terms of Use). The welcome tour then explains the app, and the Setup Wizard asks where your storage is.
+
+You do not have to answer anything. MediaFlow works on a single Mac, with or without an external drive, and needs neither a network share nor a database; every answer can be changed later in Settings.
+
+### The welcome tour
+
+Four pages: Welcome, the workflow, your workspace, and a closing page of tips. Use Next to move on, Skip to leave, and Get Started on the last page. Help → Getting Started Guide opens it again at any time.
+
+### The Setup Wizard
+
+The wizard opens when the tour closes, if nothing is set up yet. It does not open when your saved setup was put back at launch. Its first answer decides which steps follow: two for this Mac or an external drive, four for a network share. A step you leave behind by changing that answer changes nothing: a server typed on the database step, for instance, is put back as it was, password included.
+
+1. Where your footage goes — This Mac, An external drive, or A network share. Nothing is set by this answer alone; it chooses the steps that follow and where the folder picker opens
+2. Your network share (a network share only) — shares that are connected now are listed with a Use this button. Look for servers searches the network, and Connect to… opens a server in Finder so you can sign in and mount a share. Use this takes effect as soon as you click it
+3. Shared database (a network share only, or when a database is already set up) — choose None, Database file (a single file, one Mac at a time) or Database server (several Macs at once). For a database file, click New Database File… to choose where it will live (MediaFlow makes it at once, and connects when you click Done), or Use an Existing Database File… to use one another Mac made. For a server, fill in the connection fields
+4. Where organized media goes — click Choose… to pick the default destination for new projects. It opens in your Movies folder for this Mac, among your drives for an external drive, and on the share for a network share. If the folder you pick is not where your first answer said, the step says so; a project can always use a different one
+
+### Skipping
+
+- To pass over one step, click Next without answering it
+- Skip (Skip setup on the first page) closes the wizard and keeps the answers you have given so far
+- A step you leave unanswered changes nothing, including a setting that was already in place
+
+### Running it again
+
+Choose Settings › General › Run Setup Again…. The wizard opens showing your current settings, not an empty form: the first answer reads A network share when one is chosen in Settings › Network, and otherwise follows your default destination. Choosing None on the database step turns the shared database off. Answering This Mac or An external drive does not forget a network share you chose before; Forget in Settings › Network does that.
+
+See also: [Terms of Use](/manual/getting-started/#terms-of-use), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Database File or Database Server?](/manual/shared-database/#database-file-or-database-server), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [What Is MediaFlow?](/manual/getting-started/#what-is-mediaflow)
+
+## Choosing and Connecting Your Network Share
+
+*Settings › Network is where you tell MediaFlow which network share holds your projects and media.*
+
+MediaFlow has no built-in network share. Until you choose one, Settings › Network reads “No network share chosen yet” and nothing is assumed. A share is optional: you can organize to any folder, including a drive attached to this Mac.
+
+When you do choose a share, MediaFlow uses it as the starting point for file pickers, as the suggested place for the shared database file, and as the host offered for a database server. It also connects the share when it is needed: see below.
+
+### Choose a share
+
+1. Open Settings › Network
+2. If the share is already connected, it appears in the list. Click Use this beside it. The button reads In use for the share you have chosen
+3. If it is not listed, click Look for servers, then pick the server from the Connect to… menu. The server opens in Finder, which asks for the password and shows its shares
+4. Mount the share you want in Finder, return to Settings, and click Use this
+
+Picking a mounted share fills in both the share name and its address, so there is nothing to type. If you prefer, open “Type the address instead” and enter an smb:// address. A name ending in .local keeps working when the server gets a new network address.
+
+### Connected when it is needed
+
+Once a share is chosen, MediaFlowSwift connects it by itself whenever something needs it and it is not mounted: a couple of seconds after launch, a few seconds after the Mac wakes, and before opening a project whose file lives on it. The status area reads “Connecting to ‘share’…” meanwhile. The launch and wake attempts are made once, so a share that cannot be reached raises at most one password prompt; opening a project tries again, because you are there to answer. If the share still cannot be connected, the project is not opened and a message says so, rather than opening it from the database with every clip called missing. A project on some other drive that is unplugged gets the same treatment: the message names the drive.
+
+If the share is dropped while MediaFlowSwift is open, because the network blinked or the server stopped answering for a minute and macOS removed it, MediaFlowSwift reconnects it. It waits 10 seconds before the first try, then 30 seconds, one minute and two minutes between tries, then five minutes, until the share is back. A strip at the top of the window says so, with Try Now and Stop. These tries never ask for a password; if macOS has not saved it, use Connect now. A share you eject in Finder is left alone, and nothing is tried while the Mac sleeps. Finder may still list the server under Network while the share itself is gone: seeing the server does not mean the share is connected.
+
+While a drive is not connected, the clips on it read Volume not connected in the Where column, in grey, and Re-check files leaves their last known state alone. Nothing is called Missing because its drive is away.
+
+### Passwords
+
+macOS asks for the share’s password, not MediaFlow. MediaFlow never sees or stores it. If you let macOS remember the password, macOS keeps it in your Keychain and uses it to reconnect.
+
+### Connect now and Forget
+
+- The status line reads Connected with the mount path, Looking for the share…, or Not connected
+- Connect now tries the stored address, then searches the network, then mounts the share. It is available only while the share is not connected
+- Forget stops using this share. Settings that follow it go back to unset. The path to your database file is kept
+
+### No servers found
+
+Check that the server is switched on and on the same network. Also check that MediaFlow is allowed to use the local network: System Settings › Privacy & Security › Local Network.
+
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](/manual/shared-database/#database-file-or-database-server), [Database Connection Issues](/manual/troubleshooting/#database-connection-issues), [Network Share 'Resource Busy' Errors](/manual/troubleshooting/#network-share-resource-busy-errors)
+
+## Saved Setup: A Copy of Your Settings
+
+*MediaFlow keeps a copy of your settings outside macOS preferences and puts it back if the settings are ever lost.*
+
+The saved setup is a small file that holds your MediaFlow settings. It lives apart from the macOS preferences file, so a lost or reset preferences file does not take your setup with it. You do not need to do anything: it is written every time you quit, when you finish the Setup Wizard, and before an update installs.
+
+Passwords and API keys are never in it. They stay in your Keychain.
+
+### What it holds
+
+- Your network share and its address
+- The shared database settings: on or off, the store, the file path, and the server host, port, database and user
+- The default destination, recent destinations and the verification setting
+- Whether to check for new versions automatically
+- Import analysis and model settings, including the daily spending limit
+- The category and camera lists that new projects start with
+
+### What it never holds
+
+API keys and the database password. They stay in your Keychain. The saved setup is a plain file, and a secret copied into it would be readable by anyone who opened it. After a restore on a Mac with an empty Keychain, enter those again.
+
+### When it is restored automatically
+
+Only at launch, and only into a copy of MediaFlow that has nothing configured: no network share, no database file, no server and no default destination. It never overwrites settings you are already using.
+
+### Doing it by hand
+
+- Settings › General › Save Setup Now writes the file immediately. The line above the buttons shows when it was last saved
+- Restore Saved Setup puts every saved setting back
+
+> **Warning:** Restore Saved Setup overwrites the settings on this Mac with the saved ones. It asks you to confirm first. The saved copy is normally the one written when you last quit.
+
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Connecting to a Database Server](/manual/shared-database/#connecting-to-a-database-server)
+
+## Updating MediaFlow
+
+*MediaFlow updates itself from the MediaFlow website and keeps your settings.*
+
+MediaFlow looks for a newer version of itself, tells you when there is one, and installs it when you say so. Your settings and projects are not touched by an update.
+
+### Where new versions come from
+
+New versions come from the MediaFlow website. MediaFlow reads one small file from mediaflowswift.com that names the newest version, and nothing about you or your Mac goes with the request. Every copy of MediaFlow updates this way; earlier versions could also update from a copy of the app on a share, and that choice is gone.
+
+### Who may sign an update
+
+An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else can be handed to you as an update, whatever the website says. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so your Keychain asks once more and then not again. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
+
+### Automatic checks
+
+With “Check for new versions automatically” on, MediaFlow looks shortly after launch, when the Mac wakes, and then every few hours; while the website cannot be reached it tries again every half hour. Checking reads one small file.
+
+### When a new version is found
+
+A window opens over the main window saying which version is available and which one you have, with the new version’s headline and what is new in it. It never opens while an import, organize, copy, archive, export, upload to YouTube or other work is running, while another sheet or dialog is open, Settings included, while you are typing, or while another MediaFlow window such as Help is the one you are using, and not while a card you have just connected is being offered for import: it waits until nothing is going on for a few seconds, then asks. If you are working in another app, MediaFlow does not take the screen from it; the window waits over MediaFlow’s main window, and the Dock icon bounces once.
+
+- Install Now (Return) installs the new version straight away, with the same checks as the Software Update window: never while something is running, and your work is saved first. The window then shows the install as it goes
+- Later (Esc) closes the window. MediaFlow asks again the next time it opens, or after about a day if it stays open
+- Skip This Version closes the window and does not ask about that version again. A newer version is asked about as usual
+- Install Now and Skip This Version work only once the keyboard has been still for a moment: while keys keep coming, even a Return held down, Return and Space do nothing there, and neither does a click on either button. The same moment passes after the window opens and after you come back to MediaFlow from another app, so a key you were pressing for something else cannot install or skip a version. Tab and Shift-Tab between the window’s own buttons do not count, so with Full Keyboard Access you can Tab to a button and press Space straight away. Later (Esc) always works
+
+Whatever you answered, Check for Updates… in the app menu always offers the newest version, even one you skipped or put off, and you can install it from there at once. Later in the Software Update window means the same as Later in the question. A version you skipped is shown in Settings › General under Updates, with Offer It Again to be asked about it once more.
+
+### Installing
+
+1. Choose Check for Updates… in the app menu, or click Install Now when a new version asks
+2. From Check for Updates…, click Install Update. The button is unavailable while a background operation, such as an import or an upload to YouTube, is running; wait for it to finish
+3. MediaFlow downloads the new version and checks that it is exactly the file, and the version, the website promised, checks that it is genuine and from the same maker as the one you are running, closes, puts it in place of the old one and reopens. It reopens only once the old copy has fully closed, which can take some seconds while the shared database is saved. Do not quit or reopen it yourself while it works
+
+The update window lists what is new in the version on offer: every version newer than yours, its headline and its points, taken from the change log the website publishes beside the version file. Notes are read before anything is installed and are not signed, so treat the list as a preview; the copy itself is checked for its maker’s signature when it is installed. When the website has no change log to offer, the list is simply absent.
+
+Your settings are written to disk and to the saved setup before the app restarts.
+
+MediaFlow looks for a new version a few seconds after launch, again every half hour until it can reach the website, and then every few hours, as well as after the Mac wakes. If anything about the new version does not check out, nothing is changed and the version you had reopens. The version you updated from is kept whole for Revert, in MediaFlow’s own folder under Library › Application Support, not beside the app: two copies of MediaFlow in Applications made macOS judge the wrong one when the app asked for your local network after an update. A copy an earlier version left beside the app is moved there the first time this version opens. Every version is the same signed app to macOS, and before the new one reopens the installer tells Launch Services about it, so that permissions you have given MediaFlow carry over from one update to the next; the Keychain’s do. Reaching your local network is the one macOS has sometimes made the new version ask for again; see It Stopped Connecting After an Update. What the installer did is written to Library/Logs/MediaFlow/update.log in your home folder.
+
+### Going back
+
+After an update, the Software Update window shows Revert to Previous Version (or Revert to a named version). It puts the version you had before back in place and relaunches.
+
+See also: [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab)
+
+## The Settings Window, Tab by Tab
+
+*A map of the eight Settings tabs, so you know which one holds the setting you are looking for.*
+
+Settings has eight tabs. Each holds one subject. Most changes take effect as you make them.
+
+`Cmd+,` — Open Settings
+
+### General
+
+Run Setup Again…, the saved copy of your settings (Save Setup Now, Restore Saved Setup), where app updates come from and whether to check automatically, and the version you are running.
+
+### Network
+
+Which network share MediaFlow uses: shares connected now, Look for servers, Connect now and Forget. There is no built-in share; nothing is assumed until you choose one.
+
+### Storage
+
+The shared database: Enable Central Database, the Store (Database file or Database server), its file or connection fields, and copying records between the two. Below it, the default destination for new projects and “Verify organized copies by reading them back”.
+
+### Cameras
+
+The open project’s camera list (add, rename, remove), “Suggest import when a camera or card is connected”, and camera identities: the rules that turn a serial number or model into the camera name you use.
+
+### Categories
+
+The open project’s category list (add, rename, retire, restore, remove), Also use for new projects, and Category Learning with Reset Pattern Memory.
+
+### Analysis
+
+“Use a model to suggest categories” with its provider, model, API key and daily spending limit. Below it, Import Analysis: proposing a category, camera and scene after an import, and the optional Tier 1 pass that looks at pictures and listens to speech.
+
+### Privacy
+
+Everything that can leave this Mac for a company outside your network, with what is sent and to whom. Each outside service has its own switch and is off until you turn it on.
+
+### Notifications
+
+One switch for each kind of Smart Notification.
+
+> **Tip:** The camera and category lists belong to the project, not to the app. With no project open, those two tabs show Open a Project… instead of a list.
+
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](/manual/shared-database/#database-file-or-database-server), [Adding, Renaming, Retiring and Removing Categories](/manual/tags-categories/#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](/manual/organizing-media/#using-a-model-to-suggest-categories), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [How MediaFlow Verifies Copies](/manual/organizing-media/#how-mediaflow-verifies-copies), [Smart Notifications](/manual/settings-preferences/#smart-notifications)
+
+## Privacy: What Leaves This Mac
+
+*MediaFlow works on this Mac and your own network; each service that reaches an outside company is off until you turn it on.*
+
+MediaFlow has no account and collects no usage data. Your media, projects and shared database stay on this Mac and on your own network.
+
+On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a random id it made up for this Mac, and the Mac’s name. Settings › Privacy lists both, with the exact details. A problem report reaches its maker only when you send it: from your own mail app with Email Report…, or, on a Mac set up with the maker’s report relay, when you have turned on Sending problem reports and click Send on a report you have read.
+
+A few features need a service run by another company. Settings › Privacy lists every one: what is sent, to whom, and what it is for. Each is off until you turn it on, and you can turn it off again at any time.
+
+### The switches
+
+- Apple’s online speech recognition — sends the audio of the clip being transcribed to Apple, only when this Mac has no on-device speech model for the language. While it is off, speech is recognized on this Mac only, and a language without an on-device model is not transcribed.
+- Historical weather lookup — sends each clip’s GPS coordinates, rounded to about 100 m, and the date it was shot to Open-Meteo. While it is off, Look Up Weather does nothing and tells you where to turn it on.
+- Place names for GPS coordinates — sends each clip’s coordinates, rounded to about 100 m, to Apple. While it is off, clips show their coordinates; names already looked up are kept.
+- A model that writes your YouTube title, description and tags — sends the transcript of the finished video you chose, its length, the brief you typed, and then its own drafts, to the provider chosen in Settings › Analysis. Never the video or its file name. Not needed with the model on this Mac, when nothing is sent outside; a local model you have pointed at another computer on your network receives the same text. See The SEO Agent
+- Uploading to YouTube — sends the finished video you chose, with its title, description, chapters, tags, category, visibility, publish time and made-for-kids answer, the file’s size and type, and the thumbnail if you chose to send it, to Google. Signing in opens your browser at Google; MediaFlow never sees your password. Signing in and staying signed in send your client ID and secret to Google. The permission cannot read your channel or delete videos. Nothing is sent until you click Upload and confirm. While it is off, uploading is refused and sign-in does not ask for permission to upload; with both YouTube switches off, signing in is refused too. See Uploading to YouTube
+- Reading your videos’ statistics from YouTube — asks Google which channel you signed in to, and sends the YouTube IDs of the videos your database records as uploaded by MediaFlow with the span of dates from the first upload to today, and nothing else. Google answers with their views, likes, comments, watch time, average view, subscribers gained, shares, visibility and publish time. Turning it on makes the next sign-in ask Google for two more permissions, both read-only, which would allow reading your whole channel; MediaFlow asks only about those videos. Read only when you click Read from YouTube Now on the Results tab. See How Your Videos Are Doing
+- Maps of where you shot — showing a map sends the area you are looking at to Apple, which is how the map images arrive. While it is off, the Shoot Map and GPS scene review list locations without a map, with a Turn On Maps button.
+- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to a report relay run by MediaFlowSwift’s maker, whose address is entered in Settings › Privacy. The relay fields stay folded away until a relay is set up; a customer has no relay, and needs none. While it is off, or no relay is set up, the Send button is not there. Email Report… needs no switch: it opens the report in your own mail app, for you to send.
+
+### A model that suggests categories
+
+This one is set up in Settings › Analysis, and then ticked for each import you want it for. With a paid provider (Anthropic, OpenAI or Google) it sends three frames from each clip, your category list, the clip’s camera, duration and place name, the opening words of any speech, and your recent corrections. With a model on this Mac, nothing leaves it.
+
+The local model’s Server address may be this Mac or another computer on your own network. An address on the internet is refused, and a redirect from the server is never followed, so frames go only to the computer you named.
+
+### What stays on your network
+
+- Your network share: finding it, connecting to it, and reading and writing media and the database file.
+- Your database server, when you use one. That connection is not encrypted, so keep the server on a network you trust.
+
+### Things that open your browser or mail app
+
+Buttons such as a provider’s API-key page, the Ollama download or Help → Support Website open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. MediaFlow itself sends nothing.
+
+> **Tip:** A saved setup keeps your Privacy switches, but they are not restored automatically on a new install — only when you choose Restore Saved Setup…, which says so before it does.
+
+macOS may separately ask permission for speech recognition or for finding devices on your local network. Those prompts come from macOS and are managed in System Settings › Privacy & Security.
+
+See also: [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Using a Model to Suggest Categories](/manual/organizing-media/#using-a-model-to-suggest-categories), [Running a Model on This Mac](/manual/organizing-media/#running-a-model-on-this-mac), [Speech Transcription](/manual/organizing-media/#speech-transcription), [Historical Weather Lookup](/manual/organizing-media/#historical-weather-lookup), [Interactive Shoot Map](/manual/organizing-media/#interactive-shoot-map), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Contacting Support](/manual/troubleshooting/#contacting-support)
+
+<div class="chapter-nav" role="navigation" aria-label="Chapters">
+<a rel="prev" href="/manual/getting-started/">&larr; Getting Started</a>
+<a href="/manual/">All chapters</a>
+<a rel="next" href="/manual/importing-media/">Importing Media &rarr;</a>
+</div>

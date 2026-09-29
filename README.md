@@ -11,16 +11,17 @@ The public website for MediaFlowSwift, served by GitHub Pages from the `main` br
 - `key.html` — Lost your key: the key again from the transaction number on a Paddle receipt
 - `download.html` — the current version from `downloads/latest.json`, requirements, installing
 - `downloads/` — `latest.json`, `CHANGELOG.md` and the newest zip, written by `tools/publish-release.sh` with each release
-- `manual/index.md` — the online manual, GENERATED: run `tools/import-guide.sh` after each release (it copies the app's `docs/guides/user-guide.md`); GitHub Pages renders it through `_layouts/manual.html`
+- `manual/` — the online manual, GENERATED from the app's `docs/guides/user-guide.md`: run `tools/import-guide.sh <release worktree>/docs/guides/user-guide.md` after each release, then commit `manual/` and `sitemap.xml` together. Each chapter of the guide becomes `manual/<chapter>/index.md` (served at `/manual/<chapter>/`, with its own title, description and previous/next links); `manual/index.md` is the contents page at `/manual/`, and its small script sends an old one-page link such as `/manual/#clear-card` to the chapter that heading is on now. The tool (`tools/import-guide.py`) checks every link in the guide before writing anything, rewrites the manual's block of `sitemap.xml` (a page keeps its `<lastmod>` unless it changed), removes the page of a chapter the guide no longer has, and then runs `tools/check-links.py`. GitHub Pages renders the pages through `_layouts/manual.html`. Never edit these files by hand
 - `CNAME` — the custom domain
 - `404.html` — what GitHub Pages shows for an address that does not exist; absolute links, since it is served at any depth
-- `robots.txt`, `sitemap.xml` — for search engines. The sitemap is written by hand: add a page there when you add one to the site, and move its `<lastmod>` when its content changes. Pages that are `noindex` (`key.html`, `thanks.html`, `404.html`) stay out of it
+- `robots.txt`, `sitemap.xml` — for search engines. The sitemap is written by hand, except the manual's block between its two marker comments, which `tools/import-guide.sh` writes: add a page there when you add one to the site, and move its `<lastmod>` when its content changes. Pages that are `noindex` (`key.html`, `thanks.html`, `404.html`) stay out of it
+- `tools/check-links.py` — checks that every link on the site leads to a page, file or heading, that each manual page has one H1, and that the sitemap lists every manual page and nothing marked `noindex`. Run `python3 tools/check-links.py` before committing a change to the pages
 - `llms.txt` — a plain-text summary of the product for AI assistants; it states only what the pages already say, so change it when they change
 - `images/og-image.png` — the picture shown when a page is shared, drawn by `swift tools/make_og_image.swift images/og-image.png`
 
 Every page carries a canonical link, Open Graph and Twitter card tags (the two layouts build theirs from `site.url` and `page.url`), and the home page has JSON-LD for the app and the company. A new page needs the same `<head>` block.
 
-Static files plus one Jekyll-rendered page (the manual); GitHub Pages builds it. Edit, commit to `main`, and Pages publishes within a minute.
+Static files plus the Jekyll-rendered Markdown pages (the manual and the terms); GitHub Pages builds them. Edit, commit to `main`, and Pages publishes within a minute.
 
 The privacy page must say the same as Settings › Privacy in the app (`Sources/Services/PrivacySettings.swift` in the app repository). When that file changes, change this page.
 
