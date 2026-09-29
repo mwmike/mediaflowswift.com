@@ -1,0 +1,34 @@
+# MediaFlowSwift
+
+> MediaFlowSwift is a footage manager for video creators on the Mac, made by Long Road Software LLC (Tennessee, USA). It tracks every clip from a shoot: import from cards and phones, sort and review, organize into folders ready for editing, free up space only after each copy is verified, archive, and publish to YouTube.
+
+## What it does
+- Imports from SD cards, USB drives, folders, iPhone and cameras connected over USB
+- Review with frame-accurate preview, Rapid Review, star ratings, tags, notes and selects; your own categories, with optional suggestions from an on-device model or a provider you choose
+- Speech transcripts, place names, weather and a shoot map
+- Copies clips into category folders at each project's destination (network share, external drive or a folder on the Mac)
+- Archives to numbered drives with a record of what is where; restore and relink; "Library Moved" repoints every project at a new drive
+- Editing drive: move a project to a fast SSD and back, with changes carried across and checked
+- Proxies for footage on a network share
+- PDF, HTML and CSV reports
+- Studio Pro: drafts YouTube titles, descriptions, chapters and tags; uploads to YouTube with thumbnail, schedule and visibility; reads back views, watch time and subscribers; shared database server across several Macs
+
+## Requirements
+macOS 14 or later on a Mac with Apple silicon.
+
+## Pricing
+14-day free trial of the full app, no card required. Studio: USD 4.99/month. Studio Pro: USD 9.99/month. Yearly plans include two months free. One plan covers one person on up to three Macs. Payment through Paddle, merchant of record. Full refund within 14 days.
+
+## Privacy
+No account and no usage data. The app checks for updates and, once a key is entered, checks the licence; every other outside service is off until the user turns it on.
+
+## Key pages
+- Overview and plans: https://mediaflowswift.com/
+- Download: https://mediaflowswift.com/download.html
+- Manual: https://mediaflowswift.com/manual/
+- Support: https://mediaflowswift.com/support.html
+- Refund policy: https://mediaflowswift.com/refunds.html
+- Company: https://longroadsoftware.com/
+
+## Contact
+support@mediaflowswift.com

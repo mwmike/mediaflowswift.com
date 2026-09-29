@@ -1,6 +1,6 @@
 ---
 layout: manual
-title: Manual
+title: "MediaFlowSwift Manual — Import, Organize and Archive Footage"
 description: The MediaFlowSwift user guide, generated from the Help inside the app.
 ---
 # MediaFlowSwift Manual

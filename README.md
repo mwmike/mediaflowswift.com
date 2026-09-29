@@ -13,6 +13,12 @@ The public website for MediaFlowSwift, served by GitHub Pages from the `main` br
 - `downloads/` — `latest.json`, `CHANGELOG.md` and the newest zip, written by `tools/publish-release.sh` with each release
 - `manual/index.md` — the online manual, GENERATED: run `tools/import-guide.sh` after each release (it copies the app's `docs/guides/user-guide.md`); GitHub Pages renders it through `_layouts/manual.html`
 - `CNAME` — the custom domain
+- `404.html` — what GitHub Pages shows for an address that does not exist; absolute links, since it is served at any depth
+- `robots.txt`, `sitemap.xml` — for search engines. The sitemap is written by hand: add a page there when you add one to the site, and move its `<lastmod>` when its content changes. Pages that are `noindex` (`key.html`, `thanks.html`, `404.html`) stay out of it
+- `llms.txt` — a plain-text summary of the product for AI assistants; it states only what the pages already say, so change it when they change
+- `images/og-image.png` — the picture shown when a page is shared, drawn by `swift tools/make_og_image.swift images/og-image.png`
+
+Every page carries a canonical link, Open Graph and Twitter card tags (the two layouts build theirs from `site.url` and `page.url`), and the home page has JSON-LD for the app and the company. A new page needs the same `<head>` block.
 
 Static files plus one Jekyll-rendered page (the manual); GitHub Pages builds it. Edit, commit to `main`, and Pages publishes within a minute.
 

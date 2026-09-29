@@ -3,16 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page.title | escape }}</title>
-<meta name="description" content="{{ page.description | escape }}">
-<link rel="canonical" href="{{ site.url }}{{ page.url }}">
-<meta property="og:site_name" content="MediaFlowSwift">
-<meta property="og:type" content="website">
-<meta property="og:title" content="{{ page.title | escape }}">
-<meta property="og:description" content="{{ page.description | escape }}">
-<meta property="og:url" content="{{ site.url }}{{ page.url }}">
-<meta property="og:image" content="https://mediaflowswift.com/images/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
+<title>Page not found — MediaFlowSwift</title>
+<meta name="description" content="There is no page at this address on mediaflowswift.com.">
+<meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +21,7 @@
       <a href="/download.html">Download</a>
       <a href="/#how">How it works</a>
       <a href="/#plans">Plans</a>
-      <a href="/manual/" aria-current="page">Manual</a>
+      <a href="/manual/">Manual</a>
       <a href="/support.html">Support</a>
       <a href="/privacy.html">Privacy</a>
     </nav>
@@ -36,9 +29,15 @@
 </header>
 
 <main class="wrap">
-<article class="doc manual">
-  <p class="updated">This manual is generated from the Help inside MediaFlowSwift (Help → MediaFlowSwift Help), so the two always say the same thing. It describes the current release.</p>
-  {{ content }}
+<article class="doc">
+  <h1>Page not found</h1>
+  <p>There is no page at this address. It may have moved, or the link may have a typo.</p>
+  <ul>
+    <li><a href="/">Home</a>: what MediaFlowSwift does, and the plans</li>
+    <li><a href="/download.html">Download</a>: the current version, free for 14 days</li>
+    <li><a href="/manual/">Manual</a>: how everything in the app works</li>
+    <li><a href="/support.html">Support</a>: help, and how to reach us</li>
+  </ul>
 </article>
 </main>
 
