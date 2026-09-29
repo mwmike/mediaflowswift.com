@@ -25,6 +25,7 @@ No account and no usage data. The app checks for updates and, once a key is ente
 ## Key pages
 - Overview and plans: https://mediaflowswift.com/
 - Download: https://mediaflowswift.com/download.html
+- What's new in each version: https://mediaflowswift.com/changes/
 - Manual: https://mediaflowswift.com/manual/
 - Support: https://mediaflowswift.com/support.html
 - Refund policy: https://mediaflowswift.com/refunds.html

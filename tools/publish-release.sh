@@ -10,6 +10,9 @@
 # Only the newest zip is kept in the repo; the Releases keep the history. The release is made first,
 # so the manifest never points the button at a copy that is not there yet; if it cannot be made,
 # the manifest leaves "download" out and the button falls back to the site copy. A re-run is safe.
+# The What's New page (changes/index.html, and its sitemap line) is written from the same change log by
+# tools/import-changelog.py before anything is published: a change log it cannot read, or whose newest
+# version is not this one, stops the release here. downloads/CHANGELOG.md itself is copied unchanged.
 # Run it AFTER stapling.
 set -u
 APP="${1:?the stapled .app}"
@@ -24,6 +27,8 @@ VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$PLIST
 BUILD=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST") || { echo "no build in $PLIST"; exit 1; }
 [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+){0,3}$ ]] || { echo "version '$VERSION' is not digits and dots"; exit 1; }
 xcrun stapler validate "$APP" >/dev/null 2>&1 || { echo "$APP is not stapled; staple before publishing"; exit 1; }
+python3 "$SITE/tools/import-changelog.py" "$LOG" "$SITE" --newest "$VERSION" \
+  || { echo "the What's New page could not be made from $LOG; nothing was published"; exit 1; }
 
 NAME="MediaFlowswift-$VERSION.zip"
 ZIP="$WORK/$NAME"
@@ -36,7 +41,7 @@ TAG="v$VERSION"
 # The counted copy for the website's button. A release that already exists is left alone.
 if ! gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
   gh release create "$TAG" "$ZIP" --repo "$REPO" --title "MediaFlowSwift $VERSION" \
-    --notes "Build $BUILD. Notarized. What is new: https://mediaflowswift.com/downloads/CHANGELOG.md" \
+    --notes "Build $BUILD. Notarized. What is new: https://mediaflowswift.com/changes/#v${VERSION//./-}" \
     || echo "the GitHub Release failed; the Download button will use the site copy until it exists"
 fi
 DOWNLOAD_FIELD=""
@@ -63,9 +68,9 @@ print("manifest ok:", m["version"], m["build"], m["size"], "bytes")
 PY
 
 cd "$SITE" || exit 1
-git add -A downloads || exit 1
+git add -A downloads changes sitemap.xml || exit 1
 if git diff --cached --quiet; then
-  echo "nothing changed under downloads/ (already published?)"
+  echo "nothing changed under downloads/ or changes/ (already published?)"
 else
   git commit -q -m "release: MediaFlowSwift $VERSION (build $BUILD)" || exit 1
 fi
