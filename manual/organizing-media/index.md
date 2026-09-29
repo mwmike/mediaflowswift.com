@@ -140,6 +140,8 @@ The first time a Mac checks a project file after the update, it checks it as bef
 
 If that memory cannot be read or kept, which is rare, the Mac puts it aside and checks as before, so every clip whose file is gone reads Missing.
 
+With a shared database, Re-check files also tells it where a clip is when this Mac can see for certain that the database is wrong: your file is where your project says, and the file the database names is on a drive or share mounted on this Mac (under /Volumes) and isn’t there, though the folder it would be in is. A file the database names on this Mac’s own disk is never judged, since another Mac’s disk or another user’s home can look just the same; nor one on a drive that isn’t mounted. Each file is given 3 seconds to answer, and a drive or share that doesn’t answer in that time isn’t asked again in that Re-check: its clips are left as the database has them, and Re-check files says how many. A clip the database records as archived is left as it is too. When it sends any, it says how many. While it looks, the status line shows how far it has got; closing the project stops it. The check MediaFlow runs by itself after files change never does this; see Where a Clip Is in Shared Database Overview.
+
 Re-check files only looks at recorded paths. It does not search for files that have moved; use Workflow → Repair → Relink Missing Media… for that.
 
 A clip whose file is being moved into its category folder at that moment, after a category change, is left to the move: its file has already left the recorded path, and the move records where it went. The clip is looked at again once the move is done. Anything else you change while the check runs, including the category itself, is kept.

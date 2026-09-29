@@ -150,7 +150,7 @@ Whatever you answered, Check for Updates… in the app menu always offers the ne
 2. From Check for Updates…, click Install Update. The button is unavailable while a background operation, such as an import or an upload to YouTube, is running; wait for it to finish
 3. MediaFlow downloads the new version and checks that it is exactly the file, and the version, the website promised, checks that it is genuine and from the same maker as the one you are running, closes, puts it in place of the old one and reopens. It reopens only once the old copy has fully closed, which can take some seconds while the shared database is saved. Do not quit or reopen it yourself while it works
 
-The update window lists what is new in the version on offer: every version newer than yours, its headline and its points, taken from the change log the website publishes beside the version file. Notes are read before anything is installed and are not signed, so treat the list as a preview; the copy itself is checked for its maker’s signature when it is installed. When the website has no change log to offer, the list is simply absent.
+The update window lists what is new in the version on offer, taken from the change log the website publishes beside the version file. Each version newer than yours is one row: its number, its date, its one-line summary and how many changes it brings. Click a row, or its +, to see that version’s changes, each with the first sentence of what it means; the + turns into −, and a second click hides them again. The newest version starts open. The list scrolls, and while earlier versions are out of sight below it, a line under it says how many. When only one version is on offer, its changes are listed straight away. See every change on mediaflowswift.com opens the website’s What’s New page at the version on offer, in your browser. Notes are read before anything is installed and are not signed, so treat the list as a preview; the copy itself is checked for its maker’s signature when it is installed. When the website has no change log to offer, the list is simply absent, and See every change on mediaflowswift.com is there on its own.
 
 Your settings are written to disk and to the saved setup before the app restarts.
 
@@ -240,7 +240,7 @@ The local model’s Server address may be this Mac or another computer on your o
 
 ### Things that open your browser or mail app
 
-Buttons such as a provider’s API-key page, the Ollama download or Help → Support Website open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. MediaFlow itself sends nothing.
+Buttons and links such as a provider’s API-key page, the Ollama download, Help → Support Website or See every change on mediaflowswift.com in the update window open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. MediaFlow itself sends nothing.
 
 > **Tip:** A saved setup keeps your Privacy switches, but they are not restored automatically on a new install — only when you choose Restore Saved Setup…, which says so before it does.
 
