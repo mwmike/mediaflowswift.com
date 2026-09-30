@@ -173,17 +173,18 @@ Google requires every app that uploads to YouTube to identify itself with a clie
 1. In your browser, open console.cloud.google.com and sign in with the Google account that owns your channel
 2. Create a project. Any name will do
 3. Under APIs & Services › Library, find YouTube Data API v3 and click Enable. If you will read statistics, enable YouTube Analytics API too
-4. Under APIs & Services › OAuth consent screen, choose External, give the app a name and your email address, and save. Add your own Google account under Test users
-5. Under APIs & Services › Credentials, click Create Credentials › OAuth client ID, and choose the application type Desktop app
+4. From the menu, open Google Auth platform › Branding and click Get Started. Give the app a name and your email address, choose External for the audience, give your email address for contact, agree to Google’s user data policy, and click Create
+5. Under Google Auth platform › Clients, click Create Client, choose the application type Desktop app, give it any name, and click Create
 6. Copy the client ID and the client secret Google shows you
-7. In MediaFlow, open Settings › Analysis. Under YouTube, paste the client ID, paste the secret and click Save
+7. Under Google Auth platform › Audience, click Publish app and confirm, so that the publishing status reads In production. For a project that only you sign in to, this needs no review from Google. Left in Testing, Google ends every sign-in after seven days. If you leave it in Testing, add your own account under Audience › Test users: otherwise Google refuses the sign-in, and MediaFlow says it was declined
+8. In MediaFlow, open Settings › Analysis. Under YouTube, paste the client ID, paste the secret and click Save
 
 The client ID is kept in MediaFlow’s settings. The secret is kept in the Keychain, never in a file, the saved setup or a log.
 
 ### What to Expect at Sign-In
 
-- Google shows a warning that the app is not verified, because the project is yours and has not been through Google’s review. Click Advanced, then continue. Only the test users you listed can sign in
-- While the consent screen is in Testing, Google ends the sign-in after seven days and you sign in again. Publishing the consent screen, under the same page, makes it last
+- Google shows a warning that the app is not verified, because the project is yours and has not been through Google’s review. Click Advanced, then continue
+- If the publishing status is still Testing, Google ends the sign-in after seven days. MediaFlow then says your YouTube sign-in has expired, and Sign In Again… takes you straight to Google. The video’s details, and any upload already under way, are kept: after signing in, click Upload or Continue the Upload again. Publishing the app (step 7) stops this. The same happens if you remove MediaFlow’s permission at Google
 - Until the project passes Google’s audit, YouTube keeps its uploads Private. See Uploading to YouTube
 
 > **Warning:** The type must be Desktop app. A Web application client is refused at sign-in, because it does not allow the answer to come back to this Mac.

@@ -291,7 +291,17 @@ If the shared database can’t be written when a split archive finishes, its rec
 
 ### When a Drive Number Belongs to Another Drive
 
-MediaFlow may tell you that it couldn’t record an archive, or send a project to the database, because a drive number in the database belongs to a different drive. This happens when two Macs were apart (one working on its own copy of the shared database, after the other took it over, say) and each numbered a new drive the same way: two drives now carry that number, and MediaFlow can’t tell for certain which is which, so it records neither rather than guess. Nothing is lost. The archive stays on its drives, the project stays safe on this Mac in its project file, and MediaFlow keeps what it couldn’t record and tries again each time it connects. Until MediaFlow can settle this for you, keep working as usual, and choose Help → Contact Support…: support can help you tell the two drives apart.
+MediaFlow may tell you that it couldn’t record an archive, or send a project to the database, because a drive number in the database belongs to a different drive. This happens when two Macs were apart (one working on its own copy of the shared database, after the other took it over, say) and each numbered a new drive the same way: two drives now carry that number, and MediaFlow can’t tell for certain which is which, so it records neither rather than guess. Nothing is lost. The archive stays on its drives, the project stays safe on this Mac in its project file, and MediaFlow keeps what it couldn’t record and tries again each time it connects.
+
+Settings › Storage lists each of them under “Waiting, but can’t be recorded”: which project, which drive number, and why. Nothing happens to one until you choose what to do with it, or until you archive that project again and the new archive is recorded, which takes the place of what waited. Each choice says first what happens to your files, and asks:
+
+- An archive’s record: Let It Go stops keeping it. When the project file still records that very archive, it stops saying the project is archived, so you can archive it again; a project file that records another archive, made since, is left as it is. Archive Again does the same, then opens the project to archive it.
+- A project that couldn’t be sent: Send Without Its Archive Record sends the project and its clips as not archived, and the project file stops saying the project is archived. Each clip goes where your project file had it before the archive when its file is there now, and as Missing when it isn’t. Then MediaFlow offers to archive it again.
+- Whatever you choose, nothing on any drive is deleted or moved: the archive stays on its drives as it is, and nothing another Mac recorded is changed.
+
+If your library no longer has the project (you deleted it after archiving it), its archive may be the only copy. The choice says so, and names the drive and the project’s folder on it; letting the record go, or sending the project without it, keeps a note of where the archive is under “Released archives” in Settings › Storage. The note stays until you remove it.
+
+When you archive the project again, choose a new drive, which gets a number of its own, or another drive. MediaFlow won’t archive to the drive this Mac numbered the same as another drive in the database, as long as the database gives that number to the other drive, because the archive would be recorded on the other one: it tells you, and lets you choose again. It knows this Mac’s drive by when this Mac set it up and by its size, so another Mac’s drive of that number is never refused.
 
 ### Cancelling
 
@@ -325,6 +335,8 @@ See also: [Archiving a Project to USB](#archiving-a-project-to-usb), [Managing A
 *See every numbered archive drive, what is on it, and whether it is connected.*
 
 File → Manage Archive Volumes lists every registered drive with its number, label, used space, and whether it is currently connected. Select a volume to edit its label, see capacity and creation date, and view the projects archived on it with their sizes. A drive that carries a marker but is missing from the database is registered automatically the next time it appears in the archive sheet.
+
+A drive’s used space counts the clips the shared database records on it. An earlier version of MediaFlow could leave an archived clip recorded on no drive. Each time MediaFlow connects to the shared database, it puts the drive back, taking it only from the archive’s own record: for a project archived to one drive, that drive, and the drive’s used space is worked out again. A repair that never reached the shared database, used space a disconnect kept from being worked out again, or a clip that loses its drive again, is put right at a later connect. A project split across drives is left as it is unless its record names one drive for all of it, since the record doesn’t say which drive holds each clip; the next archive or restore of that project records its clips again. A clip in more than one archived project is left as it is too, and so is one first added to the project after it was archived, since that archive didn’t take it. Each archive with clips left as they are is noted in the log once. A project another Mac has open on a database server is left until a later connect.
 
 > **Tip:** Label each drive on the outside with its USB number so the numbers in the app match the shelf.
 
