@@ -6,7 +6,15 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.34.
+Nothing waiting. Everything finished so far is in 1.10.35.
+
+## 1.10.35 · September 29, 2026
+
+**YouTube tells you when to sign in again, drives that share a number are yours to settle, and archive drives count every clip.**
+
+- **If your YouTube sign-in expires, MediaFlow says so and takes you straight to sign in again.** Your video’s title, description, chapters and chosen file stay just as you left them, and an upload already under way picks up where it stopped when you click Continue the Upload after signing in. Help now also shows the one switch in your Google project that stops sign-ins running out every week.
+- **When two Macs number different drives the same way, you decide what happens.** If an archive or a project couldn’t be recorded because another Mac gave its own drive the same number, Settings › Storage now lists it, says why in plain words, and lets you let the record go, send the project without its archive, or archive it again to a drive with a number of its own. Nothing on your drives is deleted or moved, and MediaFlow won’t archive to the drive whose number belongs to another.
+- **Archive drives count all their clips again.** An earlier version could lose track of which drive held some archived clips, so those clips didn't count toward the drive's used space. MediaFlow now puts the drive back the next time you connect, taking it only from the archive's own record, and leaves alone any clip that record can't place, such as one in two archived projects or one added after the archive.
 
 ## 1.10.34 · September 29, 2026
 
