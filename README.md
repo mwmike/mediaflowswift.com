@@ -24,6 +24,7 @@ The public website for MediaFlowSwift, served by GitHub Pages from the `main` br
 
 1. `tools/publish-release.sh <stapled app> <release worktree>/CHANGELOG.md` — first writes What's New (`changes/index.html` and its line in `sitemap.xml`) from that change log, and stops before publishing anything if the log is not in the form the app reads or its newest version is not the one being released; then the zip, the GitHub Release, `downloads/` (the change log copied unchanged, `latest.json`), one commit and a push.
 2. `tools/import-guide.sh <release worktree>/docs/guides/user-guide.md` — the manual; commit `manual/` and `sitemap.xml` together.
+3. Only when the release changes the terms of use (the app's `TermsOfUse.version` moved on): `tools/import-terms.sh <release worktree>/docs/legal/terms.md`, then commit `terms.md`. Never before that release is published: the site's terms describe the app people can download, and the pricing wording that goes with new terms waits for them too.
 
 To rebuild What's New by hand: `python3 tools/import-changelog.py downloads/CHANGELOG.md .`. It writes nothing unless every version is `## <version> · <Month D, YYYY>`, then a line that is entirely bold (the headline), then `- **Title.** text` bullets, newest first, with no version twice and no other line inside a version (the app's update window would skip it). Two early versions, 1.5.1 and 1.10.1, are accepted as they were written.
 
