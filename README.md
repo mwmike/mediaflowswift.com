@@ -35,6 +35,6 @@ The privacy page must say the same as Settings › Privacy in the app (`Sources/
 
 ## Paddle (plans and checkout)
 
-Paddle.js is loaded from Paddle's CDN on the home page only. The site runs against **live** unless the URL carries `?sandbox=1`, which switches token, price ids and licence-service URL to the sandbox block in `paddle-config.js` and carries through to `thanks.html`. An environment with blank ids shows a notice instead of prices; nothing falls back silently.
+Paddle.js is loaded from Paddle's CDN on the home page only. The site runs against **live** unless the URL carries `?sandbox=1`, which switches token, price ids and licence-service URL to the sandbox block in `paddle-config.js` and carries through to `thanks.html`. `?discount=CODE` on the home page applies a Paddle discount code when the checkout opens; the checkout also shows its own field for one. An environment with blank ids shows a notice instead of prices; nothing falls back silently.
 
 To test: `python3 -m http.server 8765` in this folder, open `http://localhost:8765/?sandbox=1#plans`, and pay with Paddle's test card 4242 4242 4242 4242 (any future expiry, any CVC). Sandbox approves localhost automatically; the live account needs mediaflowswift.com approved under Checkout › Website approval and a default payment link set under Checkout › Checkout settings.

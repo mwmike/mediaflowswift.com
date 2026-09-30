@@ -52,9 +52,13 @@
     // No successUrl here: Paddle does not add the transaction number to it, and the thank-you page needs it.
     // The checkout.completed event below carries the number, and we go to the thank-you page ourselves.
     var open = { items: [{ priceId: priceId(tier), quantity: 1 }],
-      settings: { displayMode: "overlay", variant: "one-page", theme: theme(), showAddDiscounts: false } };
-    var email = new URLSearchParams(window.location.search).get("email");
+      settings: { displayMode: "overlay", variant: "one-page", theme: theme(), showAddDiscounts: true } };
+    var params = new URLSearchParams(window.location.search);
+    var email = params.get("email");
     if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) open.customer = { email: email };
+    // A code in the link (?discount=CODE) is applied before the checkout opens; the field stays for typing one.
+    var code = params.get("discount");
+    if (code && /^[A-Za-z0-9]{1,32}$/.test(code)) open.discountCode = code;
     Paddle.Checkout.open(open);
   }
 
