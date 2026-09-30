@@ -104,9 +104,9 @@ See also: [Database File or Database Server?](#database-file-or-database-server)
 
 This works with a database server only. With a database file nothing is shown: each Mac works on its own copy of the file until it disconnects, so Macs take turns with it anyway.
 
-While the server is connected, each Mac with a project open lets the others know, about every 45 seconds. When you open a project that someone has open on another Mac, MediaFlow tells you once: “Sheri Smith has this project open on Sheri’s MacBook Air.” When several people do, it says “Sheri and 2 others have this project open.”
+While the server is connected, each Mac with a project open lets the others know, about every 45 seconds. When you open a project that someone has open on another Mac, MediaFlow tells you once: “Sam Rivera has this project open on Sam’s MacBook Air.” When several people do, it says “Sam and 2 others have this project open.”
 
-While they are in, the window title says where: “Road Trip · also open on Sheri’s MacBook Air”. It appears within a minute of someone opening the project, and goes within a minute of them closing it or quitting.
+While they are in, the window title says where: “Road Trip · also open on Sam’s MacBook Air”. It appears within a minute of someone opening the project, and goes within a minute of them closing it or quitting.
 
 ### What It Means
 
@@ -417,7 +417,7 @@ A Mac that connects leaves a small file beside the database, mediaflow.session.l
 
 ### When another Mac has the database
 
-A second Mac that tries to connect copies nothing. It says who has the file, for example “Sheri’s MacBook Pro (Sheri Williams) is using the shared database, since 10:42.” There are two choices:
+A second Mac that tries to connect copies nothing. It says who has the file, for example “Sam’s MacBook Pro (Sam Rivera) is using the shared database, since 10:42.” There are two choices:
 
 - Wait — MediaFlow looks again every ten seconds and connects as soon as the other Mac disconnects or quits. The progress panel shows Waiting for the shared database, with the time it last looked. Click Stop Waiting to give up and work without it
 - Work Without the Database — Keep working. Projects open and save as usual, and MediaFlow notes which ones changed and syncs them when this Mac connects, as in Working Offline and Syncing Later. The status line reads Working without the database
@@ -426,7 +426,7 @@ While you work without it, MediaFlow does not ask again each time it reconnects 
 
 ### A Mac that stopped answering
 
-If a Mac crashes, or loses its connection to the file without disconnecting, its file stops being brought up to date. Once another Mac has seen it stand still for five minutes, counted on that Mac’s own clock so that two Macs set to slightly different times cannot mislead each other, it takes the database over and says whose it was: “Sheri’s MacBook Pro (Sheri Williams) had the shared database but stopped checking in at 10:42, so this Mac has taken it over.” A file that stopped more than a quarter of an hour ago is taken over at once. The takeover is written to the log (Help → Show Log). Anything that Mac had not written back is not in the database; its project files still have it. When that Mac next connects, its own copy of the database, which may hold that work, is set aside rather than replaced, and it says so when the copy holds work the file lacks (see Database File or Database Server?). The same Mac, opened again after a crash, takes its own turn back at once.
+If a Mac crashes, or loses its connection to the file without disconnecting, its file stops being brought up to date. Once another Mac has seen it stand still for five minutes, counted on that Mac’s own clock so that two Macs set to slightly different times cannot mislead each other, it takes the database over and says whose it was: “Sam’s MacBook Pro (Sam Rivera) had the shared database but stopped checking in at 10:42, so this Mac has taken it over.” A file that stopped more than a quarter of an hour ago is taken over at once. The takeover is written to the log (Help → Show Log). Anything that Mac had not written back is not in the database; its project files still have it. When that Mac next connects, its own copy of the database, which may hold that work, is set aside rather than replaced, and it says so when the copy holds work the file lacks (see Database File or Database Server?). The same Mac, opened again after a crash, takes its own turn back at once.
 
 If a Mac finds that another took the database over while it was away, it stops using the database without writing its copy over the other Mac’s, and says so. Every project it saved during its turn, and the open one, syncs again when it next connects.
 

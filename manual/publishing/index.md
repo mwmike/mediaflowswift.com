@@ -129,18 +129,28 @@ Uploading is off until you turn it on. Turn on Uploading to YouTube in Settings 
 
 Google keeps every upload Private from a Google Cloud project that has not passed its audit, whatever visibility is asked for. A project you have just made has not. The video is safely on your channel: open it in YouTube Studio and change the visibility there. Google’s audit form is linked from the YouTube Data API page of your project.
 
+### If Google’s Sign-In Service Is Busy
+
+An upload renews your sign-in with Google as it goes, about once an hour on a long one. If Google’s sign-in service is busy just then, MediaFlow waits and asks again, for a minute or so, and the upload carries on. If it is still busy after that, the upload stops and says so: what was sent is kept, and Continue the Upload… carries on from there. Reading statistics asks only once.
+
 ### A Dropped Connection, or Stopping
 
-The video is sent in pieces. If the connection drops, or YouTube is busy, MediaFlow waits, asks YouTube how much arrived, and carries on from there. It waits longer after each failure and gives up after ten in a row, a little over a quarter of an hour; being off the network altogether is simply waited out. If you click Stop or quit, what was sent is kept: the button reads Continue the Upload… next time, for about a week, unless you sign out. The upload starts again from the beginning if the video file has changed, or if you have changed the title, description, tags or settings, because an unfinished upload carries the words it was started with; MediaFlow tells you so before it begins. Only YouTube letting the upload lapse, a changed video or changed details start it again: an expired sign-in, a full allowance or a dropped connection never do. A publish time is fixed when the upload starts, so for a large video on a slow connection choose a time well ahead.
+The video is sent in pieces. If the connection drops, or YouTube is busy, MediaFlow waits, asks YouTube how much arrived, and carries on from there. It waits longer after each failure and gives up after ten in a row, a little over a quarter of an hour; being off the network altogether is simply waited out. If you click Stop or quit, what was sent is kept: the button reads Continue the Upload… next time, for about a week, unless you sign out. The upload starts again from the beginning if the video file has changed, or if you have changed the title, description, tags or settings, because an unfinished upload carries the words it was started with; MediaFlow tells you so before it begins. Only YouTube letting the upload lapse, a changed video or changed details start it again: an expired or refused sign-in, a full allowance or a dropped connection never do. A publish time is fixed when the upload starts, so for a large video on a slow connection choose a time well ahead.
 
 ### The Thumbnail
 
 The thumbnail is sent after the video. YouTube accepts custom thumbnails only from a channel verified by phone (youtube.com/verify). If it is refused, the video is still up: MediaFlow says so, and Send the Thumbnail to This Video tries again without uploading the video again. You can also export the thumbnail and add it in YouTube Studio.
 
+### If Your Sign-In Expires or Is Not Accepted
+
+If your sign-in expires, or you remove MediaFlow’s permission at Google, MediaFlow says the sign-in has expired and offers Sign In Again… beside the message, which takes you straight to Google. If YouTube does not accept a sign-in, MediaFlow says so and offers the same. That usually means the Google account chosen has no YouTube channel, or is not the one that manages the channel you upload to: it is easy to pick the wrong one when Google asks you to choose an account. Click Sign In Again… and choose the account and channel you upload to; if you have no channel yet, create one at youtube.com first.
+
+Either way MediaFlow lets that sign-in go, and the video’s details and any upload already under way are kept: after signing in, click Continue the Upload… and it carries on from where it stopped. There is no need to sign out, which would forget the unfinished upload. MediaFlow renews a sign-in YouTube did not accept only once, and never tries it again on its own: if YouTube still does not accept it after you have signed in again, MediaFlow says so again.
+
 ### What Is Kept
 
-- Your sign-in is kept in the Keychain, never in a file. Sign Out forgets it, forgets any unfinished upload, and asks Google to cancel the permission. If both YouTube switches are off in Settings › Privacy, Google is not contacted: MediaFlow says so, and you can remove it yourself at myaccount.google.com/permissions
-- Removing the client secret in Settings stops any upload, signs you out the same way, and then forgets the secret
+- Your sign-in is kept in the Keychain, never in a file. Sign Out forgets it, forgets any unfinished upload, and asks Google to cancel the permission. When an unfinished upload from about the last week is kept, in this project or another, Sign Out asks first and says how many would have to start again from the beginning; Cancel keeps them. Older ones are not counted: YouTube lets an unfinished upload go after about a week. If both YouTube switches are off in Settings › Privacy, Google is not contacted: MediaFlow says so, and you can remove it yourself at myaccount.google.com/permissions
+- Removing the client secret in Settings stops any upload, signs you out the same way, and then forgets the secret. When an unfinished upload from about the last week is kept, it asks first in the same way
 - Publish/upload-state.json in the project’s folder records which file went up, when, the video’s ID, and the words and settings it went up with. The address of an unfinished upload is kept in the Keychain, not in that file
 - Uploading a video that has already gone up asks first, because it makes a second copy on your channel
 
@@ -203,7 +213,7 @@ This is off until you turn it on, and it needs more permission than uploading do
 
 1. Turn on Reading your videos’ statistics from YouTube in Settings › Privacy
 2. In your Google Cloud project, under APIs & Services › Library, enable YouTube Analytics API as well as YouTube Data API v3
-3. On the Upload tab, sign out if you are signed in, then sign in again. Google now asks for two more permissions, both read-only: View your YouTube account, and View YouTube Analytics reports for your YouTube content. If you untick both at Google you can still upload, and the Results tab tells you statistics were not allowed. Ticking only one is no use, and Google cannot take back one alone, so MediaFlow hands the whole sign-in back and asks you to sign in again
+3. On the Upload tab, sign out if you are signed in, then sign in again. If an unfinished upload is kept, Sign Out asks first, because it forgets it; finish the upload before, if you can. Google now asks for two more permissions, both read-only: View your YouTube account, and View YouTube Analytics reports for your YouTube content. If you untick both at Google you can still upload, and the Results tab tells you statistics were not allowed. Ticking only one is no use, and Google cannot take back one alone, so MediaFlow hands the whole sign-in back and asks you to sign in again
 4. On the Results tab, click Read from YouTube Now
 
 MediaFlow asks Google which channel you signed in to, then sends the YouTube IDs of the videos your database records as uploaded by MediaFlow, and the span of dates from the first upload to today. Nothing else. The two permissions would allow reading your whole channel; MediaFlow asks only about those videos. If your database is shared with someone who publishes to another channel, answers about their videos are set aside, not kept as yours. Neither permission can change or delete anything.

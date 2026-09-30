@@ -87,7 +87,7 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#u
 
 The saved setup is a small file that holds your MediaFlow settings. It lives apart from the macOS preferences file, so a lost or reset preferences file does not take your setup with it. You do not need to do anything: it is written every time you quit, when you finish the Setup Wizard, and before an update installs.
 
-Passwords and API keys are never in it. They stay in your Keychain.
+Passwords, API keys and your YouTube sign-in are never in it. They stay in your Keychain.
 
 ### What it holds
 
@@ -95,12 +95,16 @@ Passwords and API keys are never in it. They stay in your Keychain.
 - The shared database settings: on or off, the store, the file path, and the server host, port, database and user
 - The default destination, recent destinations and the verification setting
 - Whether to check for new versions automatically
-- Import analysis and model settings, including the daily spending limit
+- Import analysis and model settings, including the daily spending limit. What has been spent today is kept too, and a restore only ever fills it in
 - The category and camera lists that new projects start with
+- The names you gave your cameras, and the categories MediaFlow has learned to suggest
+- Your YouTube client ID, and which permissions Google gave at your last sign-in. A restore only ever fills in the permissions
+- Which smart notifications are on
+- How you left things: the welcome tour, sort orders, the layout, Rapid Review’s choices, and the folders you last chose
 
 ### What it never holds
 
-API keys and the database password. They stay in your Keychain. The saved setup is a plain file, and a secret copied into it would be readable by anyone who opened it. After a restore on a Mac with an empty Keychain, enter those again.
+API keys, the YouTube client secret and sign-in, and the database password. They stay in your Keychain. The saved setup is a plain file, and a secret copied into it would be readable by anyone who opened it. After a restore on a Mac with an empty Keychain, enter those again and sign in to YouTube again.
 
 ### When it is restored automatically
 
@@ -109,9 +113,11 @@ Only at launch, and only into a copy of MediaFlow that has nothing configured: n
 ### Doing it by hand
 
 - Settings › General › Save Setup Now writes the file immediately. The line above the buttons shows when it was last saved
-- Restore Saved Setup puts every saved setting back
+- Restore Saved Setup puts the saved settings back
 
-> **Warning:** Restore Saved Setup overwrites the settings on this Mac with the saved ones. It asks you to confirm first. The saved copy is normally the one written when you last quit.
+> **Warning:** Restore Saved Setup overwrites the settings on this Mac with the saved ones, except today’s spend and the YouTube permissions, which it only fills in where this Mac has none. It asks you to confirm first. The saved copy is normally the one written when you last quit.
+
+That way a restore never lowers what you have spent today, and the YouTube permissions stay with the sign-in in this Mac’s Keychain.
 
 See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Updating MediaFlow](#updating-mediaflow), [The Settings Window, Tab by Tab](#the-settings-window-tab-by-tab), [Connecting to a Database Server](/manual/shared-database/#connecting-to-a-database-server)
 
@@ -225,7 +231,7 @@ A few features need a service run by another company. Settings › Privacy lists
 - Uploading to YouTube — sends the finished video you chose, with its title, description, chapters, tags, category, visibility, publish time and made-for-kids answer, the file’s size and type, and the thumbnail if you chose to send it, to Google. Signing in opens your browser at Google; MediaFlow never sees your password. Signing in and staying signed in send your client ID and secret to Google. The permission cannot read your channel or delete videos. Nothing is sent until you click Upload and confirm. While it is off, uploading is refused and sign-in does not ask for permission to upload; with both YouTube switches off, signing in is refused too. See Uploading to YouTube
 - Reading your videos’ statistics from YouTube — asks Google which channel you signed in to, and sends the YouTube IDs of the videos your database records as uploaded by MediaFlow with the span of dates from the first upload to today, and nothing else. Google answers with their views, likes, comments, watch time, average view, subscribers gained, shares, visibility and publish time. Turning it on makes the next sign-in ask Google for two more permissions, both read-only, which would allow reading your whole channel; MediaFlow asks only about those videos. Read only when you click Read from YouTube Now on the Results tab. See How Your Videos Are Doing
 - Maps of where you shot — showing a map sends the area you are looking at to Apple, which is how the map images arrive. While it is off, the Shoot Map and GPS scene review list locations without a map, with a Turn On Maps button.
-- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to a report relay run by MediaFlowSwift’s maker, whose address is entered in Settings › Privacy. The relay fields stay folded away until a relay is set up; a customer has no relay, and needs none. While it is off, or no relay is set up, the Send button is not there. Email Report… needs no switch: it opens the report in your own mail app, for you to send.
+- Sending problem reports — sends a report only when you click Send on one you have read: its text exactly as shown to you, a title, a random identifier for this copy of the app, and the crash signature if there is one, to a report relay run by MediaFlowSwift’s maker, whose address and key are entered in Settings › Privacy. Before the first report, and again if the relay will not take its key, MediaFlow asks the relay for a key of this Mac’s own, sending only a random identifier made for that and kept in your Keychain; the key it is given is kept there too, and signs each report. The relay fields stay folded away until a relay is set up; a customer has no relay, and needs none. While it is off, or no relay is set up, the Send button is not there. Email Report… needs no switch: it opens the report in your own mail app, for you to send.
 
 ### A model that suggests categories
 

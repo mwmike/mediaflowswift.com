@@ -15,7 +15,7 @@ MediaFlowSwift comes in two plans. Studio is all the file management: importing 
 
 ### The trial
 
-The first time this copy is opened, a 14-day trial of Studio Pro begins. No card is asked for. Settings › Plan shows how many days are left, and a banner in the main window says so too; Later hides it for this session. The trial’s start is kept in your Keychain, not in the preferences, so installing the app again does not start it again, and a clock turned back does not lengthen it.
+The first time this copy is opened, a 14-day trial of Studio Pro begins. No card is asked for. Settings › Plan shows how many days are left, and a banner in the main window says so too; Later hides it for this session. The trial’s start is kept on this Mac in more than one place, in your Keychain and in a small file in MediaFlow’s folder under Library › Application Support, never in the preferences and never sent anywhere. Installing the app again, or clearing one of those places, does not start the trial again, and a clock turned back does not lengthen it. If this Mac’s date is set earlier than the trial can begin, or macOS will not let MediaFlow read the trial from your Keychain, nothing is open yet and a paused feature says which: check the date and time in System Settings › General › Date & Time, or quit and open MediaFlow again and click Always Allow if macOS asks.
 
 ### When a plan ends
 
@@ -47,7 +47,7 @@ Choose MediaFlow → Settings (Cmd+,). The window has nine tabs. This topic says
 
 ### General
 
-- Setup — Run Setup Again… reopens the first-run setup questions. MediaFlow saves your setup whenever you quit and puts it back if this Mac’s settings are ever lost. Save Setup Now saves it at once. Restore Saved Setup puts every saved setting back, replacing what is set now. Passwords and API keys are not part of the saved setup; they stay in the Keychain
+- Setup — Run Setup Again… reopens the first-run setup questions. MediaFlow saves your setup whenever you quit and puts it back if this Mac’s settings are ever lost. Save Setup Now saves it at once. Restore Saved Setup puts the saved settings back, replacing what is set now, except today’s spend and the YouTube permissions, which it only fills in where this Mac has none. Passwords and API keys are not part of the saved setup; they stay in the Keychain
 - Updates — New versions come from mediaflowswift.com. “Check for new versions automatically” looks shortly after launch, on wake and every few hours; a new version asks Install Now, Later or Skip This Version, never while something is running, while you are typing or while another dialog is open. A version you skipped is shown here, with Offer It Again. To look now, choose MediaFlow → Check for Updates…, which always offers the newest version
 - About — The version and build you are running, the maker, what MediaFlowSwift needs to run (a Mac with Apple silicon and macOS 14 Sonoma or later), links to the website, the support page, the terms of use and the privacy page, and Acknowledgements… for the open-source packages it is built with. The same as MediaFlowSwift → About MediaFlowSwift
 
