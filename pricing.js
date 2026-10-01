@@ -8,7 +8,7 @@
   var amounts = document.querySelectorAll("[data-price-for]");
   var pers = document.querySelectorAll("[data-per]");
   var choices = document.querySelectorAll(".billing-choice");
-  var period = "month";
+  var period = "year";
   var prices = {}; // price id -> Paddle's formatted price before tax
   var ready = false;
 

@@ -50,7 +50,7 @@ window.MediaFlowPaddle = (function () {
       features: [
         "Everything in Studio",
         "Titles, descriptions, chapters and tags drafted for you",
-        "Upload to YouTube with thumbnail and schedule",
+        "Upload to YouTube as a private draft (advanced; needs your own Google Cloud project)",
         "Results read back from YouTube",
         "Shared database server across your Macs"
       ]
