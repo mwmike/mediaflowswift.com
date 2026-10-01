@@ -11,13 +11,13 @@
 - Editing drive: move a project to a fast SSD and back, with changes carried across and checked
 - Proxies for footage on a network share
 - PDF, HTML and CSV reports
-- Studio Pro: drafts YouTube titles, descriptions, chapters and tags; uploads to YouTube with thumbnail, schedule and visibility; reads back views, watch time and subscribers; shared database server across several Macs
+- Studio Pro: drafts YouTube titles, descriptions, chapters and tags; uploads to YouTube as a private draft (advanced; needs the user's own Google Cloud project); reads back views, watch time and subscribers; shared database server across several Macs
 
 ## Requirements
 macOS 14 or later on a Mac with Apple silicon.
 
 ## Pricing
-14-day free trial of the full app, no card required. Studio: USD 4.99/month. Studio Pro: USD 9.99/month. Yearly plans include two months free. One plan covers one person on up to three Macs. Payment through Paddle, merchant of record. Full refund within 14 days.
+14-day free trial of the full app, no card required. Studio: USD 4.99/month or USD 49.99/year. Studio Pro: USD 9.99/month or USD 99.99/year. Yearly is about 17% off the monthly price. One plan covers one person on up to three Macs. Payment through Paddle, merchant of record. Full refund within 14 days.
 
 ## Privacy
 No account and no usage data. The app checks for updates and, once a key is entered, checks the licence; every other outside service is off until the user turns it on.
