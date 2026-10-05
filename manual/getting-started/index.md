@@ -38,7 +38,7 @@ The pipeline strip under the toolbar follows these steps and always offers the n
 
 ### First-Run Setup
 
-The first time you open MediaFlow, a short tour explains the app. A Setup Wizard follows it. It first asks where your footage goes: this Mac, an external drive, or a network share. Then it asks where organized media goes. Only for a network share does it ask more: which share, and whether to use a database every Mac shares. You can skip any question. To answer them later, choose Settings › General › Run Setup Again…
+The first time you open MediaFlow, a short tour explains the app. A Setup Wizard follows it. It first asks where your footage goes: this Mac, an external drive, or a network share. Then it asks where organized media goes. Only for a network share does it ask more: which share, and whether to use a database every Mac shares. On a single Mac it makes a small database of your projects for you, unless you untick it. You can skip any question. To answer them later, choose Settings › General › Run Setup Again…
 
 ### Where to Get Help
 

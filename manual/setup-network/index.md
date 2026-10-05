@@ -13,7 +13,7 @@ generated: tools/import-guide.sh
 
 A new copy of MediaFlow knows nothing about your equipment: no network share, no shared database, no destination. Three things greet you on first launch. First come the terms of use, which you agree to once (see Terms of Use). The welcome tour then explains the app, and the Setup Wizard asks where your storage is.
 
-You do not have to answer anything. MediaFlow works on a single Mac, with or without an external drive, and needs neither a network share nor a database; every answer can be changed later in Settings.
+You do not have to answer anything. MediaFlow works on a single Mac, with or without an external drive, and needs no network share; every answer can be changed later in Settings. Archive to USB, Restore and Search All Projects do need a database, so on a single Mac the wizard makes a small one for you unless you say no (see below).
 
 ### The welcome tour
 
@@ -27,6 +27,10 @@ The wizard opens when the tour closes, if nothing is set up yet. It does not ope
 2. Your network share (a network share only) — shares that are connected now are listed with a Use this button. Look for servers searches the network, and Connect to… opens a server in Finder so you can sign in and mount a share. Use this takes effect as soon as you click it
 3. Shared database (a network share only, or when a database is already set up) — choose None, Database file (a single file, one Mac at a time) or Database server (several Macs at once). For a database file, click New Database File… to choose where it will live (MediaFlow makes it at once, and connects when you click Done), or Use an Existing Database File… to use one another Mac made. For a server, fill in the connection fields
 4. Where organized media goes — click Choose… to pick the default destination for new projects. It opens in your Movies folder for this Mac, among your drives for an external drive, and on the share for a network share. If the folder you pick is not where your first answer said, the step says so; a project can always use a different one
+
+### A database on a single Mac
+
+If you answer This Mac or An external drive, this Mac has no database yet and no network share is chosen, the last step also shows Keep a database of my projects on this Mac, ticked. MediaFlow keeps a list of your projects and archive drives in it, so Archive to USB, Restore and Search All Projects work. When you click Done, MediaFlow makes it, a file called mediaflow.db in its own folder on this Mac (Database, in MediaFlow’s Application Support folder), and connects to it. It stays on this Mac, isn’t synced, and Time Machine backs it up; Settings › Storage shows where it is, with Show in Finder. Untick it to go without; Skip makes nothing either. If a MediaFlow database is already there under that name, it is used rather than replaced, and if something else has that name, nothing is made and MediaFlow says so. If a network share is chosen in Settings › Network, the step makes nothing and says to set the database up in Settings › Storage instead, where it can go on the share for every Mac. To keep the database somewhere you choose, use New Database File… there. A Mac that already has a database, on or off, is never given a second one. You can make or choose one later in Settings › Storage, or with the offer Archive to USB makes.
 
 ### Skipping
 
@@ -133,7 +137,7 @@ New versions come from the MediaFlow website. MediaFlow reads one small file fro
 
 ### Who may sign an update
 
-An update is installed only if it was signed by the maker of the copy you are running, or by MediaFlowSwift’s Apple Developer ID. Nothing else can be handed to you as an update, whatever the website says. From MediaFlowSwift 1.10.18 the app is moving to the Developer ID: after the first update signed with it, macOS treats the app as one it knows, so your Keychain asks once more and then not again. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
+An update is installed only if it was signed with MediaFlowSwift’s Apple Developer ID. Nothing else can be handed to you as an update, whatever the website says. Since 1.10.19 every copy is signed with that Developer ID and notarized by Apple, so macOS opens it without a warning and treats each update as the app it already knows: your Keychain does not ask again after an update. The Local Network switch is another matter: on some versions of macOS the new build is still treated as a stranger, and the switch needs turning off and on once after an update. MediaFlowSwift now tells Launch Services about the new copy before reopening, which is meant to stop that; if it does not, the app says so and offers the switch.
 
 ### Automatic checks
 
@@ -170,9 +174,9 @@ See also: [Choosing and Connecting Your Network Share](#choosing-and-connecting-
 
 ## The Settings Window, Tab by Tab
 
-*A map of the eight Settings tabs, so you know which one holds the setting you are looking for.*
+*A map of the nine Settings tabs, so you know which one holds the setting you are looking for.*
 
-Settings has eight tabs. Each holds one subject. Most changes take effect as you make them.
+Settings has nine tabs. Each holds one subject. Most changes take effect as you make them.
 
 `Cmd+,` — Open Settings
 
@@ -186,7 +190,7 @@ Which network share MediaFlow uses: shares connected now, Look for servers, Conn
 
 ### Storage
 
-The shared database: Enable Central Database, the Store (Database file or Database server), its file or connection fields, and copying records between the two. Below it, the default destination for new projects and “Verify organized copies by reading them back”.
+The shared database: Enable Shared Database, the Store (Database file or Database server), its file or connection fields, when a server last backed itself up, and copying records between the two. Below it, the default destination for new projects and “Verify organized copies by reading them back”.
 
 ### Cameras
 
@@ -208,9 +212,13 @@ Everything that can leave this Mac for a company outside your network, with what
 
 One switch for each kind of Smart Notification.
 
+### Plan
+
+The plan this Mac is on and how long it has left, your licence key (enter and Activate, the Macs it is active on, Release this Mac), and what each plan includes, with Buy on the website…. See Plans and Pricing.
+
 > **Tip:** The camera and category lists belong to the project, not to the app. With no project open, those two tabs show Open a Project… instead of a list.
 
-See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](/manual/shared-database/#database-file-or-database-server), [Adding, Renaming, Retiring and Removing Categories](/manual/tags-categories/#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](/manual/organizing-media/#using-a-model-to-suggest-categories), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [How MediaFlow Verifies Copies](/manual/organizing-media/#how-mediaflow-verifies-copies), [Smart Notifications](/manual/settings-preferences/#smart-notifications)
+See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connecting Your Network Share](#choosing-and-connecting-your-network-share), [Saved Setup: A Copy of Your Settings](#saved-setup-a-copy-of-your-settings), [Updating MediaFlow](#updating-mediaflow), [Database File or Database Server?](/manual/shared-database/#database-file-or-database-server), [Adding, Renaming, Retiring and Removing Categories](/manual/tags-categories/#adding-renaming-retiring-and-removing-categories), [Using a Model to Suggest Categories](/manual/organizing-media/#using-a-model-to-suggest-categories), [Privacy: What Leaves This Mac](#privacy-what-leaves-this-mac), [How MediaFlow Verifies Copies](/manual/organizing-media/#how-mediaflow-verifies-copies), [Smart Notifications](/manual/settings-preferences/#smart-notifications), [Plans and Pricing](/manual/settings-preferences/#plans-and-pricing)
 
 ## Privacy: What Leaves This Mac
 
@@ -218,7 +226,7 @@ See also: [Setting Up MediaFlow](#setting-up-mediaflow), [Choosing and Connectin
 
 MediaFlow has no account and collects no usage data. Your media, projects and shared database stay on this Mac and on your own network.
 
-On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a random id it made up for this Mac, and the Mac’s name. Settings › Privacy lists both, with the exact details. A problem report reaches its maker only when you send it: from your own mail app with Email Report…, or, on a Mac set up with the maker’s report relay, when you have turned on Sending problem reports and click Send on a report you have read.
+On its own it reaches its maker in two ways. It asks mediaflowswift.com whether there is a newer version, with nothing about you or your Mac in the request, and downloads the new version when you choose to install it. And once you enter a licence key, it checks the key with MediaFlow’s licence service, sending the key, a one-way code made from this Mac’s hardware id (the same for every user account on this Mac, and never the hardware id itself), and the Mac’s name; until an account first activated with an earlier version has moved to that code, its checks also send the random id that version made for it, to release that id’s place. Settings › Privacy lists both, with the exact details. A problem report reaches its maker only when you send it: from your own mail app with Email Report…, or, on a Mac set up with the maker’s report relay, when you have turned on Sending problem reports and click Send on a report you have read.
 
 A few features need a service run by another company. Settings › Privacy lists every one: what is sent, to whom, and what it is for. Each is off until you turn it on, and you can turn it off again at any time.
 
@@ -246,7 +254,7 @@ The local model’s Server address may be this Mac or another computer on your o
 
 ### Things that open your browser or mail app
 
-Buttons and links such as a provider’s API-key page, the Ollama download, Help → Support Website or See every change on mediaflowswift.com in the update window open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. MediaFlow itself sends nothing.
+Buttons and links such as a provider’s API-key page, the Ollama download, Help → Support Website or See every change on mediaflowswift.com in the update window open a web page only when you click them. Help → Contact Support… and Email Report… open a new message to support@mediaflowswift.com in your own mail app, with this copy’s version, your macOS version and your Mac’s chip, or the problem report you have read, for you to send. If email links on this Mac open in a web browser, or in nothing, they put the text on the clipboard instead. Open in (your browser) Anyway then hands your browser a new message to support with only a subject line, for your webmail to open: nothing you wrote and nothing about your Mac is in it. MediaFlow itself sends nothing.
 
 > **Tip:** A saved setup keeps your Privacy switches, but they are not restored automatically on a new install — only when you choose Restore Saved Setup…, which says so before it does.
 

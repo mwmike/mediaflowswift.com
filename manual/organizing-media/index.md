@@ -44,6 +44,8 @@ If the clips came from a memory card, the Clear Card review opens when you click
 
 MediaFlow computes a SHA-256 checksum of each source file as it copies it, then finishes writing the copy to the disk. By default it then reads the whole copy back and compares its SHA-256 with the source. If the check fails, the copy is deleted and made again once; if it fails a second time, that clip is reported as failed and its source is left alone.
 
+Each copy is written under a hidden name in its folder and takes the clip’s own name only once it has passed this check, so a half-written file never looks like a finished clip. If a network drive drops in the middle of a copy, MediaFlow waits for it to answer again and starts that clip again from the beginning, up to three more times; see Organize Errors on a Network Drive.
+
 On a drive connected to your Mac, the copy is written and read back without passing through the Mac’s memory, so the check reads it from the drive itself. On a network share, every byte is read back over the network from the server; the server may answer from its own memory.
 
 Drives keep a little memory of their own for what is being written. Once the last file is copied, MediaFlow asks the destination drive to empty it, once for the whole run rather than after every file, and only then points your clips at the copies. Move Project, Move to Editing Drive, Return to Library, Archive, Restore and Duplicate Project do the same before they point anything at their copies or remove anything, and an archive has the drive confirm it is in place under its own name, before any older one it replaces is removed. If the drive cannot be asked, because MediaFlow is not allowed to open the folder for example, the operation says so instead of carrying on as if it had been; after Organize, the card is then not offered for clearing. Clear Card, however you open it, asks the drive again for each organized copy just before it deletes that clip from the card, and keeps the card file if it cannot.
@@ -54,9 +56,15 @@ Settings › Storage › Organize Media has the switch “Verify organized copie
 
 The checksum is recorded with the clip. Clear Card relies on it later, so leave read-back verification on if you plan to clear cards.
 
+### Moving Within One Drive
+
+When a clip’s imported copy is on the same drive as the destination and still matches the checksum its import took from the card (the same size, not changed since), Organize renames it into place instead of copying it: seconds, and no extra space. Nothing is copied, so nothing is read back; the import already proved those bytes against the card. A rename never replaces a file already there and never crosses to another drive: if it can’t be done, the clip is copied and checked as above. Only clips still waiting to be organized are moved, and only into the project’s own destination: a one-off copy somewhere else, a clip already organized, and a project sharing its files with another project are always copied.
+
+A clip imported by this version already carries the checksum its import took from the card. Organize checks the bytes it reads from the imported copy against that checksum, so the organized copy is proved against the card itself. If they differ while the imported copy’s size and date are unchanged, the imported copy has been damaged: the clip is reported as failed, no copy is left at the destination, and the clip stays where it is. A clip changed on purpose since the import is checked afresh, as before.
+
 ### Organizing again over existing files
 
-If a file with the same name and the same size is already in the target folder, MediaFlow uses it instead of copying again. That file is not read and no checksum is recorded for it, so Clear Card later lists the clip as “Organized, unverifiable”. If a file with the same name has a different size, the new copy is saved with a number added to its name, for example Clip_1.mp4.
+If a file with the same name and the same size is already in the target folder and the clip carries its import’s checksum, MediaFlow reads that file and uses it only if it matches; a different file of the same size, such as another chapter of a long recording, is kept and the clip is copied beside it. A clip changed since its import is always copied beside it, with a fresh checksum. A clip with no checksum at all (imported by an earlier version) uses the file instead of copying again. That file is not read and no checksum is recorded for it, so Clear Card later lists the clip as “Organized, unverifiable”. If a file with the same name has a different size, the new copy is saved with a number added to its name, for example Clip_1.mp4.
 
 ### Default destination
 
@@ -118,7 +126,7 @@ Re-check files brings the Where column back in step with what is really on disk.
 
 - Whether each clip’s file exists at its recorded path
 - For a file inside the project destination, whether its size still equals the size recorded at import
-- Files in the working folder, on a card or in a source folder are checked for existence only
+- Imported files not yet organized, files on a card and files in a source folder are checked for existence only
 
 It does not read file contents or recompute checksums, so it cannot detect damage that leaves the size unchanged.
 
@@ -126,7 +134,7 @@ It does not read file contents or recompute checksums, so it cannot detect damag
 
 - At destination — the file is inside the project destination and its size matches
 - Size mismatch — the file is inside the destination but its size differs from the recorded size
-- On this Mac — the file is in the working folder and has not been organized
+- Imported, not organized yet — the file is where the import put it (this Mac, a drive or a share, as Settings › Storage › Imports go to chose) and has not been organized
 - Only on card — the file is on a camera card and has not been copied to the destination
 - Not at destination — the file is somewhere other than the destination and not on a card, such as the folder you imported from or another drive. It is not lost; hover over it to see which drive. If a whole project reads this way after a library was moved, you may have opened the old copy of the project: see After Moving Your Library to a New Drive
 - Missing — no file was found at the recorded path
@@ -154,14 +162,14 @@ See also: [Organizing Media to Storage](#organizing-media-to-storage), [Relinkin
 
 *Free Up Space lists every file before it stages or deletes anything. Know what it checks before you confirm.*
 
-After you organize, the imported copies are still in the working folder (Documents → MediaFlow Projects → Imports), and the originals are usually still on the card or in the folder you imported from. Free Up Space reclaims that space in two stages: first it moves files into a Cleanup folder, and only later, when you choose, does it delete them.
+After you organize, the imported copies are still where the import put them (on this Mac, Documents → MediaFlow Projects → Imports; or the drive or share chosen in Settings › Storage › Imports go to, including any folder used before), and the originals are usually still on the card or in the folder you imported from. A clip Organize moved within one drive left no imported copy behind, so no imported copy of it is listed here, and its organized file is never touched; its card original can still be listed, as for any organized clip, when you tick that group. Free Up Space reclaims that space in two stages: first it moves files into a Cleanup folder, and only later, when you choose, does it delete them.
 
 ### Free Up Space
 
 Workflow → Free Up Space… scans the open project and lists three groups. Each has a file count, a total size and an expandable list of the exact files it would touch.
 
-- “Local import copies that have an organized copy” — working-directory copies of clips that have been organized. Checked by default. Moved to Cleanup.
-- “Files still on the card or source folder” — the originals on the card or in the import folder. Unchecked by default. Moved to Cleanup.
+- “Local import copies that have an organized copy” — the imported copies of clips that have been organized, in whichever import folder they landed. Checked by default. Moved to Cleanup.
+- “Files still on the card or source folder” — the originals on the card or in the import folder. Unchecked by default. Moved to Cleanup. Files on a card laid out by the camera (Sony XAVC, XDCAM and XDCAM EX, older Sony cameras, Canon XF, Panasonic P2, AVCHD) are never listed, because taking single files off such a card leaves the camera’s own list of its clips wrong; the sheet says how many were left out. Format that card in the camera instead, once Clear Card says it is safe.
 - “Staged in Cleanup” — files an earlier run already moved into Cleanup. This is the only group that deletes anything.
 
 A running “Reclaim” total follows your checkboxes, and one red button applies the selection. When you confirm, MediaFlow acts only on files the sheet listed. A listed file that no longer qualifies is skipped; nothing new is added.
@@ -195,7 +203,7 @@ A file goes back only to a place this Mac has had it. When two Macs share a proj
 
 ### Re-file folders by category
 
-Workflow → Repair → Re-file folders by category (called Sync Folder Layout in earlier versions) moves every organized file at the destination into the folder that matches its current category and camera. Single edits re-file themselves in the background, so you need this only to catch up after an interrupted move or a relink.
+Workflow → Repair → Re-file folders by category (called Sync Folder Layout in earlier versions) moves every organized file at the destination into the folder that matches its current category and camera. Single edits re-file themselves in the background, so you need this only to catch up after an interrupted move or a relink. A clip on a card laid out by the camera (see Clear Card) is never moved: it stays where it is, and MediaFlow says why.
 
 ### The End of Day Wrap template
 
@@ -209,7 +217,7 @@ See also: [Organizing Media to Storage](#organizing-media-to-storage), [Re-check
 
 ## Clear Card
 
-*Delete clips from a memory card only after each one is organized and the card file matches its recorded checksum.*
+*Delete clips from a memory card only after each one is organized, the card file checks out, and its organized copy is read back in full and matches.*
 
 Clear Card empties a memory card safely. It lists every clip on the card, works out which ones already have an organized copy it can vouch for, and lets you delete only those. Clearing is always a separate, deliberate step from importing.
 
@@ -221,13 +229,13 @@ Clear Card empties a memory card safely. It lists every clip on the card, works 
 
 ### What it looks at
 
-Only the card’s DCIM folder is scanned. Nothing else on the card is read or touched. Each file is matched to a clip by the path it was imported from, or by filename and size when the card has mounted under a different name.
+Only the card’s DCIM folder is scanned. Nothing else on the card is read or touched. A card laid out by the camera is the exception: it is checked whole and nothing is deleted from it (see below). Each file is matched to a clip by the path it was imported from, or by filename and size when the card has mounted under a different name.
 
-With the central database connected, files are matched against the clips of every project. Without it, only the open project is searched, so clips that belong to other projects read “Not imported” and are kept.
+With the shared database connected, files are matched against the clips of every project. Without it, only the open project is searched, so clips that belong to other projects read “Not imported” and are kept.
 
 ### The five states
 
-- “Verified at destination” — the clip is organized, a checksum was recorded, the organized copy is present and the same size, and the card file passed the check below. The only state that can be deleted; it is checked for you.
+- “Verified at destination” — the clip is organized, a checksum was recorded, the organized copy is present and the same size, and the card file passed the check below. The only state that can be deleted; it is checked for you. Its organized copy is still read back before the card file goes (see below).
 - “Organized, unverifiable” — organized, but the destination is not reachable, the clip is Missing, or no checksum was recorded. Kept.
 - “Imported only” — imported into a project but not organized yet. Kept.
 - “Not imported” — no project knows about this file. Kept.
@@ -240,9 +248,21 @@ Every kept row is locked, with the reason shown next to it. There is no select-a
 The Check menu chooses between two modes.
 
 - Verified (full SHA-256), the default — reads each card file in full and compares its checksum with the checksum recorded when the clip was organized. It also checks that the organized copy is still present and is the same size as the card file.
-- Standard (path and size) — matches on the import path and the size only. It is much faster but never reads the card file, and it will not act on a card that mounted under a different name.
+- Standard (path and size) — matches on the import path and the size only. Its review is much faster because it never reads the card file, and it will not act on a card that mounted under a different name.
 
-Neither mode reads the organized copy again. The recorded checksum is the checksum of the source file at organize time. With read-back verification on (the default in Settings › Storage), the organized copy was proven identical to it when it was made. With read-back verification off, the organized copy was checked only by size and sampled ranges, so a Verified result shows that the card file is unchanged and the organized copy is the right size, not that every byte of the copy is intact.
+Whichever mode you choose, nothing is deleted on the review alone. When you confirm, Clear Card first reads each selected clip’s organized copy back in full (the sheet shows “Checking copies…”) and matches it against the checksum recorded when the clip was organized, or, when none was recorded, against the card file itself. This matters because a copy made with read-back verification off (in Settings › Storage) was only spot-checked, and a copy can be damaged later without changing size. Reading the copies back takes about as long as copying them did.
+
+A clip whose organized copy does not match, has gone, cannot be read, or is only a placeholder for a file in iCloud or another cloud service stays on the card. When the run finishes, the sheet lists each one by name with the reason. Organize the clip again, then clear the card.
+
+### Cards Laid Out by the Camera
+
+Some cameras keep their own list of the clips on a card, beside the clips: Sony XAVC cameras in a PRIVATE/M4ROOT folder (with a MEDIAPRO.XML file), Sony XDCAM in XDROOT or PRIVATE/XDROOT, Sony XDCAM EX in BPAV, older Sony cameras in MP_ROOT and AVF_INFO, Canon XF and Panasonic P2 in CONTENTS, and AVCHD cameras in AVCHD or BDMV. If MediaFlow finds one of these folders but cannot read it, it treats the card the same way, to be safe. Deleting single files from such a card on a Mac leaves that list wrong, and the camera may then ask to repair the card (Sony’s cameras offer Recover Image DB) or show clips that are gone. So MediaFlow never deletes files from a card like this, not even its DCIM photos.
+
+Clear Card checks every clip on the whole card instead and deletes nothing. It reads each card file in full and compares its SHA-256 with the checksum recorded when the clip was organized, and then reads each organized copy back in full too, because a copy made with read-back verification off was only spot-checked. Reading the copies back takes about as long as copying them did; the sheet shows its progress.
+
+When every clip has an organized copy that matches, it says “Safe to format this card in the camera”: eject the card and format it from the camera’s menu. Until then it says “Not safe to format yet” and lists each clip without a verified copy, with the reason. Clips in a format MediaFlow does not import yet, such as AVCHD’s MTS or XDCAM’s MXF, have no verified copy, so copy them yourself before you format. If any folder on the card cannot be read, the card is never called safe, and the sheet names the folder.
+
+Only the files a camera keeps for itself are left out of the count: its database and index files, Sony’s thumbnails and proxies in PRIVATE/M4ROOT/THMBNL and PRIVATE/M4ROOT/SUB, and XDCAM’s proxies in its Sub folder. Everything else counts, including anything you put on the card yourself, such as files in XDCAM’s General folder.
 
 ### GoPro naming
 
@@ -252,10 +272,12 @@ A .MP4 owns the .LRV proxy and .THM thumbnail that share its name; they are list
 
 1. Review the list. Click Rescan if you have connected the destination or organized more clips since the scan
 2. Click the red Delete button. A confirmation restates the clip count, the file count, the total size and the file types, and has a checkbox you must tick before it enables
-3. MediaFlow checks again that each file is inside the card’s DCIM folder immediately before deleting it, and asks the drive holding its organized copy to finish writing it. A clip whose copy’s drive cannot be asked is kept, and the reason is listed
-4. When it finishes, click Eject to eject the card, or Done
+3. MediaFlow reads each organized copy back in full (“Checking copies…”), as described above. Click Cancel to stop: stopped while copies are being checked, nothing is deleted; stopped while deleting, the clips not yet reached stay on the card
+4. MediaFlow checks again that each file is inside the card’s DCIM folder immediately before deleting it, and asks the drive holding its organized copy to finish writing it. A clip whose copy’s drive cannot be asked is kept, and the reason is listed
+5. At the moment of deleting, it also checks that the card file is still the one it checked, with the same size and date, and that the organized copy is still the one it read back. If either has changed since, the card file is kept; scan the card again to check it. If the drive holding the copy disconnects and reconnects during the run, the clips not yet deleted are kept too, to be safe, and the reason says so
+6. When it finishes, click Eject to eject the card, or Done
 
-A list of everything that was removed is written to the card’s MISC folder as cleared-files-&lt;date and time>.txt. Each cleared clip is also marked in the project so the Import sheet does not offer it again. Emptied folders such as 100GOPRO are left on the card on purpose.
+Only one card is cleared at a time: while one is clearing, or waiting for you to confirm its deletion, Clear Card for another card is refused, with a message naming the card being cleared. A list of everything that was removed is written to the card’s MISC folder as cleared-files-&lt;date and time>.txt. Each cleared clip is also marked in the project so the Import sheet does not offer it again. Emptied folders such as 100GOPRO are left on the card on purpose.
 
 > **Warning:** A memory card has no Trash. Cleared files are erased at once and cannot be recovered. Clear Card will not run while an import, organize, archive, relink or the Proxy queue is running, and it refuses a card that is mounted read-only.
 
@@ -602,7 +624,7 @@ Weather Lookup retrieves historical weather conditions for every clip with GPS d
 
 1. Open a project with media with GPS data
 2. Choose Workflow → Analyze… → Weather
-3. Wait for the lookup to finish. It needs an internet connection. The progress HUD then reports how many clips had weather added
+3. Wait for the lookup to finish. It needs an internet connection. The progress panel then reports how many clips had weather added
 
 ### Data Retrieved
 
@@ -671,7 +693,7 @@ Transcribe turns the speech in your video clips into text using Apple’s speech
 1. Open a project with video clips that contain speech
 2. Choose Workflow → Analyze… → Transcribe
 3. Allow speech recognition if macOS asks
-4. Wait for it to finish. The progress HUD reports how many clips were transcribed
+4. Wait for it to finish. The progress panel reports how many clips were transcribed
 
 To transcribe one clip, select it, open the Transcript tab of the metadata panel and click Transcribe This Clip.
 
@@ -709,7 +731,7 @@ Smart Selects, once called AI Smart Selects, scores every clip on five measures 
 
 1. Open a project with media clips
 2. Choose Workflow → Analyze… → Smart Selects
-3. Watch the progress row in the feedback HUD at the bottom-right of the window
+3. Watch the progress row in the progress panel at the bottom-right of the window
 4. Review the results sorted by overall quality score
 5. Accept individual ratings or click Accept All to apply all suggestions
 
@@ -873,7 +895,7 @@ See also: [Privacy: What Leaves This Mac](/manual/setup-network/#privacy-what-le
 
 *Flag clips with clipped, quiet, or silent audio before they reach the edit.*
 
-The Audio pass finds sound problems before you cut. Choose Workflow → Analyze… and click Run on the Audio row. MediaFlow reads the audio track of every video or audio clip that has not been analyzed yet and records its peak level, average level and a quality flag. Progress shows in the progress HUD.
+The Audio pass finds sound problems before you cut. Choose Workflow → Analyze… and click Run on the Audio row. MediaFlow reads the audio track of every video or audio clip that has not been analyzed yet and records its peak level, average level and a quality flag. Progress shows in the progress panel.
 
 ### Flags
 
@@ -888,23 +910,27 @@ See also: [Day Summary](/manual/reports/#day-summary), [Smart Selects](#smart-se
 
 ## Exposure
 
-*Traffic-light exposure ratings and color-cast notes for every clip, grouped by scene.*
+*Traffic-light exposure ratings and color-cast notes for every clip, estimated from the camera settings each clip recorded, grouped by scene.*
 
 The Exposure pass gives you a triage list of clips that may be too bright, too dark or off-color. Choose Workflow → Analyze… and click Run on the Exposure row. MediaFlow rates each clip’s exposure, estimates its color balance, and flags clips that do not match the rest of their scene.
 
+### What it measures
+
+Nothing in the picture. The pass never decodes a frame: it reads the camera settings recorded with each clip and estimates from them. The rating comes from ISO multiplied by shutter time, the light the camera let in, in five bands from Underexposed to Overexposed; a GoPro’s exposure compensation moves the estimate up or down by the stops it records. The aperture is shown in the note and is not part of the calculation. A clip that recorded none of these reads Good. The color note comes from the white balance the camera recorded: a tungsten setting reads as a cool cast, cloudy or shade as warm, fluorescent as green; daylight, or no setting, as neutral.
+
 ### Traffic lights
 
-- Green / Good — exposure within the normal range
-- Yellow / Marginal — Slightly Over (more than 2% of highlights clipped) or Slightly Under (mean luminance below 50)
-- Red / Problem — Overexposed (more than 5% clipped) or Underexposed (mean luminance below 30)
+- Green / Good — the estimate is within the normal range, or there was nothing to estimate from
+- Yellow / Marginal — Slightly Over or Slightly Under
+- Red / Problem — Overexposed or Underexposed
 
-Click a traffic-light count, or use the All / Good / Marginal / Problem filter bar, to narrow the list. Each row shows the scene, a mini histogram, and a note such as “Overexposed — 8.0% highlights blown out · Color: warm (cloudy/shade WB) · ISO 400 · Shutter 1/60 · f/2.8”.
+Click a traffic-light count, or use the All / Good / Marginal / Problem filter bar, to narrow the list. Each row shows the scene and a note such as “Overexposed — 8.0% highlights blown out · Color: warm (cloudy/shade WB) · ISO 400 · Shutter 1/60 · f/2.8”. The percentage and the mean luminance in a note are the estimate’s own figures for that band, not measurements from the clip. The box beside each row where a histogram would go stays empty for the same reason.
 
 ### Scene color mismatches
 
-Within a scene that has two or more clips, any clip whose average color differs noticeably from the scene average is flagged, and the header counts the scenes with mismatches. This is useful for spotting a camera left on the wrong white balance.
+Within a scene that has two or more clips, any clip whose estimated color differs noticeably from the scene average is flagged, and the header counts the scenes with mismatches. Since the estimate follows the white balance setting and reads no picture, this can catch one camera set far from the rest of its scene, such as tungsten against cloudy, or tungsten among several daylight clips. It is a coarse check: two clips with one on daylight and the other on tungsten are not far enough from their scene average to be flagged, and a fluorescent setting never is.
 
-The ratings are estimated from each clip’s recorded exposure data (ISO, shutter, aperture, white balance), not from the decoded picture. Treat the list as a guide to which clips to look at, and confirm on a monitor.
+Treat the list as a guide to which clips to look at, and confirm on a monitor. Smart Selects is the pass that looks at the picture: its exposure score comes from a frame near the start of each clip.
 
 See also: [Smart Selects](#smart-selects), [Format Conformance Checker](#format-conformance-checker), [Logging Scene, Shot and Take](#logging-scene-shot-and-take), [The Analyze Hub](/manual/getting-started/#the-analyze-hub)
 

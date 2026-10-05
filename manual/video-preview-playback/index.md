@@ -70,7 +70,7 @@ A subclip added to the project takes the category, camera, scene, shot, take, ca
 
 A subclip keeps the clip’s own format: a .mov stays a .mov and an .mp4 stays an .mp4. The picture and sound are copied as they are, so there is no loss of quality and it is quick. For a clip where that is not possible, the part is encoded afresh at high quality instead, and the notice says so. The name says where the part lies in the clip, for example GX010042_subclip_0m12s-0m41s.MP4, so several subclips of one clip never collide. In the working folder, a subclip whose name is already taken, by a file or by a clip of the project that still records it, gets _1 added to its name.
 
-The export shows in the activity panel at the bottom right of the window and in the Workflow Tools tab, each with a Cancel button, and carries on if you switch tabs or select another clip. Cancel stops it and keeps nothing of it, not even over a file you chose to replace. One subclip is made at a time. If MediaFlowSwift quits while it is making one, the unfinished file is hidden, and is removed the next time a subclip is saved under that name.
+The export shows in the progress panel at the bottom-right of the window and in the Workflow Tools tab, each with a Cancel button, and carries on if you switch tabs or select another clip. Cancel stops it and keeps nothing of it, not even over a file you chose to replace. One subclip is made at a time. If MediaFlowSwift quits while it is making one, the unfinished file is hidden, and is removed the next time a subclip is saved under that name.
 
 ### Subclips in the Project
 

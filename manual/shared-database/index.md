@@ -11,7 +11,7 @@ generated: tools/import-guide.sh
 
 *The optional shared database lets you search and track clips across projects; it is a database file or a database server.*
 
-The shared database (the app calls it the Central Database) keeps a record of every project so you can search, compare and track clips across all of them. It is optional. Import, organize, preview and editing all work without it.
+The shared database keeps a record of every project so you can search, compare and track clips across all of them. It is optional. Import, organize, preview and editing all work without it.
 
 Each project lives in its project file (.vpm), and every project opens and works from it without the database. The database keeps a record of each project and its clips for all your Macs to share, but not the whole project: transcripts, sound levels, what Vision found, GPS, weather, sun position and camera details, the checklist, the shot list, the storyboard, the projects it shares media with and retired categories are kept only in the project file. Neither one simply overrides the other: a save sends the database what changed on this Mac, and opening a project from its file doesn’t copy the database’s clips into it.
 
@@ -73,7 +73,7 @@ The database is kept in one of two stores. You choose with the Store picker in S
 
 1. Open Settings › Storage
 2. For a database file, click New Database File… and choose where it will live: MediaFlow makes it there, turns the database on and connects. To use a database file another Mac already made, click Use an Existing Database File… instead
-3. For a server, turn on Enable Central Database, choose Database server as the Store, fill in Host, Port, Database, User and Password, then click Test Connection
+3. For a server, turn on Enable Shared Database, choose Database server as the Store, fill in Host, Port, Database, User and Password, then click Test Connection
 
 A database file is never replaced. New Database File… never makes a file at the name of the database file in use, even before that file has first been written. If the name you choose for a new one is already taken by a database file, MediaFlow asks whether to use that one or choose another name; a file that isn’t a MediaFlow database is refused, and left as it is. The new file is made on this Mac first and put in place only if nothing is there, so a file that appears in the meantime is never written over. The Save dialog opens beside the usual place on the network share chosen in Settings › Network, or in Documents on this Mac.
 
@@ -133,6 +133,8 @@ Searching every project needs a shared database, which keeps a record of every p
 
 - A database file, on this Mac or on a network share. It works with any plan. One Mac uses it at a time
 - A database server, so several Macs can use it at the same time. It needs Studio Pro
+
+On a Mac with no database at all and no network share chosen, All Projects offers Make Database File instead: one click makes a database file in MediaFlow’s own folder on this Mac and connects to it. It stays on this Mac, isn’t synced, and Time Machine backs it up; Settings › Storage shows where it is, with Show in Finder. If a MediaFlow database is already there under that name, it is used rather than replaced; if something else is, nothing is made and MediaFlow says so. Once any database is set up, the button is gone.
 
 To set one up, open Settings › Storage; All Projects’ Set Up a Shared Database… button takes you there. For a database file, click New Database File… and choose where it will live, on this Mac or a network share: MediaFlow makes it, turns the database on and connects. Use an Existing Database File… uses one another Mac made. For a server, Database File or Database Server? has the steps.
 
@@ -263,7 +265,7 @@ If you turn it on, you choose where it keeps its records.
 
 1. Open Settings › Storage
 2. For a file, click New Database File… to make one where it will live, or Use an Existing Database File… to use one that is there, such as the one another Mac made. Either turns the database on and connects
-3. For a server, turn on Enable Central Database, pick Database server under Store, and fill in Host, Port, Database, User and Password
+3. For a server, turn on Enable Shared Database, pick Database server under Store, and fill in Host, Port, Database, User and Password
 
 MediaFlow works on this Mac’s own copy of a database file on a network share, and notes which file that copy belongs to. Whenever the database file changes, however it changed (the two buttons, a typed path, Reset to Default, a copy from the server, the setup wizard or a restored setup), the copy of the previous one is set aside (renamed and kept in MediaFlow’s cache folder, never deleted) and the file you chose is copied fresh, so another database never ends up in it. Changes still waiting to be sent to the previous database stay waiting for it, and go to it when you connect to it again; see Working Offline in Shared Database Overview. A copy made by an earlier version, which noted nothing, is set aside the same way the first time, unless the database itself shows it is the same one.
 
@@ -300,7 +302,9 @@ The fields save as you type. On every other Mac, enter the same host, port and p
 
 Update MediaFlowSwift on every Mac that uses the server. Older versions saved whole copies of a project and could undo another Mac’s work, so once an up-to-date Mac has connected, the server refuses saves from those older versions. A Mac still on an older version can read the shared database, and its saves fail with “Update MediaFlowSwift on this Mac to keep working with the shared database”. Its changes stay in its project files and reach the server once it is updated. A later version that needs the same may ask every Mac to update again.
 
-A database file can’t tell which version is writing to it, so there the refusal is up to each Mac: a Mac on this version or later won’t use a file a newer version has set up, but an older version still writes to the file as it always did. Update every Mac that uses the file too.
+A database file can’t tell which version is writing to it, so there the refusal is up to each Mac: a Mac on this version or later only reads a file a newer version has set up, but an older version still writes to the file as it always did. Update every Mac that uses the file too.
+
+The other way round, when a server or file is set up for a newer version (one that changes the rules for writing to it), a Mac on this version or later connects to it only to read. Every project opens read-only there, with a strip saying so, until that Mac is updated too. A newer version that only adds to the database leaves older Macs writing as before. See A Project Saved by a Newer Version.
 
 > **Tip:** A tool other than MediaFlowSwift that changes projects or clips on the server, such as psql, must first run SET mediaflow.protocol = '2'; without it the server refuses the change.
 
@@ -309,7 +313,7 @@ A database file can’t tell which version is writing to it, so there the refusa
 A successful test says Connected, with the server’s version number, such as 16.4. A failed test says why:
 
 - “…could not be found on the network” — the Host name is wrong. MediaFlow tries the name as typed and then with .local on the end, which is what most server names on a home network need; when that works, Test Connection corrects the Host field and says so. Otherwise use the server’s address
-- “MediaFlow could not read the saved password from your Keychain” — the password is saved, but macOS would not hand it to this version without asking you. This happens once after an update. macOS cannot ask while the app is still opening, so MediaFlow tries again by itself a moment after its window appears: enter your Mac password when macOS asks, and click Always Allow. If you dismissed the question, choose Database → Enable & Connect Database (Reconnect Database while it is connected) to be asked again. macOS recognises an app across updates only when its maker has an Apple Developer ID; until MediaFlow has one, expect to be asked once after each update, for each password or key MediaFlow keeps
+- “MediaFlow could not read the saved password from your Keychain” — the password is saved, but macOS would not hand it to this copy without asking you. macOS asks once when the app’s signature changes, as it did at 1.10.19, when MediaFlowSwift took its Apple Developer ID; every update since carries the same signature, so macOS knows the app and does not ask again. macOS cannot ask while the app is still opening, so MediaFlow tries again by itself a moment after its window appears: enter your Mac password when macOS asks, and click Always Allow. If you dismissed the question, choose Database → Enable & Connect Database (Reconnect Database while it is connected) to be asked again
 - “Nothing is listening at…” — the server is not running, or the port is wrong
 - “macOS is keeping MediaFlowSwift off your local network…” — macOS has told MediaFlowSwift so. It often follows an update. Click Open Local Network Settings…, turn MediaFlowswift off and on again, and MediaFlowSwift connects by itself within a few seconds
 - “…did not answer… macOS may be keeping MediaFlow off your local network” — macOS asks your leave before an app may reach other devices on your network, and refuses silently until you give it. Open System Settings › Privacy & Security › Local Network and turn MediaFlowswift on; if it is already on, turn it off and on again
@@ -322,7 +326,7 @@ A successful test says Connected, with the server’s version number, such as 16
 ### Set Up a Server…
 
 1. Click Save docker-compose.yml…. This file describes the server to a container app. It contains the password, so it is saved readable only by you. Keep it private
-2. Put the file in a folder of its own on the network storage or computer that will run the server. The database keeps its data in a folder beside it
+2. Put the file in a folder of its own on the network storage or computer that will run the server. The database keeps its data in a folder beside it, and its nightly backups in a backups folder. Make the backups folder yourself, beside the file, with the account you’ll use to copy the backups (for example from your Mac over the share, signed in as that account): each backup belongs to whoever owns the folder, and only that account can open it
 3. Start it: in your network storage’s container app, create a project from that folder. On a computer with Docker, run docker compose up -d in that folder. The first start takes a minute or two
 4. Back in Settings, set Host and click Test Connection
 
@@ -333,6 +337,52 @@ A successful test says Connected, with the server’s version number, such as 16
 - The password goes into your Keychain before the file is written. If macOS will not let MediaFlow save it there, the file is not saved and the guide says so, since a server started from it would have a password this Mac does not know
 - Use the password already in my Keychain — for saving the file again for the server you already use. A server reads its password only the first time it starts, so the file must keep the same one
 - Make a new password — for a server that has never been started. It replaces the one in your Keychain, so MediaFlow can no longer sign in to the old server
+
+### Nightly backups
+
+A server set up from the file this version saves backs itself up. Beside the database, the file runs a second, small service called mediaflow-backup. Every night at 3 in the morning, on the clock of the Mac that saved the file, it saves a copy of the whole database in a folder called backups, next to the server’s data folder, and keeps the newest 14: two weeks to go back to. It makes the first copy as soon as it starts (on a new server, within ten minutes of MediaFlow first connecting to it), and if the server was off at 3 in the morning, it makes the missed one when the server starts again. A copy is kept only when every part of it reads back; when one fails, the older copies stay and it tries again ten minutes later. It skips a night rather than fill the disk, and the Macs keep working while it runs. Once there is a backup, it makes none while the database holds no projects, clips, drives or published videos, so an emptied database can’t push the good backups out.
+
+Settings › Storage shows when the server last backed itself up, under the connection fields. When there is no backup yet, or none in the last seven days, it says so in orange, with what to do.
+
+> **Tip:** A server of your own, backed up your own way? Have your backup job note each backup and Settings shows it: INSERT INTO mediaflow_meta (key, value) VALUES ('last_backup_at', '2026-09-30T03:00:00Z') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, with the time of the backup in universal time.
+
+> **Warning:** The backups hold every project’s records, so keep them, and any copy of them, somewhere private. The backups folder is on the same disk as the database: it protects you from mistakes and damaged records, not from that disk failing. Include it in your storage’s own backup, or copy it to another drive now and then.
+
+### Adding backups to a server you already have
+
+1. In Settings › Storage, with Database server chosen, click Save Updated Server File…. It writes docker-compose.yml with the backup service added and the password already in your Keychain, which is the one your server uses. If no password is saved on this Mac, or macOS won’t let MediaFlow read it, it says so and saves nothing
+2. In the server’s folder, rename the old docker-compose.yml to docker-compose.yml.old, and put the new file beside it. Don’t name the old one compose.yml or compose.yaml: the container app would read that one instead. Before you do, check that the ports and volumes lines of the new mediaflow-db service match the old file’s. If you changed the old file by hand, for a different port or data folder, make the same change in the new one: a server started with a different data folder starts empty
+3. In the same folder, beside data, make a folder called backups yourself, with the account you’ll use to copy the backups: for example from your Mac over the share, signed in as that account. Each backup belongs to whoever owns the folder, and only that account can open it. If the server makes the folder, only its administrator can open them
+4. Redeploy the server: in your storage’s container app, open the project and redeploy or update it; on a computer with Docker, run docker compose up -d in that folder. If the container app keeps its own copy of the file, paste the new file into the project’s editor first. The database keeps its data and its password; only the backup service is new
+5. Check that the project now shows two containers: mediaflow-db, running for as long as before, and mediaflow-backup, whose log says “Saved mediaflow-backup-…”. Back in Settings › Storage, the backup shows within a few minutes
+
+### Restoring a backup
+
+A restore puts the backup into a new database beside the current one, then swaps their names. Nothing is overwritten: the current database is kept under another name until you decide you don’t need it, and no Mac’s settings change. You type four commands in the backup service’s terminal, which already knows the server’s password. Where they say mediaflow, use the Database name in Settings › Storage if yours is different.
+
+1. Quit MediaFlow on every Mac that uses the server
+2. In the backups folder, find the backup to go back to. Each is named for the day and time it was made, such as mediaflow-backup-2026-09-30-030004.dump
+3. Open a terminal in the mediaflow-backup container: in your container app, select it and choose Terminal (some call it Console or Exec). Or, from a shell on the server, type docker exec -it mediaflow-backup bash
+4. Type createdb mediaflow_restored and press Return. This makes a new, empty database
+5. Type pg_restore --no-owner --single-transaction -d mediaflow_restored /backups/mediaflow-backup-2026-09-30-030004.dump, with the name of your backup in place of the one shown, and press Return. It brings back everything or, if anything goes wrong, nothing. If it ends with an error, stop here: your current database has not been touched
+6. Type psql -d postgres -c 'ALTER DATABASE "mediaflow" RENAME TO "mediaflow_before_restore"' and press Return. This puts the current database aside. If it ends with an error, don’t type the next step: see below
+7. Type psql -d postgres -c 'ALTER DATABASE "mediaflow_restored" RENAME TO "mediaflow"' and press Return. The restored database now has the usual name
+8. Open MediaFlow. The shared database is back as it was when the backup was made: see After a restore, below
+
+- “…is being accessed by other users” at step 6 — a Mac still has MediaFlow open, or went to sleep with it open, which keeps its place for about two hours, or a backup is being made. Quit MediaFlow wherever you can, then type psql -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'mediaflow' AND pid &lt;> pg_backend_pid()" and press Return, which signs every Mac out of that database, and type step 6 again
+- If step 6 ends with an error, don’t type step 7. Nothing has changed yet: the restored copy waits under its own name until step 6 works
+- “…already exists” at step 4 or step 6 — an earlier restore left that name behind. At step 4, add _2 to mediaflow_restored there and in steps 5 and 7. At step 6, add _2 to mediaflow_before_restore. At step 7 the message means step 6 didn’t work: go back to it
+
+### After a restore
+
+A restore doesn’t change your projects’ own files. Each project keeps the clips its file holds, work done after the backup included, and the database takes in a clip’s later changes the next time that clip is changed and saved on a Mac. But when a project opens, MediaFlow takes the database’s word on where the project lives and whether it is archived, so a project moved or brought back from its archive since the backup shows what the database remembers:
+
+- Moved since the backup, with the earlier copy still there — opening it asks “There is another copy of…”, naming where it lived at the backup. Choose the copy you’ve been working on: if it is the one you opened, click Use This Copy and Don’t Ask Again; if it is the other one, click Open the Other Copy
+- Brought back from its archive drive since the backup — it opens as archived again, and its file says so from its next save. To bring it back again, plug in the archive drive, open the project browser, right-click the project and choose Restore from Archive…, into a new folder. Then open the copy you’ve been working on and, when MediaFlow asks which copy is current, click Use This Copy and Don’t Ask Again. Or restore a backup made after you brought it back
+
+Until the next night’s backup, Settings › Storage shows the last backup noted in the one you restored, which is earlier.
+
+If the server itself was lost, keep the backups folder you saved somewhere safe, and put a copy of it, not the folder itself, beside the new server’s file. Set up the new server from the server file, choosing Use the password already in my Keychain, and start it. Then follow the same steps before you use MediaFlow with it: the new server’s empty database is the one put aside. Keep the original folder until the restore is done.
 
 The database server is part of Studio Pro; without it the app keeps working with a database file. See Plans and Pricing.
 

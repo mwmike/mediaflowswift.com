@@ -255,7 +255,9 @@ See also: [Saving Projects](#saving-projects), [Moving a Project](#moving-a-proj
 
 *Copy a finished project folder to a numbered USB drive for long-term storage, with every file checked before the original may go.*
 
-Archive to USB frees your working storage by copying a finished project to a drive you can put on a shelf. It copies the whole project folder to a removable drive, checks the copy, and records where it went in the central database. Archive volumes are numbered (USB #0001, USB #0002, …) so a project can always be found again. Only the project folder is copied; media organized to a destination outside the project folder is not included.
+Archive to USB frees your working storage by copying a finished project to a drive you can put on a shelf. It copies the whole project folder to a removable drive, checks the copy, and records where it went in the shared database. Archive volumes are numbered (USB #0001, USB #0002, …) so a project can always be found again. Only the project folder is copied; media organized to a destination outside the project folder is not included.
+
+If any of the project’s clips are outside its folder (organized to a destination outside it, imported but not yet organized, or Missing from a place outside it), the Archive sheet says so before you archive: “3 clips (12.4 GB) are organized outside this project’s folder and will not be on the archive drive.” The archive still goes ahead, and those clips stay where they are. To put them on the drive too, bring them into the project folder first (organize into a destination inside it, or move them there and relink), then archive. A project with nothing outside its folder shows no such line.
 
 ### Archiving
 
@@ -267,11 +269,17 @@ Archive to USB frees your working storage by copying a finished project to a dri
 
 Every file is read back from the drive after it is written and compared with its original by checksum, so a file damaged on the way — even one that kept its size — fails the archive rather than being recorded. The Verifying step then confirms the number of files and their total size. Because each file is read twice, archiving takes longer than a plain copy, most of all on a USB hard drive or with a project made of many small files; to save time, the next file is already being copied while the last one is checked, and a file counts only once its own check has passed. File contents and dates are archived; Finder tags and similar extras are not, because most archive drives are formatted in a way that cannot hold them. On success the project is marked Archived with the volume number, date, and path. Its project file records the archive too, so the project still shows as archived when you open it again. The copy of the project file on the drive is left exactly as it was checked, and it shows as archived too when you open it from the drive, even with no shared database: the drive and the project folder on it say so, and the pipeline strip names the drive. In the project browser the row reads “Archived → USB #0007”.
 
+### With no database yet
+
+Archive to USB needs a database to write down which drive each project is on. On a Mac with none at all, choosing Archive to USB offers Make Database File instead of the Archive sheet: one click makes a database file in MediaFlow’s own folder on this Mac, connects to it and goes on to the Archive sheet. It stays on this Mac, isn’t synced, and Time Machine backs it up; Settings › Storage shows where it is, with Show in Finder. A MediaFlow database already there under that name is used rather than replaced. When a network share is chosen in Settings › Network, it offers Storage Settings… instead, so you can put the database on the share where every Mac can use it.
+
 ### Completion screen
 
 After the progress dialog closes, an Archive Complete screen summarizes the result — “Archived 312 files (48.2 GB) to USB #0007 · verified” — and lists the drive (or every drive, for a split archive) with an Eject button for each one that is still connected. “Keep Original” closes the screen and leaves both copies in place. “Delete Original…” removes the original project folder, wherever it is stored. It scans the folder first and then shows the same confirmation used when you delete staged files or delete a project: the file count, the total size, a warning when the folder is on a network volume (where there is no Trash to recover from), and a checkbox you must tick before the delete button enables. Confirming moves the folder to the Trash, or deletes it outright on a network volume.
 
 Before it offers, and again at the moment of deleting, MediaFlow checks the folder against what this archive copied. Just before archiving it notes each file’s size and when it was last changed, and it keeps that note only for the files the archive then copied and checked. The folder is deleted only if every file in it is one of those, unchanged, and every folder in it, empty ones included, is in the archive: a folder that is not keeps the project folder, and is named. A file the archive did not copy (one added since, one added after a split archive was planned, or one moved out of the folder while the archive ran and put back afterwards) or one changed since, even under the same name, keeps the folder; the message names it and offers Archive Again. Finder’s own .DS_Store files are left out. Once the archive is done, MediaFlow writes where the archive is into the project file; that change of its own does not count, but any other change to the project file does, and the delete button waits until that write is over. A file or folder whose name starts with .incoming- or .superseded- followed by an eight-character code of digits and the letters A to F, and a dash is never archived, because MediaFlow gives those names to its own unfinished copies; nor is a .mediaflow-leg.json or .mediaflow-archive file, a note MediaFlow keeps on an archive drive about that drive. Either keeps the folder and is named, and the Archive Complete screen stays open, saying why, so that once you have renamed or removed the file, Delete Original works. An archive that cannot finish says why in the progress window. A split archive that picked up drives written in an earlier session is not deleted from here, because those drives were matched by size only; archive the project again in one go, or delete the folder by hand. A change of the same size within a second or two of the note cannot be told apart on some drives.
+
+Delete Original… is also not offered while any clip of the project was outside its folder when it was archived: the drive does not hold those clips, so it is not the whole project. The Archive Complete screen says so in the same words as the Archive sheet, and what to do: bring those clips into the project folder and archive again first, or keep the project folder and the drive they are on. Deleting the project folder would not delete the clips themselves, which stay at their destination, but the archive could no longer say which drive every clip is on.
 
 > **Warning:** Deleting the original leaves the USB drive as the only copy of the project. Every file on it was compared with its original by checksum, but a single drive can still fail on the shelf; for footage you cannot replace, archive to a second drive as well before you delete. “Delete Original…” is disabled when the database update was queued instead of saved; keep the original until the database has recorded the archive.
 
@@ -307,7 +315,7 @@ When you archive the project again, choose a new drive, which gets a number of i
 
 Cancel on the progress window stops an archive between files. Files already written to the drive stay there. A split archive that is stopped part way can be picked up later with Resume Archive.
 
-Archiving needs the central database to record volumes and projects.
+Archiving needs the shared database to record volumes and projects.
 
 See also: [Restoring an Archived Project](#restoring-an-archived-project), [Managing Archive Volumes](#managing-archive-volumes), [Shared Database Overview](/manual/shared-database/#shared-database-overview), [Freeing Up Space](/manual/organizing-media/#freeing-up-space), [Moving a Project](#moving-a-project)
 
@@ -315,7 +323,7 @@ See also: [Restoring an Archived Project](#restoring-an-archived-project), [Mana
 
 *Bring a project back from its USB archive drive, or drives, with every file checked against the archive.*
 
-To bring an archived project back, open the project browser, right-click the archived project, and choose Restore from Archive…. Restoring needs the central database, which records which drive holds each project.
+To bring an archived project back, open the project browser, right-click the archived project, and choose Restore from Archive…. Restoring needs the shared database, which records which drive holds each project.
 
 1. Plug in the archive drive. It does not have to mount under the same name it had when you archived; MediaFlow looks for the project on every connected archive drive
 2. Choose the folder to restore into. The project comes back as a folder inside it, with the name it was archived under. If a folder with that name is already there, the restore stops before copying anything; choose a different folder
