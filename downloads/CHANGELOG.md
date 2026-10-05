@@ -6,7 +6,16 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.38.
+Nothing waiting. Everything finished so far is in 1.10.39.
+
+## 1.10.39 · October 5, 2026
+
+**Upload in YouTube Studio and let MediaFlow fill in the rest, and your edit lists and Final Cut files open cleanly.**
+
+- **Upload in YouTube Studio yourself; MediaFlow does the rest.** Prepare for YouTube now has Apply to the Video I Uploaded: upload your video in YouTube Studio as you always have, click Apply, confirm the video from your channel's recent uploads (MediaFlow picks out the one with your file's name), and your title, description with chapters, tags, thumbnail and captions go onto it in one go. Nothing else on the video is touched, and the visibility you chose in YouTube Studio stays unless you change it in the sheet. Because you uploaded it yourself, Google's audit never holds it Private. The Results tab reads its views and watch time like any other, and Apply again updates the same video. Google asks you to sign in once more for the permission that can do this; the Upload tab is now last, marked advanced, and Help explains the new way and what each step costs of your daily allowance.
+- **Your DaVinci Resolve edit list now lays your clips out one after another.** The .edl from NLE Template Export used to stack every clip at the very start of the timeline, and gave each camera a name with spaces that stricter editors could not read. Now each clip follows the one before it, at your footage's own frame rate, with 29.97 and 59.94 counted correctly, and camera names are cleaned up to fit, with the full clip name kept beside each cut.
+- **Final Cut Pro files now follow Final Cut’s own rules for the file format.** Every Final Cut Pro file MediaFlow writes (the NLE Template, Report → FCPXML and Export FCPXML) now passes Apple’s own check for the version it declares. Your clips point at their files the way Final Cut expects, and each clip carries a keyword for its Keyword Collection, so it shows up under that collection while staying in its Event. Importing one into Final Cut on your own Mac is still the final proof, so try a small project first.
+- **Exposure now measures your pictures instead of guessing from camera settings.** The Exposure window reads five frames from each clip and shows what it really finds: how bright the clip is, how much of the highlights are clipped, how much of the shadows are crushed, and a histogram drawn from those frames. When a clip can’t be read, it says “Couldn’t read a frame from this clip” and shows no numbers at all, only a rating from the camera’s settings that says so.
 
 ## 1.10.38 · October 4, 2026
 
