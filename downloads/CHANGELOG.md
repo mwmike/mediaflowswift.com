@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.37.
+Nothing waiting. Everything finished so far is in 1.10.38.
+
+## 1.10.38 · October 4, 2026
+
+**On a shaky connection, a long clip now picks up where it left off instead of starting over.**
+
+- **A long clip picks up where it left off when your network drive drops.** Since 1.10.37, Organize waits for a drive that drops for a moment. Now it also carries the clip on from what had already arrived, so a long clip over a phone hotspot or a satellite dish no longer starts over every time the link blinks. It checks what it keeps before carrying on, and once the clip is complete it reads the whole copy back and compares it with the original, even if you turned full read-back off, before counting it as organized.
 
 ## 1.10.37 · October 4, 2026
 
