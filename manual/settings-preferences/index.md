@@ -70,6 +70,7 @@ Where you choose the network share that MediaFlow reconnects to. Nothing is assu
 - Database server — Host (a button beside it offers the server of the chosen network share), Port, Database, User and Password. The password is kept in your Keychain. Test Connection shows the server version or the reason it failed. Set Up a Server… is a guide to making one. Two Copy buttons move every record between the file and the server
 - Organize Media — “Default destination for new projects” (Choose… or Clear) fills in the destination for a project that has none; a project’s own destination always wins
 - Verify organized copies by reading them back — On: every copy is read again in full and its SHA-256 compared with the source; slowest and safest. Off: copies are checked by size plus 1 MB samples at the start, middle and end; much faster over a network
+- Remove unfinished copies after … days — When Organize gives up on a clip because a network drive dropped, what had arrived is kept on the drive so the next Organize can carry it on. One that no Organize carries on is removed after this many days (7 unless you change it), the next time you organize to that folder
 
 ### Cameras
 

@@ -258,11 +258,14 @@ Cause: the connection to the drive went away for a moment while a clip was being
 - Every copy is written under a hidden name and is read back and checked before it takes the clip’s name, so a half-written file is never counted as organized
 - If the drive keeps dropping, that clip is left where it was, untouched, and listed with the reason. Clips after it get one try each, and once the drive is found not answering, every clip after that is left where it is without a try, so a long outage does not keep you waiting for hours; as soon as one copies, the full tries come back
 - The wait for the drive to answer again is at most three minutes by the clock, however slowly the drive answers, and Cancel stops it at once
-- A hidden half-written copy that could not be removed while the drive was away is removed the next time that clip is organized. Archive, Move Project and Return to Library leave such copies out
+- When MediaFlow gives up on a clip, what had arrived stays on the drive under a hidden name, with a small note beside it saying which clip it is and how far it got. The next Organize of that clip, even after you quit MediaFlow or restart the Mac, carries the copy on from there instead of starting again
+- Before it carries such a copy on, MediaFlow checks that the clip has not changed (its size, date and first part), and reads back from the drive what the copy holds and compares it with the clip. It carries the copy on from the last point that still matches; if the clip has changed, the start of the copy differs, or the note is missing, unreadable or about another clip, the hidden copy is deleted and the clip copied again from the beginning. If the drive drops while it checks, the copy is kept and checked again once the drive answers. Once the copy is complete, the whole of it is read back from the drive and compared with the clip, as for any copy that was carried on
+- If another Mac is copying the same clip into the same folder at that moment, MediaFlow leaves its copy alone and leaves the clip where it is, saying so. Organize again once the other Mac has finished. A copy whose Mac has stopped working on it for a couple of minutes, or gave up on it, is taken over, and only ever by one Mac: if two try at once, the other leaves the clip where it is
+- A hidden copy that no Organize carries on is removed after 7 days, the next time you organize to that folder. Change the number of days in Settings › Storage, under Organize Media. Only MediaFlow’s own hidden copies and notes are ever removed, and a drive that is not answering is skipped. Archive, Move Project and Return to Library leave such copies and notes out
 
 ### Fixes
 
-- Organize again when the connection is steady. Clips that were finished are not copied again, and nothing was lost
+- Organize again when the connection is steady. Clips that were finished are not copied again, a clip that was cut short carries on from what arrived, and nothing was lost
 - If you can, stay on one network while Organize runs, and keep the Mac from going to sleep
 - If the share has disappeared from the Finder, MediaFlow connects it again by itself when it is the one chosen in Settings › Network; you can also connect it in the Finder
 
