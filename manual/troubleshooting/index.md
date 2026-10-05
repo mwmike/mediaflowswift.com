@@ -251,11 +251,14 @@ Cause: the connection to the drive went away for a moment while a clip was being
 
 ### What MediaFlow Does About It
 
-- It stops writing that clip, waits a few seconds, longer each time, until the clip’s folder answers again, and then copies the clip again from the beginning. It tries up to three more times
+- It stops writing that clip, waits a few seconds, longer each time, until the clip’s folder answers again, and then carries the copy on from what had already arrived, so a long clip over a slow connection does not start again from nothing. What arrived is read back and compared with the clip first; the part that was being written when the drive dropped is always written again, never trusted
+- Once a copy that was carried on is complete, the whole of it is read back from the drive and compared with the clip, even with read-back verification off in Settings › Storage. If anything differs, that copy is deleted and the clip is copied again from the beginning. If the drive drops while MediaFlow asks it to finish writing the copy, everything written since the last point that was checked is written again
+- While it copies, MediaFlow measures how fast the drive is taking the clip and keeps a point it can carry on from about every 30 seconds of copying: a few tens of megabytes over a phone or satellite connection, much more on a fast network. A drop costs about that much. On a connection that does not drop, nothing extra is read back
+- If nothing that arrived can be kept, or the copy cannot be opened again, the clip is copied again from the beginning. It tries up to three more times in a row without getting further; a drop after the copy got further does not use up a try
 - Every copy is written under a hidden name and is read back and checked before it takes the clip’s name, so a half-written file is never counted as organized
 - If the drive keeps dropping, that clip is left where it was, untouched, and listed with the reason. Clips after it get one try each, and once the drive is found not answering, every clip after that is left where it is without a try, so a long outage does not keep you waiting for hours; as soon as one copies, the full tries come back
 - The wait for the drive to answer again is at most three minutes by the clock, however slowly the drive answers, and Cancel stops it at once
-- A hidden half-written copy that could not be removed while the drive was away is removed the next time that clip is organized
+- A hidden half-written copy that could not be removed while the drive was away is removed the next time that clip is organized. Archive, Move Project and Return to Library leave such copies out
 
 ### Fixes
 
