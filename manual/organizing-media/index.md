@@ -910,27 +910,34 @@ See also: [Day Summary](/manual/reports/#day-summary), [Smart Selects](#smart-se
 
 ## Exposure
 
-*Traffic-light exposure ratings and color-cast notes for every clip, estimated from the camera settings each clip recorded, grouped by scene.*
+*Traffic-light exposure ratings and color-cast notes for every clip, measured from a few frames of each clip, with the camera settings as the fallback, grouped by scene.*
 
-The Exposure pass gives you a triage list of clips that may be too bright, too dark or off-color. Choose Workflow → Analyze… and click Run on the Exposure row. MediaFlow rates each clip’s exposure, estimates its color balance, and flags clips that do not match the rest of their scene.
+The Exposure pass gives you a triage list of clips that may be too bright, too dark or off-color. Choose Workflow → Analyze… and click Run on the Exposure row. MediaFlow reads a few frames from each clip, rates its exposure from what it sees, estimates its color balance, and flags clips that do not match the rest of their scene.
 
 ### What it measures
 
-Nothing in the picture. The pass never decodes a frame: it reads the camera settings recorded with each clip and estimates from them. The rating comes from ISO multiplied by shutter time, the light the camera let in, in five bands from Underexposed to Overexposed; a GoPro’s exposure compensation moves the estimate up or down by the stops it records. The aperture is shown in the note and is not part of the calculation. A clip that recorded none of these reads Good. The color note comes from the white balance the camera recorded: a tungsten setting reads as a cool cast, cloudy or shade as warm, fluorescent as green; daylight, or no setting, as neutral.
+The picture. For each video, the pass reads five frames spread evenly through the clip (a still is read once) and builds a brightness histogram from them, using the standard Rec. 709 weighting of red, green and blue. Each row shows the average brightness out of 255, the share of the picture whose highlights are clipped (brightness 250 or more), and the share whose shadows are crushed (5 or less), with a small histogram beside it. The rating comes from those figures, in five bands from Underexposed to Overexposed: more than 5% of highlights clipped reads Overexposed, an average under 30 reads Underexposed, and Slightly Over and Slightly Under sit between those and Good.
+
+### When a frame can’t be read
+
+Some clips can’t be read: a format this Mac can’t decode, a file that is missing or on a drive that is offline, or a clip that is only a placeholder in iCloud or another cloud folder (MediaFlow never downloads it just to look). That row says “Couldn’t read a frame from this clip” and shows no figures and no histogram. Its rating is then the band the camera’s settings point to, and the row says so: ISO multiplied by shutter time, the light the camera let in, with a GoPro’s exposure compensation moving it up or down. Settings can warn of a problem but never vouch for a clip nobody looked at: when they look normal, or none were recorded, the clip reads “Not measured” in grey. It is not counted as Good, it has its own filter and count, and a set that includes one is never reported as All Clear. The aperture is shown in the note and is not part of any calculation.
+
+The color note always comes from the white balance the camera recorded, not from the picture: a tungsten setting reads as a cool cast, cloudy or shade as warm, fluorescent as green; daylight, or no setting, as neutral.
 
 ### Traffic lights
 
-- Green / Good — the estimate is within the normal range, or there was nothing to estimate from
+- Green / Good — the figures are within the normal range, or there was nothing to go on
 - Yellow / Marginal — Slightly Over or Slightly Under
 - Red / Problem — Overexposed or Underexposed
+- Grey / Not measured — no frame could be read, and the camera’s settings gave no reason to worry
 
-Click a traffic-light count, or use the All / Good / Marginal / Problem filter bar, to narrow the list. Each row shows the scene and a note such as “Overexposed — 8.0% highlights blown out · Color: warm (cloudy/shade WB) · ISO 400 · Shutter 1/60 · f/2.8”. The percentage and the mean luminance in a note are the estimate’s own figures for that band, not measurements from the clip. The box beside each row where a histogram would go stays empty for the same reason.
+Click a traffic-light count, or use the All / Good / Marginal / Problem / Not measured filter bar (a clip still being read waits out of the coloured filters until it is read), to narrow the list. Each row shows the scene and a note such as “Overexposed · average brightness 214 of 255 · 8.0% of highlights clipped · 0.0% of shadows crushed · measured from 5 frames · Color: warm (cloudy/shade WB) · ISO 400 · Shutter 1/60 · f/2.8”. Every figure in a note was measured from the frames of that clip; a row that could not be read has none. While the frames are being read, the window opens at once and each row fills in as its clip is done.
 
 ### Scene color mismatches
 
-Within a scene that has two or more clips, any clip whose estimated color differs noticeably from the scene average is flagged, and the header counts the scenes with mismatches. Since the estimate follows the white balance setting and reads no picture, this can catch one camera set far from the rest of its scene, such as tungsten against cloudy, or tungsten among several daylight clips. It is a coarse check: two clips with one on daylight and the other on tungsten are not far enough from their scene average to be flagged, and a fluorescent setting never is.
+Within a scene that has two or more clips, any clip whose recorded color setting differs noticeably from the scene average is flagged, and the header counts the scenes with mismatches. Since this check follows the white balance setting and reads no picture, this can catch one camera set far from the rest of its scene, such as tungsten against cloudy, or tungsten among several daylight clips. It is a coarse check: two clips with one on daylight and the other on tungsten are not far enough from their scene average to be flagged, and a fluorescent setting never is.
 
-Treat the list as a guide to which clips to look at, and confirm on a monitor. Smart Selects is the pass that looks at the picture: its exposure score comes from a frame near the start of each clip.
+Treat the list as a guide to which clips to look at, and confirm on a monitor: five frames cannot show a flash or a dark moment between them. Smart Selects also looks at the picture, from a frame near the start of each clip.
 
 See also: [Smart Selects](#smart-selects), [Format Conformance Checker](#format-conformance-checker), [Logging Scene, Shot and Take](#logging-scene-shot-and-take), [The Analyze Hub](/manual/getting-started/#the-analyze-hub)
 

@@ -11,7 +11,7 @@ generated: tools/import-guide.sh
 
 *Two plans, Studio and Studio Pro, a 14-day trial of the full app, and what stays open when a plan ends.*
 
-MediaFlowSwift comes in two plans. Studio is all the file management: importing from cards, phones and folders; categorizing, reviewing, rating and tagging; Organize with every copy proved; Free Up Space; Archive and restore; proxies; the editing drive; Library Moved; reports; Help; updates and problem reports. Studio Pro is everything in Studio, plus the title, description, chapters and tags written for you, uploading to YouTube as a private draft (advanced), results read back from YouTube, and the database server that gives every Mac the same projects list. Neither plan limits how often you use what it opens.
+MediaFlowSwift comes in two plans. Studio is all the file management: importing from cards, phones and folders; categorizing, reviewing, rating and tagging; Organize with every copy proved; Free Up Space; Archive and restore; proxies; the editing drive; Library Moved; reports; Help; updates and problem reports. Studio Pro is everything in Studio, plus the title, description, chapters and tags written for you and set, with the thumbnail and captions, on the video you upload in YouTube Studio, uploading to YouTube as a private draft (advanced), results read back from YouTube, and the database server that gives every Mac the same projects list. Neither plan limits how often you use what it opens.
 
 ### The trial
 
