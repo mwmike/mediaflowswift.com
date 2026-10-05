@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.39.
+Nothing waiting. Everything finished so far is in 1.10.40.
+
+## 1.10.40 · October 5, 2026
+
+**Organize picks up an unfinished clip next time, even after you quit or restart.**
+
+- **A clip cut short by a dropped network drive carries on next time, even after a restart.** When Organize gives up on a clip because your network drive dropped, what had arrived now stays on the drive, and your next Organize picks the clip up from there, even after you quit MediaFlow or restart your Mac. It first makes sure your clip hasn't changed and that what arrived is still right, and it reads the whole copy back once it's complete. If another Mac is copying the same clip at that moment, it leaves that copy alone and tells you. Pieces nobody comes back for are tidied away after 7 days, or whatever you choose in Settings › Storage.
 
 ## 1.10.39 · October 5, 2026
 
