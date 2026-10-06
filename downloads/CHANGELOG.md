@@ -6,7 +6,18 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.40.
+Nothing waiting. Everything finished so far is in 1.10.41.
+
+## 1.10.41 · October 5, 2026
+
+**Your plan is protected from copies, saves never get stuck when your server connection drops, and drive numbers never clash.**
+
+- **Your plan can't be faked or copied.** MediaFlowSwift now believes only an answer the licence service has signed for your key on your Mac, so nobody can hand-write a plan or borrow another Mac's. The first time you open this version, it checks your licence once; if you're offline then, your plan keeps working for three days while it waits for a connection. If your Mac's clock is far off, Settings › Plan says so and tells you how to fix it.
+- **A save no longer gets stuck if your server connection drops mid-save.** If your database server restarted or the network dropped while MediaFlow was saving, that save could wait forever, and every save after it waited too. Now MediaFlow lets go of it within 15 seconds (at once if the server says it is closing), connects again and saves your change once more, or keeps it to sync as soon as the server is back. Nothing you changed is lost.
+- **Every new archive drive gets a number of its own, even when two Macs set one up at once.** When two Macs shared one database, setting up new archive drives at the same moment could give both the same number, so one drive couldn't be recorded, or two drives ended up sharing a number. Now MediaFlow claims the number for your drive before writing it on the drive, so no other Mac can take it, and your drives keep counting up as before.
+- **A project you emptied stays in your library.** If you had removed every clip from a project still called "Untitled Project" or "Test", MediaFlow could take it for an unused leftover and delete it the next time it connected to your database, along with its record of what you removed. Now a project is only tidied away when it truly holds nothing, so your removed clips are always on record.
+- **MediaFlow notices when your database server goes away, and still rides out a slow connection.** If the server restarts or the network drops while MediaFlow is checking on it, MediaFlow used to wait for an answer that never came, and never noticed it had lost the connection. Now, once the server has said nothing at all for 15 seconds, it connects again, just as it does after any other disconnect. A slow link that is still working, over a phone or satellite connection, is left to finish what it is doing, and anything cut off is saved again once you're back.
+- **Category Suggestions now show the whole reason.** Each suggestion's reason used to be cut off mid-word with no way to read the rest. Now it wraps under the clip, so you can see exactly why MediaFlow suggests a category, and the category name stays on one line with its buttons neatly lined up.
 
 ## 1.10.40 · October 5, 2026
 
