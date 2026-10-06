@@ -262,7 +262,7 @@ If any of the project’s clips are outside its folder (organized to a destinati
 ### Archiving
 
 1. Plug in the drive and choose Workflow → Archive to USB…; click Scan if it is not listed
-2. A drive that has never been used shows “(not initialized)”. Select it, give it an optional label such as “Interviews 2026”, and click Set Up. MediaFlow writes a hidden marker file to the drive and assigns the next number. Numbers are permanent
+2. A drive that has never been used shows “(not initialized)”. Select it, give it an optional label such as “Interviews 2026”, and click Set Up. MediaFlow assigns the next number, one no other Mac sharing your database can take, and writes it to the drive in a hidden marker file. Numbers are permanent
 3. Pick a drive. The smallest initialized drive that still fits is marked Recommended; drives that are too small show an orange warning
 4. Click Archive. Progress moves through Preparing, Copying and Checking (each file is written, then read back; the bar and the time left move through both, even inside a large file), Flushing, Verifying, Updating Database, and Done
 5. Dismiss the progress dialog to reach the completion screen described below
