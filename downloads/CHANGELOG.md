@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.43.
+Nothing waiting. Everything finished so far is in 1.10.44.
+
+## 1.10.44 · October 7, 2026
+
+**See how much is sent, how much is checked, and how long Organize has left.**
+
+- **See your footage on its way, not just a bar stuck at zero.** Organizing over a slow connection, such as a phone hotspot, the window now shows how much you’ve sent and how much is checked, for example “1.2 GB of 3.77 GB sent · 800 MB checked”, how fast it’s going and about how long is left, within a minute of starting. The current file shows its own progress as it’s sent and then checked, and if the drive drops, the window tells you it’s waiting rather than guessing. Only checked clips ever count as done.
 
 ## 1.10.43 · October 6, 2026
 
