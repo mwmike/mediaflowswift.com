@@ -155,6 +155,28 @@ When several clips are selected, the Edit tab shows batch operations. Each one a
 
 See also: [Working with Tags](/manual/tags-categories/#working-with-tags), [Working with Categories](/manual/tags-categories/#working-with-categories), [Context Menu Actions](#context-menu-actions), [Undo and Redo](#undo-and-redo)
 
+## Clips Added Twice
+
+*Find the video files that are in a project more than once, compare the clips side by side, and keep one or both.*
+
+A video file can end up in a project twice: imported again from the same card, say, or imported again while the project’s file was out of reach and the first import came back into it later. Each copy is a clip of its own, with its own camera name, category, rating and notes.
+
+1. Choose Projects → Find Clips Added Twice… (or click Compare Them on the notice that says some clips came in twice)
+2. Each group shows the clips of one file side by side: whether its file is complete, camera, category, rating, notes, tags, favorite, where the file is and when the clip was added. What differs is in bold
+3. Click Keep This One under the clip to keep (the one marked Recommended has a complete file), and confirm. Or click Keep Both to leave the group as it is
+
+The clip you keep gets the other’s details where it has none: a rating, a category (if it has none or is Uncategorized), a camera name, scene details and a favorite mark. Notes are both kept when they differ, and tags are added together. Where its file is doesn’t change. The other clip is taken out of the project the same way Remove from Project takes a clip out.
+
+When the window opens, MediaFlow looks at each clip’s file: whether it is there, and how large it is (it reads only the size, never the whole file). A file is complete when its size matches the size recorded when the clip was added (or, with none recorded, another clip’s file of the same size). A smaller one says “This copy is incomplete” with both sizes; a larger one says “Size differs from what was recorded”; with nothing to compare against it says “Can’t be confirmed complete”; a file that isn’t there says “File missing”; and one on a drive that isn’t connected can’t be checked. The first clip with a complete file is marked Recommended, unless one of the files is larger than recorded: then sizes can’t tell which is the original, and none is. If you choose to keep one whose file is incomplete, missing or can’t be checked, MediaFlow says so and offers Keep the Complete One instead: the clip you keep gets the other’s category, rating and other details either way, and the question lists what it gets.
+
+Subclips of a clip taken out move to the clip you keep: it is the same file, so their in and out points still hold. Edit → Undo doesn’t undo Keep This One; the question says what can and can’t be put back.
+
+Two clips count as the same file when they have the same checksum, or, when either has none, the same file name, size and capture date. A subclip is never counted: it is meant to be there.
+
+> **Tip:** Nothing here changes or deletes a file on your disk, and nothing is taken out until you confirm. Keep Both lasts while the window is open; the clips are listed again the next time you look.
+
+See also: [Context Menu Actions](#context-menu-actions), [Editing Clip Metadata](#editing-clip-metadata)
+
 ## Star Ratings & Selects
 
 *Rate clips 1-5 stars and mark them Hero, Maybe or Reject for fast editorial triage.*
