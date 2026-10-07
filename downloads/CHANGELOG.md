@@ -6,7 +6,16 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.41.
+Nothing waiting. Everything finished so far is in 1.10.42.
+
+## 1.10.42 · October 6, 2026
+
+**Organize finishes over even the shakiest connection, and only says it's done when every clip is safely checked.**
+
+- **Organize carries on over the shakiest connection, and never says it finished when it didn’t.** Organizing to your network drive over a phone hotspot? When the drive drops, MediaFlowSwift waits for it, however long it takes, and carries each clip on from where it stopped, even after you quit, the Mac sleeps, or the drive comes back under another name. Each part is checked once, so you pay for your data once, and clips already there from an earlier try are found and checked instead of sent again. The window shows only what’s really been checked, tells you plainly if any clip couldn’t be finished, and never offers to clear your card until every clip is safe.
+- **Organize always finishes, even when the connection to your shared database drops at the very end.** Once your clips are copied and your project is saved, Organize used to wait for your shared database to note the run, and on a dropped connection that wait could last for hours. Now it waits ten seconds at most, then finishes and tells you the database will be updated later, and Cancel ends that wait at once. Your copies and your project are never affected. Clear Card finishes the same way.
+- **Clips you add while a project's file is out of reach find their way back into it.** If your project opened without its file (the drive was off, say) and you imported clips or rated and noted them, the file used to miss all of it when you opened it again later, so the same clips could end up imported twice. Now, the next time the project opens from its file, wherever the file is now, what you did meanwhile comes into it and is saved, without touching anything newer in the file, and MediaFlow tells you how many clips came in. If your shared database has other clips the file doesn't, MediaFlow shows them and lets you bring them in or leave them out, rather than guessing. Nothing is taken out without asking, and if you've since imported some of the same files again, it tells you they now appear twice.
+- **See every clip that's in your project twice, and tidy them up in a click.** Projects › Find Clips Added Twice shows each video file that's in a project more than once, side by side, with what's different between them: camera, category, rating, notes, tags and where the file is. MediaFlow checks each clip's file and recommends the complete one, warning you if a copy is cut short or missing. Keep the one you want and it picks up the other's rating, category, notes and tags, or keep both. Nothing is taken out until you say so, and no video file on your disk is ever touched.
 
 ## 1.10.41 · October 5, 2026
 
