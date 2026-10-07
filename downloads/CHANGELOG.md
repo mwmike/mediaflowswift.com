@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.44.
+Nothing waiting. Everything finished so far is in 1.10.45.
+
+## 1.10.45 · October 7, 2026
+
+**Organize rides out every network hiccup and tells you how your drive is doing as it goes.**
+
+- **Organizing over a phone keeps going through every hiccup, and tells you as it happens.** Brief stumbles like "Resource temporarily unavailable" no longer stop a clip: MediaFlowSwift waits and carries on, as it does for any drop. The window shows how your network drive is doing right now, which clip is waiting for it, and any clip that truly can't be finished, the moment it happens, and if you allow notifications you'll hear when the drive has been out for five minutes.
 
 ## 1.10.44 · October 7, 2026
 
