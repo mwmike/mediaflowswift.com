@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.42.
+Nothing waiting. Everything finished so far is in 1.10.43.
+
+## 1.10.43 · October 6, 2026
+
+**Clear away what interrupted copies left on your drive, safely, in one place.**
+
+- **Clear out what interrupted copies left behind, safely.** Tidy Up Destination (Workflow › Repair) shows the unfinished, cut-short and extra copies earlier Organize runs left on your drive, with their sizes. Tick what to clear: each one is checked against your footage first, only true leftovers are moved, and they go to the Trash (or your drive's recycle folder), never deleted.
 
 ## 1.10.42 · October 6, 2026
 
