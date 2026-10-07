@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.45.
+Nothing waiting. Everything finished so far is in 1.10.46.
+
+## 1.10.46 · October 7, 2026
+
+**Organize tells you when your drive has stalled, and never cries wolf on a slow connection.**
+
+- **A stuck connection never hides behind "answering".** If your network drive stops taking a clip without saying why, Organize now notices within about six minutes, shows when it last heard from the drive, and lets you know once. If the drive answers but a clip has stopped moving, the window names the clip and when it last moved. Slow connections that are still sending are left in peace. And when the drive fills up, the window says so once, in plain words, and keeps every clip it didn't reach safe where it was.
 
 ## 1.10.45 · October 7, 2026
 
