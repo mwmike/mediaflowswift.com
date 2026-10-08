@@ -6,7 +6,13 @@ MediaFlow takes your footage from the card to the finished upload, and keeps eve
 
 ## Coming next
 
-Nothing waiting. Everything finished so far is in 1.10.46.
+Nothing waiting. Everything finished so far is in 1.10.47.
+
+## 1.10.47 · October 7, 2026
+
+**Organize never gets stuck on a file your network drive keeps locked.**
+
+- **Organize never gets stuck on a file your drive won't let go of.** After a dropped connection, a network drive can keep the unfinished copy of a file locked, sometimes for good. Organize now notices within about ten minutes, carries on with a fresh copy (reusing what already arrived when the drive allows it), counts that in the time left, and tells you plainly. Tidy Up can clear the locked leftover later; otherwise it goes by itself after a week.
 
 ## 1.10.46 · October 7, 2026
 
